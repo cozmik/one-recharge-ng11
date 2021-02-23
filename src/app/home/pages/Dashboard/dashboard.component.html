@@ -1,0 +1,30 @@
+<!--<div class="site-container" [ngClass]="getClasses()" [attr.dir]="rtl ? 'rtl' : null">-->
+  <!--<navbar [title]="pageTitle" (sidebarState)="sidebarState()"></navbar>-->
+
+  <!--<app-side-menu></app-side-menu>-->
+  <!--<main class="main-content">-->
+    <!--<div class="main-content-wrap">-->
+      <!--<router-outlet></router-outlet>-->
+    <!--</div>-->
+    <!--<app-footer></app-footer>-->
+  <!--</main>-->
+<!--</div>-->
+
+
+<div class="site-container" [ngClass]="getClasses()" [attr.dir]="rtl ? 'rtl' : null">
+  <navbar [title]="pageTitle" (sidebarState)="sidebarState()" [openedSidebar]="openedSidebar"></navbar>
+
+  <sidebar (sidebarState)="sidebarState()"></sidebar>
+
+  <app-side-menu></app-side-menu>
+
+  <main class="main-content">
+    <div class="main-content-wrap">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </main>
+</div>
+
+
+

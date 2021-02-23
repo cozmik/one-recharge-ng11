@@ -1,0 +1,172 @@
+<div class="row" *ngIf="self">
+
+  <div class="col-md-6 col-xl-3">
+    <div class="card-wrap danger-card info-card airtime-card">
+      <div class="card-content">
+        <span class="icon" style="background-color: #42ccb1;"><i class="fa fa-exchange"></i></span>
+        <div class="content-block-single">
+          <div class="title text-uppercase" style="color:#42ccb1">Total Airtime Transactions</div>
+          <div class="count">{{DashboardStatistics.totalAirtimeTransactions}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="card-wrap danger-card info-card airtime-card">
+      <div class="card-content">
+        <span class="icon" style="background-color: #469408;"><i class="fa fa-check"></i></span>
+        <div class="content-block-single">
+          <div class="title text-uppercase"  style="color:#469408">Successful Transactions</div>
+          <div class="count">{{DashboardStatistics.successfulAirtimeTransactions}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="card-wrap danger-card info-card airtime-card">
+      <div class="card-content">
+        <span class="icon" style="background-color: #f49c0e;"><i class="fa fa-clock-o"></i></span>
+        <div class="content-block-single">
+          <div class="title text-uppercase"  style="color:#f49c0e">Pending Transactions</div>
+          <div class="count">{{DashboardStatistics.pendingAirtimeTransactions}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="card-wrap danger-card info-card airtime-card">
+      <div class="card-content">
+        <span class="icon" style="background-color: #ff6265;"><i class="fa fa-warning"></i></span>
+        <div class="content-block-single">
+          <div class="title text-uppercase"  style="color:#ff6265">Failed Transactions</div>
+          <div class="count">{{DashboardStatistics.failedAirtimeTransactions}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row" style="margin:20px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+
+    <div class="custom-card" [class.custom-shadow]="self"  style="margin:0; padding-bottom:20px;min-height: 400px;">
+      <header>
+        Airtime & Data Transactions
+        <a class="download-btn" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
+      </header>
+
+      <div class="filter-section">
+        <div class="filter-block">
+          <div style="display: inline-block;">
+            <mat-select [(ngModel)]="range" (change)="getRange()" style="width:100px;"  >
+              <mat-option value="today">Today</mat-option>
+              <mat-option value="week">This Week</mat-option>
+              <mat-option value="month">This Month</mat-option>
+              <mat-option value="other">Range</mat-option>
+            </mat-select>
+          </div>
+          <div class="filter-form" [style.visibility]="range=='other' ? 'visible' : 'hidden'" style="display:inline-block; font-size:12px;">
+            <label for="fromDate">From: </label>
+            <input type="date" [(ngModel)]="fromDate" id="fromDate" placeholder="from date" style="width:120px;"/>
+            <label for="toDate">To: </label>
+            <input type="date" [(ngModel)]="toDate" id="toDate" placeholder="to date"  style="width:120px;"/>
+            <input type="submit" class="filter-btn" value="Search" (click)="getRangeTransaction()"/>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <ul class="list-group list-unstyled list-items" style="float:left; margin-left:5px; font-size:13px;">
+            Status :
+            <select class="form-control-sm custom-select" [(ngModel)]="transactionStatus" (change)="getPaginatedData(1)" >
+              <option [value]="'2'">All</option>
+              <option [value]="'1'">Successful</option>
+              <option [value]="'0'">Failed</option>
+              <option [value]="'-1'">Pending</option>
+            </select></ul>
+        </div>
+        <div class="search-range filter-block">
+          <span>
+            <input class="form-control" type="text" placeholder="Filter by name, email or phone" [(ngModel)]="searchText" name="search" id="searchText">
+          </span>
+        </div>
+      </div>
+      <div>
+        <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
+        <table class="table table-dark mobile-table"  *ngIf="airtimeTransactions.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <th scope="col">Transaction Ref</th>
+            <!--<th scope="col">Full Name</th>-->
+            <th scope="col">Transaction Type</th>
+            <th scope="col">Channel</th>
+            <th scope="col">Network</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date / Time</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'"  *ngFor="let tranx of airtimeTransactions | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index;">
+            <mat-progress-bar *ngIf="isLoadingData && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td scope="row">{{(itemsPerView * (page - 1)) + (i + 1)}}</td>
+            <td scope="row"><span class="title">Ref : </span>{{tranx.transactionId}}</td>
+            <!--<td class="link">{{tranx.data.firstName}} {{tranx.data.lastName}} </td>-->
+            <td scope="row">{{tranx.transactionType}}</td>
+            <td scope="row">{{tranx.channel}}</td>
+            <td scope="row">{{tranx.networkName}}</td>
+            <td scope="row">{{tranx.toMsisdn}}</td>
+            <td scope="row">{{tranx.amount | currency | moneyFormatter}}</td>
+            <td class="more" style="padding-right: 20px;">
+              {{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}
+              <span *ngIf="tranx.status === 0"  [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
+              <span *ngIf="tranx.status === -1" [style.background-color]="'#dfac2d'" class="status desktopOnly"></span><!--pending-->
+              <span *ngIf="tranx.status === 1" [style.background-color]="'#5cb85c'" class="status desktopOnly"></span> <!--successful-->
+            </td>
+            <td *ngIf="tranx.status === 0" class="mobileOnly"><span [style.background-color]="'#d9534f'" class="status-badge">Failed</span></td>
+            <td *ngIf="tranx.status === -1" class="mobileOnly"><span [style.background-color]="'#dfac2d'" class="status-badge">Pending</span></td>
+            <td *ngIf="tranx.status === 1" class="mobileOnly"><span [style.background-color]="'#5cb85c'" class="status-badge">Success</span></td>
+
+            <!--<td class="more"><div class="btn btn-link" (click)="getAgentData(agent.data)" [mat-menu-trigger-for]="action"><i class="fa fa-ellipsis-v"></i></div>-->
+            <!--<span *ngIf="tranx.data.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> &lt;!&ndash;failed&ndash;&gt;-->
+            <!--<span *ngIf="tranx.data.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span>&lt;!&ndash;pending&ndash;&gt;-->
+            <!--<span *ngIf="tranx.data.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> &lt;!&ndash;successful&ndash;&gt;-->
+            <!--</td>-->
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="airtimeTransactions.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+          <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+        </div>
+        <div class="row">
+          <div  class="text-left col-md-3">
+            items per page :
+            <select class="form-control-sm custom-select" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
+              <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
+
+            </select>
+            total : {{totalElements? totalElements : '-'}}
+          </div>
+          <div  class="text-right col-md-9">
+            <pagination-controls  style="text-align: right" (pageChange)="getPaginatedData($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

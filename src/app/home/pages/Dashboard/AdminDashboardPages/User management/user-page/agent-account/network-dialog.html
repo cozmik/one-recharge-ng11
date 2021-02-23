@@ -1,0 +1,16 @@
+<h2 md-dialog-title class="user-details"><span>Configure </span><span style="font-weight:600;">{{networkName}}</span></h2>
+<div md-dialog-content>
+
+  <mat-form-field>
+    <label class="sr-only" for="agentCommission">Agent Commission</label>
+    <input [(ngModel)]="agentCommission" matInput name="agentCommission" (focus)="true" type="text" required id="agentCommission" placeholder="Agent Commission" value="{{agentCommission}}"/>
+  </mat-form-field>
+
+</div>
+
+<div md-dialog-actions style="display:flex; justify-content: center;">
+  <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
+  <!--<button style="margin-left:20px;" md-button md-raised-button [disabled]="(swiftaCommission === null) || (agentCommission === null) || (systemCommission === null) || isUpdating"  (click)="updateNetwork()" color="accent">{{!isUpdating?'Update Network' : 'Updating'}}</button>-->
+  <button style="margin-left:20px;" md-button md-raised-button [disabled]="isUpdating || agentCommission === null || agentCommission === undefined"  (click)="updateNetwork()" color="accent">{{!isUpdating?'Update Network' : 'Updating'}}</button>
+</div>
+

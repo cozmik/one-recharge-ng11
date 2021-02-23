@@ -1,0 +1,164 @@
+<section class="container-area">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-6 col-xl-3">
+        <div class="card-wrap danger-card info-card airtime-card">
+          <div class="card-content">
+            <span class="icon" style="background-color: #42ccb1;"><i class="fa fa-exchange"></i></span>
+            <div class="content-block-single">
+              <div class="title text-uppercase" style="color:#42ccb1">Total Transactions</div>
+              <div class="count">{{DashboardStatistics?.transactionCount ? DashboardStatistics?.transactionCount : 0}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="card-wrap danger-card info-card airtime-card">
+          <div class="card-content">
+            <span class="icon" style="background-color: #469408;"><i class="fa fa-check"></i></span>
+            <div class="content-block-single">
+              <div class="title text-uppercase"  style="color:#469408">Successful Transactions</div>
+              <div class="count">{{DashboardStatistics?.successfulTran ? DashboardStatistics?.successfulTran : 0}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="card-wrap danger-card info-card airtime-card">
+          <div class="card-content">
+            <span class="icon" style="background-color: #f49c0e;"><i class="fa fa-clock-o"></i></span>
+            <div class="content-block-single">
+              <div class="title text-uppercase"  style="color:#f49c0e">Pending Transactions</div>
+              <div class="count">{{DashboardStatistics?.pendingTrans ? DashboardStatistics?.pendingTrans : 0}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="card-wrap danger-card info-card airtime-card">
+          <div class="card-content">
+            <span class="icon" style="background-color: #ff6265;"><i class="fa fa-warning"></i></span>
+            <div class="content-block-single">
+              <div class="title text-uppercase"  style="color:#ff6265">Failed Transactions</div>
+              <div class="count">{{DashboardStatistics?.failedTrans ? DashboardStatistics.failedTrans : 0}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row" style="margin:20px 5px 10px;">
+      <div class="col-lg-12 filter-container">
+
+        <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
+          <header>
+            Airtime Transactions
+            <a class="download-btn" *ngIf="false" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
+          </header>
+
+          <div class="filter-section">
+            <div class="filter-block">
+              <div style="display: inline-block;">
+                <mat-select [(ngModel)]="range" (change)="getRange()" style="width:100px;"  >
+                  <mat-option value="today">Today</mat-option>
+                  <mat-option value="week">This Week</mat-option>
+                  <mat-option value="month">This Month</mat-option>
+                  <mat-option value="other">Range</mat-option>
+                </mat-select>
+              </div>
+              <div class="filter-form" [style.visibility]="range=='other' ? 'visible' : 'hidden'" style="display:inline-block; font-size:12px;">
+                <label for="fromDate">From: </label>
+                <input type="date" [(ngModel)]="fromDate" id="fromDate" placeholder="from date" style="width:120px;"/>
+                <label for="toDate">To: </label>
+                <input type="date" [(ngModel)]="toDate" id="toDate" placeholder="to date"  style="width:120px;"/>
+                <input type="submit" class="filter-btn" value="Search" (click)="getRangeTransaction()"/>
+              </div>
+            </div>
+
+            <div class="filter-block">
+              <ul class="list-group list-unstyled list-items" style="float:left; margin-left:5px; font-size:13px;">
+                <!--<li class="filter-title">Filter by : </li>-->
+                <li class="list-group-item select-all" style="color:#5cb85c">  <mat-checkbox [(ngModel)]="isSuccessTicked">Successful</mat-checkbox></li>
+                <li class="list-group-item" style="color:#f49c0e"> <mat-checkbox [(ngModel)]="isPendingTicked">Pending</mat-checkbox></li>
+                <li class="list-group-item" style="color:#d9534f"> <mat-checkbox [(ngModel)]="isFailedTicked">Failed</mat-checkbox> </li>
+                <!--<li class="list-group-item"> <mat-checkbox [checked]="vAgents" #viewAgents (click)="selectAgents()" >Agent</mat-checkbox> </li>-->
+              </ul>
+            </div>
+            <div class="search-range filter-block">
+              <span>
+                <input class="form-control" type="text" placeholder="Filter by phone" [(ngModel)]="searchText" name="search" id="searchText">
+              </span>
+            </div>
+          </div>
+          <div>
+            <mat-progress-bar *ngIf="isLoadingTransaction" mode="indeterminate"></mat-progress-bar>
+            <table class="table table-dark mobile-table"  *ngIf="transactionsWithId  && !isLoadingTransaction">
+              <thead>
+              <tr>
+                <!--make table stable-->
+                <th></th>
+                <!---->
+                <th scope="col">#</th>
+                <th scope="col">Transaction Ref</th>
+                <!--<th scope="col">Full Name</th>-->
+                <th scope="col">Email</th>
+                <th scope="col">Type</th>
+                <th scope="col">Network</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date / Time</th>
+              </tr>
+              </thead>
+              <tbody *ngFor="let tranx of transactionsWithId | transactionStatusFilter : isSuccessTicked: isPendingTicked: isFailedTicked | airtimeTransactionsFilter : searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+<!--                <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+                <!--make table stable-->
+                <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                <td scope="row">{{tranx.id}}</td>
+                <td scope="row"><span class="title">Ref : </span>{{tranx.data.transactionId}}</td>
+                <!--<td class="link">{{tranx.data.firstName}} {{tranx.data.lastName}} </td>-->
+                <td scope="row">{{tranx.data.email}}</td>
+                <td scope="row">{{getTransactionType(tranx.data.transactionType).toLowerCase()}}</td>
+                <td scope="row">{{tranx.data.networkName}}</td>
+                <td scope="row">{{tranx.data.toMsisdn}}</td>
+                <td scope="row">{{tranx.data.amount | currency | moneyFormatter}}</td>
+                <td scope="more" style="padding-right: 20px;"><div *ngIf="tranx.data.status === -1" class="btn btn-link" style="float: right;" (click)="getTranxData(tranx.data.transactionId)" [mat-menu-trigger-for]="action"><span class="fa fa-ellipsis-v"></span></div>
+                  {{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
+                  <span *ngIf="tranx.data.status === 0" [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
+                  <span *ngIf="tranx.data.status === -1" [style.background-color]="'#dfac2d'" class="status desktopOnly"></span><!--pending-->
+                  <span *ngIf="tranx.data.status === 1" [style.background-color]="'#5cb85c'" class="status desktopOnly"></span> <!--successful-->
+                </td>
+                <td class="mobileOnly"  *ngIf="tranx.data.status === 0"><span [style.background-color]="'#d9534f'" class="status-badge mobileOnly">Failed</span></td>
+                <td class="mobileOnly"  *ngIf="tranx.data.status === -1"><span [style.background-color]="'#dfac2d'" class="status-badge mobileOnly">Pending</span></td>
+                <td class="mobileOnly"  *ngIf="tranx.data.status === 1"><span [style.background-color]="'#5cb85c'" class="status-badge mobileOnly">Success</span></td>
+
+
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="!transactionsWithId.length && !isLoadingTransaction"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+              <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+            </div>
+            <pagination-controls *ngIf="transactionsWithId.length > 10" style="text-align: right" (pageChange)="p = $event"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--    <mat-menu #action="matMenu" class="actionMenu" style="width: 240px;">-->
+<!--      <div style="width: 230px;">-->
+<!--        <div class="myItems" (click)="refundTransaction()"><i class="fa fa-repeat" style="color: #0e7cc5"></i><span>Reverse</span></div>-->
+<!--        <div class="myItems" (click)="updateToSuccess()"> <i class="fa fa-check-circle" style="color: #5cb85c"></i><span>Mark as Successful</span></div>-->
+<!--      </div>-->
+<!--    </mat-menu>-->
+
+  </div>
+</section>
+

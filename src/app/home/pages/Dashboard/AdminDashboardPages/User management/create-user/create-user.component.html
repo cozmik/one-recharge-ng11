@@ -1,0 +1,179 @@
+<div class="row">
+  <div class="container col-lg-12">
+    <div class="mat-card">
+      <!--<h4 class="mat-card-title">Create User</h4>-->
+      <div class="card">
+        <div class="container switcher" style="padding-left: 10px">
+          <mat-radio-group  [(ngModel)]="switchCreate">
+            <mat-radio-button [value]=true (click)="getVal()">Create User</mat-radio-button>
+            <mat-radio-button [value]=false (click)="getVal()">Upload User Excel</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div *ngIf="uUser">
+        <form (ngSubmit)="onSubmitFIle()" class="card" id="file" method="post" enctype="multipart/form-data">
+          <div style="width: 100%;margin: auto;">
+            <app-custom-alert *ngIf="successfulAgents > 0 && unsuccessfulAgents === 0" [type]="'success'" [fadeOut]="false" [multiple]="false" [title]="allSuccessfulMsg" [textObject]=""></app-custom-alert>
+          </div>
+
+          <div  style="width: 100%;margin: auto;">
+            <app-custom-alert *ngIf="successfulAgents > 0 && unsuccessfulAgents > 0" [type]="'warning'" [fadeOut]="false" [multiple]="false" [title]="partiallySuccessfulMsg" [textObject]=""></app-custom-alert>
+          </div>
+
+          <div style="width: 100%;margin: auto;">
+            <app-custom-alert *ngIf="successfulAgents === 0 && unsuccessfulAgents > 0" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="unsucceessfulMsg" [textObject]=""></app-custom-alert>
+          </div>
+          <div class="md-container">
+            <div class="mat-card-header">Excel Upload</div>
+            <div class="divider"></div>
+            <div class="form-inline">
+              <label class="sr-only" for="excel">Upload Excel File</label>
+
+              <input type="file" id="excel" required (ngModel)="excel" [disabled]="isloading" [ngModelOptions]="{standalone: true}" #excel value="">
+
+            </div>
+
+          </div>
+          <button md-raised-button type="submit" color="accent">{{uplodText}}
+            <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'">
+            </mat-spinner>
+          </button>
+        </form>
+      </div>
+
+      <div *ngIf="cUser">
+        <form (ngSubmit)="onSubmit(formData)" [formGroup]="userForm" #formData='ngForm' class="card" method="post" enctype="multipart/form-data">
+          <div class="md-container">
+            <div class="mat-card-header">Personal Information</div>
+            <div class="divider"></div>
+
+
+            <div class="form-inline pb-15">
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="fname">First Name</label>
+                <input matInput type="text" name="fname" required formControlName="firstName"  id="fname" placeholder="First Name" value="">
+                <div *ngIf="userForm.get('firstName').invalid && (userForm.get('firstName').dirty || userForm.get('firstName').touched)">
+                  <div class="errorText" >
+                    First name is required
+                  </div>
+                </div>
+              </mat-form-field>
+
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="lname">Last Name</label>
+                <input matInput type="text" id="lname" required formControlName="lastName" name="lname" placeholder="Last Name" value="">
+                <div *ngIf="userForm.get('lastName').invalid && (userForm.get('lastName').dirty || userForm.get('lastName').touched)">
+                  <div class="errorText" >
+                    Last name is required
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-12 pb-15">
+              <mat-form-field>
+                <label class="sr-only" for="email">Email address</label>
+                <input matInput type="email" (blur)="checkEmail()" id="email" required  formControlName="email" name="email" placeholder="Email address" value="">
+
+                <div *ngIf="userForm.get('email').invalid && (userForm.get('email').dirty || userForm.get('email').touched)">
+                  <div *ngIf="userForm.get('email').errors.required" class="errorText" >
+                    Email address is required
+                  </div>
+                  <div *ngIf="userForm.get('email').errors.email && !(userForm.get('email').errors.required)" class="errorText" >
+                    Enter a valid email address
+                  </div>
+
+                  <div *ngIf="userForm.get('email').errors.emailExists" class="errorText" >
+                    Email already exists
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+
+            <div class="form-inline pb-15">
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" required for="phone1">Mobile phone</label>
+                <input matInput type="tel" (blur)="checkNum()" id="phone1" formControlName="mobileNo" name="phone1" placeholder="Mobile Phone" value="">
+                <div *ngIf="userForm.get('mobileNo').invalid && (userForm.get('mobileNo').dirty || userForm.get('mobileNo').touched)">
+                  <div *ngIf="userForm.get('mobileNo').errors.required" class="errorText" >
+                    Phone number is required
+                  </div>
+                  <div *ngIf="userForm.get('mobileNo').errors.numberExists" class="errorText" >
+                    Phone number already exists
+                  </div>
+
+                </div>
+              </mat-form-field>
+
+
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="phone2">Alternate phone</label>
+                <input matInput type="tel" id="phone2" formControlName="altMobileNo" name="phone2" placeholder="Alternate Phone" value="">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="md-container">
+            <div class="mat-card-header">Address</div>
+            <div class="divider"></div>
+            <div class="form-inline">
+              <mat-form-field class="col-md-12">
+                <label class="sr-only" for="address">Address</label>
+                <textarea matInput md-maxlength="200" rows="2" required id="address" formControlName="address" placeholder="Address" value=""></textarea>
+                <div *ngIf="userForm.get('address').invalid && (userForm.get('address').dirty || userForm.get('address').touched)">
+                  <div class="errorText" >
+                    Address is required
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="md-container"  [style.display]="loggedInUser.getUserType() === 'subSuper' ? 'none' : 'block'">
+            <div class="mat-card-header" [style.display]="loggedInUser.isSubSuperAgent ? 'none' : 'block'" >Select User</div>
+            <div class="divider" [style.display]="loggedInUser.isSubSuperAgent ? 'none' : 'block'" ></div>
+            <div class="form-inline">
+              <div class="mb-module col-md-12"  [style.display]="loggedInUser.isSubSuperAgent ? 'none' : 'block'" >
+                <mat-radio-group  (change)="updateAssignedAgents()"   formControlName="createAgentType" [(ngModel)]="createAgentType" name="createAgentType">
+                  <mat-radio-button *ngIf="loggedInUser.isPermittedTo('CREATE_SUPER_AGENT')" value = "super" >Super Agent</mat-radio-button>
+                  <mat-radio-button *ngIf="loggedInUser.isPermittedTo('CREATE_SUB_SUPER_AGENT')" value = "subSuper" >Sub-super Agent</mat-radio-button>
+                  <mat-radio-button *ngIf="loggedInUser.isPermittedTo('CREATE_AGENT')" value = "agent" >Agent</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="mb-module col-md-12" *ngIf="createAgentType === 'agent'" [style.display]="loggedInUser.isSubSuperAgent ? 'none' : 'block'" style="margin-top: 15px !important;">
+                <mat-select [placeholder]="'Select ' + (loggedInUser.userType === 'ADMIN' ? 'a super agent/' : '') + 'Sub-super agent to manage this agent'" formControlName="subOrSuperAgent" >
+                  <mat-option [value]="agent.id" *ngFor="let agent of superAgents">
+                    {{agent.lastName + ' ' + agent.firstName + ' ['+agent.email+ ']'}}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div class="mb-module col-md-12" *ngIf="createAgentType === 'subSuper' && ((loggedInUser.userType === 'ADMIN') || !loggedInUser.isSuperAgent)" style="margin-top: 15px !important;">
+                <mat-select [placeholder]="loggedInUser.userType === 'ADMIN' ? 'Select a super agent to manage this sub-super agent': 'Super agent managing this agent'" formControlName="superAgentId" >
+                  <mat-option [value]="agent.id" *ngFor="let agent of superAgents">
+                    {{agent.lastName + ' ' + agent.firstName + '   ['+agent.email+ ']'}}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div class="mb-module col-md-12" *ngIf="loggedInUser.userType === 'ADMIN'" style="margin-top: 30px;">
+                <mat-select placeholder="Select a role"  formControlName="roleId" style="width: 100%">
+                  <mat-option value="{{role.id}}" *ngFor="let role of roles">
+                    {{role.name}}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="md-container">
+            <button md-raised-button [disabled]="userForm.invalid || isloading" type="submit" color="accent">Create {{getAgentType(this.createAgentType)}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'"> </mat-spinner></button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

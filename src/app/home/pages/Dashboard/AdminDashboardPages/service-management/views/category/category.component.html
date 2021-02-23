@@ -1,0 +1,60 @@
+<section>
+  <div class="card" *ngIf="!editCategory && !editLogo && category">
+    <div class="logo  mr-2">
+      <img [src]="sanitizer.bypassSecurityTrustResourceUrl(category?.categoryLogo)">
+    </div>
+    <div style="width: 75%">
+      <h4 class="title">
+        {{category?.categoryName}}
+      </h4>
+      <div class="description">
+        {{category?.description}}
+      </div>
+
+      <div class="button-section">
+        <button (click)="editCategory = true" class="tertiary-button">Edit category</button>
+        <button (click)="editLogo = true" class="tertiary-button">Change image</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-form-section" *ngIf="editCategory">
+    <form>
+      <label for="title">
+        <span>Category Name</span>
+        <input id="title" placeholder="name" type="text" [value]="category?.categoryName">
+      </label>
+      <label for="description">
+        <span>Description</span>
+        <textarea id="description" placeholder="Description" [value]="category?.description"></textarea>
+      </label>
+
+      <div class="button-section">
+        <button class="btn-primary">Update</button>
+        <button class="btn-outline" (click)="editCategory = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="cat-form-section" *ngIf="editLogo">
+    <form class="logo-section">
+      <label for="logo">
+        <span>Logo</span>
+        <input id="logo" placeholder="logo" type="file">
+      </label>
+
+      <div class="button-section">
+        <button class="btn-primary">Update</button>
+        <button class="btn-outline" (click)="editLogo = false">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <ul class="service-lists">
+    <ng-template ngFor let-service [ngForOf]="category?.services" [ngForTrackBy]="trackFn" let-i="index">
+    <li>
+      <sm-service-list [service]="service"></sm-service-list>
+    </li>
+    </ng-template>
+  </ul>
+</section>

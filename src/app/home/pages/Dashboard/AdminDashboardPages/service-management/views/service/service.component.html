@@ -1,0 +1,151 @@
+<section>
+  <div *ngIf="service">
+    <div [class.editing]="editConfiguration">
+      <div>
+        <div class="image-section">
+          <div class="logo">
+            <button>
+              <fa-icon [icon]="camera"></fa-icon>
+            </button>
+            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)">
+          </div>
+          <div class="buttons">
+            <button class="tertiary-button" (click)="openServiceConfig()">Manual Config</button>
+            <button class="tertiary-button" (click)="openServiceList(serviceRef)">Import Config</button>
+          </div>
+        </div>
+        <div class="details">
+          <div><span class="title">Service Provider:</span>
+            <span
+              class="value">{{service.serviceProviderName ? service.serviceProviderName : 'No service provider'}}</span>
+          </div>
+
+          <div *ngIf="service.serviceProviderHasCommission">
+            <span class="title">Service Provider Commission:</span>
+            <span class="value" [appPercentCurrency]="service.isServiceProviderCommissionFixed">
+          {{service?.serviceProviderCommission}}</span>
+          </div>
+
+          <div *ngIf="service.hasFee"><span class="title">Service Fee Type:</span> <span
+            class="value">{{service.feeType === 1 ? 'Fixed' : (service.feeType === null ? 'Not set' : 'Tiered')}}</span>
+          </div>
+          <div>
+            <span class="title">Service Fee:</span>
+            <ng-container *ngIf="service.feeType == 2; else type1">
+              <div class="value">
+                <span *ngIf="service.serviceFees.length < 1; else table">Not set</span>
+                <ng-template #table>
+                  <div class="table-section">
+                    <table>
+                      <thead>
+                      <tr>
+                        <th>Tiers</th>
+                        <th>Lower Bound</th>
+                        <th>Upper Bound</th>
+                        <th>Fee Type</th>
+                        <th>Fee</th>
+                        <th *ngIf="service.isCommissionPerFee">Sys Commission</th>
+                        <th *ngIf="service.isCommissionPerFee">SA Commission</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let feeList of service.serviceFees; let i = index;">
+                        <td>{{'Tier ' + (i + 1)}}</td>
+                        <td><span [appPercentCurrency]="'currency'">{{feeList.lowerBound | number:'1.2-2'}}</span></td>
+                        <td><span [appPercentCurrency]="'currency'">{{feeList.upperBound |  number:'1.2-2'}}</span></td>
+                        <td>{{feeList.isFeePercentage == 1 ? 'percentage' : 'amount'}}</td>
+                        <td>
+                          <span [appPercentCurrency]="!feeList.isFeePercentage">{{feeList.feeAmount}}</span>
+                        </td>
+                        <td *ngIf="service.isCommissionPerFee">
+                    <span [appPercentCurrency]="feeList.isSystemCommissionFixed">
+                      {{ feeList.systemCommission | number:'1.2-2'}}</span>
+                        </td>
+
+                        <td *ngIf="service.isCommissionPerFee">
+                    <span [appPercentCurrency]="feeList.isSystemCommissionFixed">
+                      {{ feeList.superAgentCommission | number:'1.2-2'}}</span>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </ng-template>
+              </div>
+            </ng-container>
+            <ng-template #type1>
+              <ng-container *ngIf="service.feeType == 1; else notSet">
+                <div class="value">
+            <span [appPercentCurrency]="!serviceData.serviceFees[0]?.isFeePercentage">
+              {{service.serviceFees[0]?.feeAmount ? service.serviceFees[0]?.feeAmount : 0}}
+            </span>
+                </div>
+              </ng-container>
+            </ng-template>
+            <ng-template #notSet>
+              <div class="value">
+                Not set
+              </div>
+            </ng-template>
+          </div>
+
+          <ng-template [ngIf]="!service.isCommissionPerFee">
+            <div><span class="title">System Commission:</span>
+              <span class="value" [appPercentCurrency]="service.isCommissionFixed">
+            {{service.systemCommission}}
+            </span></div>
+            <div>
+              <span class="title">Superagent Commission:</span>
+              <span class="value" [appPercentCurrency]="service.isCommissionFixed">
+            {{service.superAgentCommission}}
+          </span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="config-section">
+        <div>
+          <h4>Service Packages</h4>
+          <ng-template [ngIf]="service.servicePackages" [ngIfElse]="noPackage">
+            <div class="card" *ngFor="let pack of service.servicePackages">
+              <img
+                src="data:image/png;base64,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">
+              <span class="package-name">{{pack.name}}</span>
+              <button (click)="viewService(pack)">view</button>
+            </div>
+          </ng-template>
+          <ng-template #noPackage>
+            <h5>No Packages for this Service</h5>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<ng-template #serviceRef>
+  <section class="service-list">
+    <div>
+      <button class="close-icon" (click)="closeSideNav()">
+        <fa-icon [icon]="close"></fa-icon>
+      </button>
+      <label>
+        <input #data placeholder="Type to filter by service name" (keypress)="filterServices(data.value)" type="text"
+               name="search">
+      </label>
+    </div>
+    <ul>
+      <li *ngFor="let service of filteredServices">
+        <button (click)="selectService(service.id)">
+          <span class="img">
+            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)">
+          </span>
+          <span>{{service.serviceName}}</span><span class="sp"
+                                                    *ngIf="service.serviceProviderName">({{service.serviceProviderName}}
+          )</span>
+        </button>
+      </li>
+    </ul>
+  </section>
+</ng-template>

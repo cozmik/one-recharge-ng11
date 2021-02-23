@@ -1,0 +1,37 @@
+<nav class="col-12">
+  <div>
+    <a href="#" class="logo">
+      <img src="../../../../../../assets/logo/Lilly_logo.png" alt="logo" height="60" class="logo-img">
+    </a>
+    <ul [ngClass]="navClasses" *ngIf="!isLoggedIn && !isCustomer">
+      <li><a routerLink="/sign-in">Sign In</a></li>
+      <li><a routerLink="/sign-up">Sign Up</a></li>
+      <li><a routerLink="/agent-signup" class="signup" >Become an Agent</a></li>
+    </ul>
+
+
+    <ul [ngClass]="navClasses" *ngIf="isLoggedIn && !isCustomer">
+      <li><a (click)="goToDashboard()">Dashboard</a></li>
+      <li><a (click)="signOut()" class="signout">Logout</a></li>
+    </ul>
+
+    <ul [ngClass]="navClasses" *ngIf="isCustomer && !isLoggedIn">
+      <li><a  routerLink="/customer" [routerLinkActiveOptions]="{exact:true}"
+              routerLinkActive="active">Home</a>
+      </li>
+      <li><a  routerLink="/customer/transaction-history" [routerLinkActiveOptions]="{exact:true}"
+              routerLinkActive="active">Transaction History</a></li>
+      <li><a  routerLink="/customer/settings"  [routerLinkActiveOptions]="{exact:true}"
+              routerLinkActive="active">Settings</a></li>
+      <li><a (click)="signOut()" class="signout">Logout</a></li>
+    </ul>
+    <div class="menu" (click)="toggleNav()">
+      <i class="fa fa-bars"  [class.visible]="!isOpened"></i>
+      <i class="fa fa-close" [class.visible]="isOpened"></i>
+    </div>
+  </div>
+</nav>
+
+<div class="clearfix"></div>
+
+<div class="mobile-backdrop" (click)="toggleNav()" *ngIf="isOpened"></div>

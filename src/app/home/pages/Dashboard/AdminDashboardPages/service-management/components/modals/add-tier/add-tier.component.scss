@@ -1,0 +1,40 @@
+form {
+  .form-contain {
+    display: flex;
+    justify-content: space-between;
+
+    label:not(.slide-toggle) {
+      margin-right: 10px;
+      width: 100px;
+
+      input {
+        padding: 10px !important;
+      }
+    }
+
+    div {
+      display: flex;
+      position: relative;
+      margin-left: 20px;
+
+      > span {
+        display: inline;
+        align-self: center;
+        font-size: 1.3rem;
+        margin-top: -10px;
+        position: absolute;
+        left: -20px;
+      }
+
+      label + span{
+        right: -10px;
+        left: unset;
+      }
+    }
+  }
+  .toggle-container{
+    >div{
+      margin-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+@import "src/assets/sass/variable";
+
+section{
+  .link-button{
+    @include btn-link($tertiary-color);
+  }
+
+  div{
+    text-align: left;
+    margin: 20px 20px;
+
+    &:not(:nth-child(5)){
+      border-bottom: 1px #cccccc solid;
+    }
+
+    span{
+      display: inline-block;
+
+      &:first-child{
+        width: 100px;
+      }
+
+      &:nth-child(2){
+        font-weight: 500;
+      }
+    }
+
+    .description{
+      font-weight: unset !important;
+      font-size: .9rem;
+    }
+  }
+
+  form{
+    .button-section{
+      border-bottom: none;
+    }
+    label{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 0;
+      &:not(:last-child){
+        align-items: baseline;
+      }
+
+      span{
+        display: inline-block;
+        position: relative;
+        top: unset !important;
+        font-size: 1em !important;
+        width: 35%;
+        text-align: left;
+
+        &.input-pack{
+          display: flex !important;
+          width: 60% !important;
+          align-items: baseline;
+        }
+      }
+
+      input, textarea{
+        width: 100%;
+        padding-left: 10px;
+      }
+    }
+  }
+
+
+  .close-button{
+    @include btn-outline($danger-color);
+    margin: 20px;
+    padding: 5px 20px;
+  }
+
+  .space{
+    text-align: right;
+    margin-bottom: 20px;
+    border: none !important;
+  }
+}

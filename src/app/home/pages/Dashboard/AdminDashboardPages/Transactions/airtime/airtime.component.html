@@ -1,0 +1,224 @@
+<div class="row"  style="margin:20px 5px 10px;">
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap" style="background: #42ccb1">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Total Transactions Today</div>
+          <div style="display:flex;">
+            <div class="count">{{dashboardData.todayAirtimeTransactions ? dashboardData.todayAirtimeTransactions : 0}}<span>Airtime</span></div>
+            <div class="count">{{ dashboardData.todayDataTransactions ? dashboardData.todayDataTransactions : 0 }}<span>Data</span></div>
+          </div>
+
+          <i class="fa fa-exchange info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #56a53c">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Successful</div>
+          <div style="display:flex;">
+            <div class="count">{{dashboardData.todaySuccessfulAirtimeTransactions ? dashboardData.todaySuccessfulAirtimeTransactions : 0}}<span>Airtime</span></div>
+            <div class="count">{{ dashboardData.todaySuccessfulDataTransactions ? dashboardData.todaySuccessfulDataTransactions : 0 }}<span>Data</span></div>
+          </div>
+          <i class="fa fa-check info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #f49c0e">
+        <div class="card-content" style="padding: 1rem">
+
+          <div class="title text-uppercase">Pending</div>
+
+          <div style="display:flex;">
+            <div class="count">{{dashboardData.todayPendingAirtimeTransactions ? dashboardData.todayPendingAirtimeTransactions :0}}<span>Airtime</span></div>
+            <div class="count">{{dashboardData.todayPendingDataTransactions ? dashboardData.todayPendingDataTransactions : 0}}<span>Data</span></div>
+          </div>
+          <i class="fa fa-clock-o"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #ff6265">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Failed</div>
+
+          <div style="display:flex;">
+            <div class="count">{{dashboardData.todayFailedAirtimeTransactions ? dashboardData.todayFailedAirtimeTransactions : 0}}<span>Airtime</span></div>
+            <div class="count">{{dashboardData.todayFailedDataTransactions ? dashboardData.todayFailedDataTransactions : 0 }}<span>Data</span></div>
+          </div>
+          <i class="fa fa-warning info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="row" style="margin:20px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+
+    <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
+      <header>
+        Airtime & Data Transactions
+        <a class="download-btn" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
+      </header>
+
+      <div class="filter-section">
+        <div class="filter-block" style="flex-basis:550px;">
+          <div style="display: inline-block;">
+            <mat-select [(ngModel)]="range" (change)="getRange()" style="width:100px;"  >
+              <mat-option value="today">Today</mat-option>
+              <mat-option value="week">This Week</mat-option>
+              <mat-option value="month">This Month</mat-option>
+              <mat-option value="other">Range</mat-option>
+            </mat-select>
+          </div>
+          <div class="filter-form" [style.visibility]="range=='other' ? 'visible' : 'hidden'" style="display:inline-block; font-size:12px;">
+            <label for="fromDate">From: </label>
+            <input type="date" [(ngModel)]="fromDate" id="fromDate" placeholder="from date" style="width:120px;"/>
+            <label for="toDate">To: </label>
+            <input type="date" [(ngModel)]="toDate" id="toDate" placeholder="to date"  style="width:120px;"/>
+            <input type="submit" class="filter-btn" value="Search" (click)="getRangeTransaction()"/>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <div class="list-group list-unstyled flex-row align-items-center list-items" style="float:left; margin-left:5px; font-size:13px;">
+            <label for="list" class="mr-2 mb-n3"> Status :</label>
+
+            <select id="list" class="form-control-sm custom-select" [(ngModel)]="transactionStatus" (change)="getPaginatedData(1)" >
+              <option [value]="'2'">All</option>
+              <option [value]="'1'">Successful</option>
+              <option [value]="'0'">Failed</option>
+              <option [value]="'-1'">Pending</option>
+            </select>
+
+            <!--<li class="filter-title">Filter by : </li>-->
+            <!--<li class="list-group-item select-all" style="color:#5cb85c">  <mat-checkbox [(ngModel)]="isSuccessTicked">Successful</mat-checkbox></li>-->
+            <!--<li class="list-group-item" style="color:#f49c0e"> <mat-checkbox [(ngModel)]="isPendingTicked">Pending</mat-checkbox></li>-->
+            <!--<li class="list-group-item" style="color:#d9534f"> <mat-checkbox [(ngModel)]="isFailedTicked">Failed</mat-checkbox> </li>-->
+            <!--&lt;!&ndash;<li class="list-group-item"> <mat-checkbox [checked]="vAgents" #viewAgents (click)="selectAgents()" >Agent</mat-checkbox> </li>&ndash;&gt;-->
+          </div>
+        </div>
+        <div class="search-range filter-block" *ngIf="false">
+          <div style="display: inline-block; margin-right:0px;" class="row" >
+            <input class="form-control" style="display: inline-block; width:200px;" type="text" placeholder="Filter by keyword" [(ngModel)]="searchText" (keyup)="filterData(searchText)" name="search" id="searchText">
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
+        <table class="table table-dark"  *ngIf="transactions.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <!--<th scope="col">Transaction Ref</th>-->
+            <!--<th scope="col">Full Name</th>-->
+            <th scope="col">Type</th>
+            <th scope="col">Email</th>
+            <th scope="col">Channel</th>
+            <th scope="col">Network</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date / Time</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <!--//The number of elements in the page-->
+          <!--size: number = 0;-->
+          <!--//The total number of elements-->
+          <!--totalElements: number = 0;-->
+          <!--//The total number of pages-->
+          <!--totalPages: number = 0;-->
+          <!--//The current page number-->
+          <!--pageNumber: number = 0;-->
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'"  *ngFor="let tranx of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index;">
+<!--            <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td scope="row">{{(itemsPerView * (page - 1)) + (i + 1)}}</td>
+            <!--<td scope="row">{{itemsPerView}} {{page }} {{(i + 1)}}</td>-->
+            <!--<td scope="row">{{tranx.data.transactionId}}</td>-->
+            <!--<td class="link">{{tranx.data.firstName}} {{tranx.data.lastName}} </td>-->
+            <td (click)="viewTransaction(tranx)" class="link">{{getTransactionType(tranx.transactionType)}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.email}} {{tranx.fromType  !==  'GUEST' ? ' (' + tranx.fromType +')' : ''}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.channel}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.networkName}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.toMsisdn}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.amount | currency | moneyFormatter}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}</td>
+
+            <td class="more" style="padding-right: 20px;">
+              <div *ngIf="tranx.status === -1 || (tranx.status === 0 && (tranx.fromType === 'GUEST' || tranx.fromType === 'CUSTOMER'))" class="btn btn-link" style="float: right;" (click)="getTranxData(tranx)" [mat-menu-trigger-for]="action"><span class="fa fa-ellipsis-v"></span></div>
+
+              <span *ngIf="tranx.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> <!--failed-->
+              <span *ngIf="tranx.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span><!--pending-->
+              <span *ngIf="tranx.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> <!--successful-->
+            </td>
+
+            <!--<td class="more"><div class="btn btn-link" (click)="getAgentData(agent.data)" [mat-menu-trigger-for]="action"><i class="fa fa-ellipsis-v"></i></div>-->
+              <!--<span *ngIf="tranx.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> &lt;!&ndash;failed&ndash;&gt;-->
+              <!--<span *ngIf="tranx.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span>&lt;!&ndash;pending&ndash;&gt;-->
+              <!--<span *ngIf="tranx.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> &lt;!&ndash;successful&ndash;&gt;-->
+            <!--</td>-->
+          </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="transactions.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+          <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+        </div>
+        <div class="row" style="padding: 0 10px" *ngIf="totalElements > 5">
+          <div  class="text-left col-md-3 d-flex flex-row">
+            <label for="per-view" class="mr-2"> items per page : </label>
+            <select id="per-view" class="form-control-sm" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
+              <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
+
+            </select>
+           <div class="ml-2"> total : {{ totalElements? totalElements : '0'}}</div>
+          </div>
+          <div  class="text-right col-md-9" *ngIf="totalElements > itemsPerView">
+            <pagination-controls  style="text-align: right" (pageChange)="getPaginatedData($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #action="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 230px;">
+    <div class="myItems" (click)="refundTransaction()"><i class="fa fa-repeat" style="color: #0e7cc5"></i><span>Reverse</span></div>
+    <div class="myItems" (click)="updateToSuccess()"> <i class="fa fa-check-circle" style="color: #5cb85c"></i><span>Mark as Successful</span></div>
+  </div>
+  <div style="width: 230px;" *ngIf="tranxOwner === 'GUEST' || tranxOwner === 'CUSTOMER'">
+    <div class="myItems" (click)="retryTransaction()"><i class="fa fa-refresh" style="color: gold"></i><span>Retry</span></div>
+  </div>
+</mat-menu>
+
+
+

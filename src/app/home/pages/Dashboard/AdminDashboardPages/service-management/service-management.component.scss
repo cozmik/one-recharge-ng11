@@ -1,0 +1,23 @@
+@import 'src/assets/sass/variable';
+
+.main-container {
+  background: white;
+  padding: 40px 60px;
+}
+
+  //section {
+  //  position: relative;
+  //  overflow-x: hidden;
+  //  background-color: white;
+  //
+  //  .container {
+  //    padding: 30px;
+  //    min-height: 80vh;
+  //  }
+  //}
+
+  .mat-drawer-content.mat-sidenav-content {
+    min-height: 78vh;
+    background: white;
+  }
+

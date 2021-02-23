@@ -1,0 +1,297 @@
+<card  style="margin: 5px 0px; padding: 0px;">
+  <div class="row">
+    <div class="d-flex profile_container">
+      <div class="profile_image_container">
+        <div class="profile_image">
+          <div class="img-container">
+            <img style="border-radius:100%" [src]="userData?.profileImage">
+            <div class="status" [style.backgroundColor]="isBlocked? '#48b84d': '#ff6265'"></div>
+          </div>
+          <div style="display: inline-block; position: absolute; bottom:-35px; ">
+            <mat-slide-toggle style="margin-left: 20px; margin-top:10px" #slider [checked]="isBlocked" (change)="toggleBlockUser()">{{blockingText}}</mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+      <div class="profileDetails">
+        <h5>{{userData?.fullName | checkNull}}</h5>
+        <span>{{userData?.email | checkNull}}</span>
+        <span>{{userData?.mobile | checkNull}}</span>
+        <span>{{userData?.agentTypeName | checkNull}}</span>
+        <div class="wallet-container">
+          <div class="main"><span class="title">Main Wallet</span>
+            <span class="money">₦{{userFormData.mainWallet | number:'1.2-2' }}</span>
+          </div>
+          <div class="commission">
+            <span class="title">Commission Wallet</span>
+            <span class="money">₦{{userFormData.commissionWallet | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</card>
+
+<card style="margin-top: 5px; padding: 0;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="selectorDiv">
+        <div class="user_loader" *ngIf="allLoading.profile || allLoading.roles || allLoading.transaction">
+            <!--<mat-spinner style="width: 35px; height: 35px; margin-top: 45%;" [color]="'accent'"> </mat-spinner>-->
+            <p style="position: absolute;">loading profile...</p>
+        </div>
+        <div>
+          <div class="row">
+            <mat-tab-group style="width:100%;" mat-stretch-tabs>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>perm_identity</mat-icon> PROFILE
+                </ng-template>
+                <div class="col-md-12" style="min-height:300px;">
+                  <form (ngSubmit)="onSubmit()" class="">
+                    <div class="mat-container" style="margin-top: 30px;">
+                      <div ><strong>User Information</strong>
+                        <span *ngIf="isNotEdit"  style="color: #3b7fc4; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editProfile()"><span>[ Edit Profile ]</span> </span>
+                        <span *ngIf="!isNotEdit" style="color: #ff6265; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editProfile()"><span>[ Cancel Edit ]</span></span>
+                      </div>
+
+                      <div class="profile_container" *ngIf="isNotEdit">
+                        <div class="row profile_item">
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">First name</span>
+                            <p class="content">{{userFormData.firstName}}</p>
+                          </div>
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">Last name</span>
+                            <p class="content">{{userFormData.lastName}}</p>
+                          </div>
+                        </div>
+                        <div class="row profile_item">
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">Mobile no</span>
+                            <p class="content">{{userFormData.mobileNo}}</p>
+                          </div>
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">Alt Phone</span>
+                            <p class="content">{{userFormData.altMobileNo?userFormData.altMobileNo:'-'}}</p>
+                          </div>
+                        </div>
+                        <div class="row profile_item">
+                          <div class="col-xs-12 col-md-6">
+                            <span class="title">Email Address</span>
+                            <p class="content">{{userFormData.email}}</p>
+                          </div>
+                          <div class="col-xs-12 col-md-6">
+                            <span class="title">Address</span>
+                            <p class="content">{{userFormData.address}}</p>
+                          </div>
+                        </div>
+                        <div class="row profile_item">
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">Date Created</span>
+                            <p class="content">{{userFormData.dateCreated | date}}</p>
+                          </div>
+                          <div class="col-xs-6 col-md-6">
+                            <span class="title">Last Login</span>
+                            <p *ngIf="userFormData.lastLogin" class="content">{{userFormData.lastLogin | date}}</p>
+                            <p *ngIf="!userFormData.lastLogin" class="content"> - </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="!isNotEdit">
+                        <div style=" width: 100%;margin: auto;">
+                        </div>
+                        <div class="form-inline">
+                          <mat-form-field class="md-inline col-md-6">
+                            <label class="sr-only" for="firstName">First Name</label>
+                            <input matInput type="text" [disabled]="isNotEdit" id="firstName" [(ngModel)]="userFormData.firstName" [ngModelOptions] ="{standalone: true}" required name="firstName" placeholder="First Name" value="">
+                          </mat-form-field>
+
+                          <mat-form-field class="md-inline col-md-6">
+                            <label class="sr-only" for="lname">Last Name</label>
+                            <input matInput type="text" id="lname" [disabled]="isNotEdit" required  [(ngModel)]="userFormData.lastName" [ngModelOptions] ="{standalone: true}" name="lastName" placeholder="Last Name" value="">
+                          </mat-form-field>
+
+                        </div>
+                        <div class="form-inline">
+                          <mat-form-field class="md-inline col-md-6">
+                            <label class="sr-only" for="phone1">Mobile phone</label>
+                            <input matInput type="tel" required id="phone1" [disabled]="isNotEdit" [(ngModel)]="userFormData.mobileNo" [ngModelOptions] ="{standalone: true}" name="mobile" placeholder="Mobile Phone" value="">
+                          </mat-form-field>
+
+
+                          <mat-form-field class="md-inline col-md-6">
+                            <label class="sr-only" for="phone2">Alternate Number</label>
+                            <input matInput type="email" id="phone2" [disabled]="isNotEdit" [(ngModel)]="userFormData.altMobileNo" [ngModelOptions] ="{standalone: true}" name="mobile2" placeholder="Alternate Phone" value="">
+                          </mat-form-field>
+                        </div>
+                        <div class="form-inline">
+                          <mat-form-field class="md-inline col-md-12">
+                            <label class="sr-only" for="email">Email address</label>
+                            <input matInput type="email" id="email" [disabled]="isNotEdit" required [(ngModel)]="userFormData.email" [ngModelOptions] ="{standalone: true}" name="email" placeholder="Email address" value="">
+                          </mat-form-field>
+                        </div>
+                        <div class="form-inline">
+                          <mat-form-field class="col-md-12" style="margin-top: 60px;">
+                            <label class="sr-only" for="address">Address</label>
+                            <textarea matInput md-maxlength="200" [disabled]="isNotEdit" [(ngModel)]="userFormData.address" rows="2"required id="address" name="address" placeholder="Address" value=""></textarea>
+                          </mat-form-field>
+                        </div>
+                        <button class="custom" *ngIf="!isNotEdit || isloading" [disabled]="isloading" md-raised-button type="submit" color="accent">Update {{userData.agentTypeName}}  <i *ngIf="isloading" style="color:#fff; font-size:30px;" class="fa fa-spinner fa-spin"></i></button>
+
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>compare_arrows</mat-icon> TRANSACTIONS
+                </ng-template>
+                <div style="min-height:300px;">
+                  <app-agent-transaction-history [dUserId]="userId" [self]="false"></app-agent-transaction-history>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>account_balance_wallet</mat-icon> WALLET
+                </ng-template>
+                <div style="min-height:300px;">
+                  <app-agent-wallet-transaction-history [dUserId]="userId"  [self]="false"></app-agent-wallet-transaction-history>
+                </div>
+              </mat-tab>
+              <mat-tab *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'agent'">
+                <ng-template mat-tab-label>
+                  <mat-icon>group</mat-icon> AGENTS
+                </ng-template>
+                <div style="min-height:300px;">
+                  <app-user-agents></app-user-agents>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>build</mat-icon> AIRTIME
+                </ng-template>
+                <mat-progress-bar *ngIf="isLoadingAirtimeNetworkConfig" mode="indeterminate"></mat-progress-bar>
+                <div *ngIf="airtimeNetworkConfig.length < 1 && !isLoadingAirtimeNetworkConfig" style="padding:20px 10px;text-align:center">
+                  <span>No Networks at the moment</span>
+                </div>
+
+                <table class="table table-dark"  *ngIf="airtimeNetworkConfig.length > 0">
+                  <thead>
+                  <tr>
+                    <!--make table stable-->
+                    <th></th>
+                    <!---->
+                    <th scope="col">#</th>
+                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+                    <th scope="col">Network Name</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() !== 'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>
+                    <th scope="col">Agent Commission</th>
+                    <th scope="col">Date Configured</th>
+                    <th scope="col"> </th>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let network of airtimeNetworkConfigWithId; let i = index">
+                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                    <!--make table stable-->
+                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                    <td class="link"> {{network.id}}</td>
+                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+                    <td class="link"> {{network.data.network.networkName}}</td>
+                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>
+                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>
+                    <td class="link" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>
+                    <td class="link"> {{network.data.commission}} </td>
+                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>
+                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Airtime')" [mat-menu-trigger-for]="airtimeAction">
+                      <i class="fa fa-ellipsis-v"></i></div>
+                      <span class="status" [style.background-color]="network.data.network.isAirtimeActive ? '#5cb85c' : '#d9534f'" class="status"></span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </mat-tab>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>build</mat-icon> DATA
+                </ng-template>
+                <mat-progress-bar *ngIf="isLoadingDataNetworkConfig" mode="indeterminate"></mat-progress-bar>
+                <div *ngIf="dataNetworkConfig.length < 1 && !isLoadingDataNetworkConfig" style="padding:20px 10px;text-align:center">
+                  <span>No Networks at the moment</span>
+                </div>
+
+                <table class="table table-dark"  *ngIf="dataNetworkConfig.length > 0">
+                  <thead>
+                  <tr>
+                    <!--make table stable-->
+                    <th></th>
+                    <!---->
+                    <th scope="col">#</th>
+                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+                    <th scope="col">Network Name</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>
+                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>
+                    <th scope="col">Agent Commission</th>
+                    <th scope="col">Date Configured</th>
+                    <th scope="col"> </th>
+                  </tr>
+                  </thead>
+                  <tbody *ngFor="let network of dataNetworkConfigWithId; let i = index">
+                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                    <!--make table stable-->
+                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                    <td class="link"> {{network.id}}</td>
+                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+                    <td class="link"> {{network.data.network.networkName}}</td>
+                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>
+                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>
+                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>
+                    <td class="link"> {{network.data.commission}} </td>
+                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>
+                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Data')" [mat-menu-trigger-for]="dataAction">
+                      <i class="fa fa-ellipsis-v"></i></div>
+                      <span class="status" [style.background-color]="network.data.network.isDataActive ? '#5cb85c' : '#d9534f'" class="status"></span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <!--<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>-->
+              </mat-tab>
+
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</card>
+
+
+
+
+<!--airtime action-->
+<mat-menu #airtimeAction="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 200px; text-align: center">
+    <div class="myItems" *ngIf="networkObj?.isPersonalConfig"  (click)="resetUserAirtimeNetwork()"><i class="fa fa-refresh" style="color: #ff594f"></i><span>Reset default</span></div>
+    <div class="myItems" (click)="configureDialog()"><i class="fa fa-edit" style="color: #38a3df"></i><span>Edit Commission</span></div>
+  </div>
+</mat-menu>
+<!--airtime action-->
+
+<!--data action-->
+<mat-menu #dataAction="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 200px; text-align: center">
+    <div class="myItems" *ngIf="networkObj?.isPersonalConfig" (click)="resetUserDataNetwork()"><i class="fa fa-refresh" style="color: #ff594f"></i><span>Reset default</span></div>
+    <div class="myItems" (click)="configureDialog()"><i class="fa fa-edit" style="color: #38a3df"></i><span>Edit Commission</span></div>
+  </div>
+</mat-menu>
+<!--data action-->

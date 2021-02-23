@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-6 col-xl-12">
+
+    <!--wallet counter section-->
+    <section class="counter-card">
+      <div class="block">
+        <h4>Main Account</h4>
+        <h2 *ngIf="DashboardStatistics.walletBalance !== null">NGN {{DashboardStatistics.walletBalance | currency | moneyFormatter}} </h2>
+        <h2 *ngIf="DashboardStatistics.walletBalance === null"><i class="fa fa-spin fa-spinner"></i> </h2>
+      </div>
+      <div class="block" style="border-left:1px solid #ededed">
+        <h4>Commission Account</h4>
+        <h2 *ngIf="DashboardStatistics.walletCommissionBalance !== null">NGN {{DashboardStatistics.walletCommissionBalance | currency | moneyFormatter}} </h2>
+        <h2 *ngIf="DashboardStatistics.walletCommissionBalance === null"><i class="fa fa-spin fa-spinner"></i> </h2>
+      </div>
+    </section>
+
+    <div style="margin-top:20px;">
+      <router-outlet></router-outlet>
+    </div>
+
+
+    <div class="transaction-card" *ngIf="false">
+      <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
+      <header style="font-weight:700;">Most Recent Transactions</header>
+      <div>
+        <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+        <table class="table table-dark"  *ngIf="true">
+          <thead>
+          <tr>
+            <th scope="col">Transaction Ref</th>
+            <th scope="col">Type</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Network</th>
+            <th scope="col">Amount (₦)</th>
+            <th scope="col">Date / Time</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="link"> gdgdfg</td>
+            <td class="link"> fsdfs</td>
+            <td class="link"> sdfas</td>
+            <td class="link"> dfsdsd </td>
+            <td class="link"> dffsffs</td>
+            <td class="link"> dfsdsd </td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="false"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+          <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

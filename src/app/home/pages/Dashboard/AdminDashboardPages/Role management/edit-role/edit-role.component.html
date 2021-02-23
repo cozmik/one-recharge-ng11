@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="container col-lg-11">
+    <div class="mat-card">
+      <!--<h4 class="mat-card-title">Create User</h4>-->
+      <div>
+        <form (ngSubmit)="onSubmit(formData)" #formData='ngForm' class="card">
+          <div class="md-container">
+            <div class="mat-card-header">Role Name</div>
+            <div class="divider"></div>
+            <div class="form-inline">
+              <mat-form-field class="md-inline col-md-12">
+                <label class="sr-only" for="roleName">Enter Role Name</label>
+                <input matInput type="tel" required id="roleName" [(ngModel)]="roleName" name="roleName" placeholder="Enter Role Name">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="mat-card-header">Select Basic Permission</div>
+          <div class="divider"></div>
+          <div class="row">
+            <div class="col-lg-5 perm">
+              <div>All Permission</div>
+              <button class="mycard btn" type="button" (click)="addToActive()">Add <i fa class="fa fa-angle-double-right"></i></button>
+              <ul class="list-unstyled well">
+              <span *ngFor="let obj of inActivePerm">
+              <li><mat-checkbox (change)="selectFromInactive(obj)">{{obj.name | titlecase }}</mat-checkbox></li>
+              </span>
+              </ul>
+            </div>
+
+
+            <div class="col-lg-5 perm">
+              <div>Active Permission</div>
+              <button class="mycard btn" type="button" (click)="removeFromActive()"><i fa class="fa fa-angle-double-left"></i> Remove</button>
+              <ul class="list-unstyled well">
+              <span *ngFor="let obj of activePerm">
+              <li><mat-checkbox (change)="selectFromActive(obj)">{{obj.name | titlecase }}</mat-checkbox>
+                </span>
+              </ul>
+            </div>
+          </div>
+
+          <button style="width: 250px" [disabled]="isLoading || activePerm.length < 1" class="editRole" mat-raised-button type="submit" color="accent">Update Role  <mat-spinner *ngIf="isLoading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="content-area">
+  <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+   <div class="widget-content">
+
+          <!--loading block-->
+          <div class="widget-content-block" style="text-align: center;"  [class.visible]="switchState === 'transaction-loading'">
+            <h1 class="icon"><i style="color:#38a3df" class="fa fa-spin fa-spinner fa-2x"></i></h1>
+            <h5 style="margin:0;">Processing... please wait</h5>
+          </div>
+          <!--failed block-->
+
+          <!--recharge successful block-->
+          <div class="widget-content-block success-recharge" *ngIf="switchState === 'transaction-success'"  [class.visible]="switchState === 'transaction-success'">
+            <h1 class="icon"><i class="fa fa-check-circle fa-2x"></i></h1>
+            <h5 style="margin:0;">Transaction Successful</h5>
+
+            <div class="inner-content-area">
+              <div class="block" *ngIf="transactionResponse?.transactionId">
+                <span class="title">Transaction ID</span> <span class="value">{{transactionResponse?.transactionId}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.networkId">
+                <span class="title">Network</span> <span class="value">{{getNetworkName(transactionResponse?.networkId)}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.toMsisdn">
+                <span class="title">MSISDN</span> <span class="value">{{transactionResponse?.toMsisdn}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.createdDate">
+                <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.amount">
+                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.commission">
+                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+              </div>
+            </div>
+
+          </div>
+          <!--recharge successful block-->
+
+          <!--recharge failed block-->
+          <div class="widget-content-block failed-recharge" *ngIf="switchState === 'transaction-failed'"  [class.visible]="switchState === 'transaction-failed'">
+            <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+            <h5 style="margin:0;">Transaction Failed</h5>
+
+            <div class="inner-content-area">
+              <div class="block" *ngIf="transactionResponse?.transactionId">
+                <span class="title">Transaction ID</span> <span class="value">{{transactionResponse?.transactionId}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.networkId">
+                <span class="title">Network</span> <span class="value">{{getNetworkName(transactionResponse.networkId)}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.toMsisdn">
+                <span class="title">MSISDN</span> <span class="value">{{transactionResponse?.toMsisdn}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.createdDate">
+                <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.amount">
+                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.commission">
+                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+              </div>
+            </div>
+
+          </div>
+          <!--recharge failed block-->
+
+          <!--recharge pending block-->
+          <div class="widget-content-block pending-recharge" *ngIf="switchState === 'transaction-pending'"  [class.visible]="switchState === 'transaction-pending'">
+            <h1 class="icon"><i class="fa fa-hourglass-half fa-2x"></i></h1>
+            <h5 style="margin:0;">Transaction Pending</h5>
+            <p> Kindly contact the administrator</p>
+
+            <div class="inner-content-area">
+              <div class="block" *ngIf="transactionResponse?.transactionId">
+                <span class="title">Transaction ID</span> <span class="value">{{transactionResponse?.transactionId}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.networkId">
+                <span class="title">Network</span> <span class="value">{{getNetworkName(transactionResponse?.networkId)}}</span>
+              </div>
+              <div class="inline-block" *ngIf="transactionResponse?.toMsisdn">
+                <span class="title">MSISDN</span> <span class="value">{{transactionResponse?.toMsisdn}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.createdDate">
+                <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.amount">
+                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+              </div>
+              <div class="block" *ngIf="transactionResponse?.commission">
+                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+              </div>
+            </div>
+
+          </div>
+          <!--recharge pending block-->
+
+          <!--failed block-->
+          <div class="widget-content-block"  [class.visible]="switchState === 'error'">
+            <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+            <h5 style="margin:0;">OOPs something went wrong</h5>
+
+          </div>
+          <!--failed block-->
+
+          <div style="width:100%; text-align: center;"*ngIf="switchState  !==  'transaction-loading'">
+              <!--<button *ngIf="homeUrl !== ''" md-raised-button type="button" (click)="goToHome()"  color="accent"> <i class="fa fa-home"></i> Home </button>-->
+            <button *ngIf="packageTransactionUrl !== ''" md-raised-button type="button" (click)="goToPackage()"  color="accent"> New Transaction</button>
+            <button *ngIf="repeatTransactionUrl !== ''" md-raised-button type="button" (click)="repeatTransaction()"  color="accent"> Repeat Transaction</button>
+          </div>
+
+        </div>
+</div>

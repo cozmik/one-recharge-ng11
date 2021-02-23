@@ -1,0 +1,15 @@
+<div class="row" style="margin:20px 5px 10px;">
+  <mat-sidenav-container class="w-100">
+    <mat-sidenav mode="over" #rightPanel position="end">
+      <ng-template [cdkPortalOutlet]="panelService.panelPortal | async"></ng-template>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <section>
+        <sm-title></sm-title>
+        <div class="main-container">
+          <router-outlet></router-outlet>
+        </div>
+      </section>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

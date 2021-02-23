@@ -1,0 +1,20 @@
+<section>
+  <h3 mat-dialog-title>Commission</h3>
+  <h4>Configure commission for {{service.serviceName}}</h4>
+
+  <form>
+    <label for="agent" class='d-flex align-items-baseline justify-content-center' [appPercentCurrency]="false">
+      <span class="mr-3">System commission: </span>
+      <input class="mr-2" id="agent" type="text" [(ngModel)]="commission" name="system-comm"
+             (keyup)="commission = commission > 100 ? 100 : commission.valueOf() < 0 ? 0 : commission.valueOf()">
+    </label>
+
+    <div class="button-section">
+      <button class="btn-outline">cancel</button>
+      <button class="btn-primary" (click)="quickUpdate()">
+        update
+        <fa-icon icon="spinner" spin></fa-icon>
+      </button>
+    </div>
+  </form>
+</section>

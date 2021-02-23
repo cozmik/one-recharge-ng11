@@ -1,0 +1,116 @@
+<div class="package-card">
+  <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
+  <header style="font-weight:700;">
+    <a *ngIf="switchState === 'recharge'" routerLink="/customer" class="back-btn"><i class="fa fa-arrow-left"></i><span>back to Home</span></a>
+    <a *ngIf="switchState !== 'recharge'" (click)="goToPage('recharge')" class="back-btn"><i
+      class="fa fa-arrow-left"></i><span>back</span></a>
+    Buy Airtime
+  </header>
+  <div>
+    <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div class="content-area">
+    <div class="container">
+      <div class="row mt-5 mb-5">
+        <div class="col-xl-2">
+
+        </div>
+        <div class="col-xl-8 col-xs-12">
+          <div class="widget-content">
+
+            <!--recharge block -->
+            <div class="widget-content-block recharge" [class.visible]="switchState === 'recharge'">
+              <form [formGroup]="airtimeForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="mb-5">
+                  <mat-select placeholder="Select your network" #selectNetwork required formControlName="networkId"
+                             [(ngModel)]="network" (change)="setNetwork(network)" style="width:100%;">
+                    <ng-template ngFor let-network [ngForOf]="networksWithId">
+                      <mat-option [value]="network.data.id" *ngIf="network.data.isAirtimeActive">
+                        <img width="20" height="20" [src]="network.logoPath"/>  {{network.data.networkName}}
+                      </mat-option>
+                    </ng-template>
+                  </mat-select>
+                  <div
+                    *ngIf="airtimeForm.get('networkId').invalid && (airtimeForm.get('networkId').dirty || airtimeForm.get('networkId').touched)">
+                    <div class="errorText">
+                      Network is required
+                    </div>
+                  </div>
+                </div>
+
+                <mat-form-field class="mb-5">
+                  <label class="sr-only" for="phone">Mobile phone</label>
+                  <input matInput type="tel" required id="phone" (keyup)="checkNum()" (blur)="checkNum()"
+                         formControlName="mobile" placeholder="Mobile Phone" [(ngModel)]="mobile">
+                  <div
+                    *ngIf="airtimeForm.get('mobile').invalid && (airtimeForm.get('mobile').dirty || airtimeForm.get('mobile').touched)">
+                    <div *ngIf="airtimeForm.get('mobile').errors.required" class="errorText">
+                      Phone number is required
+                    </div>
+
+                    <div
+                      *ngIf="airtimeForm.get('mobile').errors.pattern && !(airtimeForm.get('mobile').errors.required)"
+                      class="errorText">
+                      Enter a valid phone number
+                    </div>
+
+                    <div *ngIf="airtimeForm.get('mobile').errors.numberValid" class="errorText">
+                      Number length must be 11 digits
+                    </div>
+                  </div>
+                </mat-form-field>
+
+                <mat-form-field class="mb-5">
+                  <label class="sr-only" for="amount">Enter Amount</label>
+                  <input matInput type="number" required [(ngModel)]="amount" (keyup)="checkNum()" (blur)='checkNum()'
+                         id="amount" formControlName="amount" placeholder="Enter Amount" value="">
+                  <div
+                    *ngIf="airtimeForm.get('amount').invalid && (airtimeForm.get('amount').dirty || airtimeForm.get('amount').touched)">
+                    <div *ngIf="airtimeForm.get('amount').errors.required" class="errorText">
+                      Amount is required
+                    </div>
+
+                    <div *ngIf="!(airtimeForm.get('amount').errors.required)" class="errorText">
+                      Enter a valid amount
+                    </div>
+                  </div>
+                </mat-form-field>
+                <a md-raised-button color="" (click)="resetForm()"> Reset </a>
+
+                <button md-raised-button type="submit" color="accent" [disabled]="!airtimeForm.valid">Proceed</button>
+
+              </form>
+            </div>
+            <!--recharge block-->
+
+            <!--recharge verify block-->
+            <div class="widget-content-block verify-recharge" [class.visible]="switchState === 'recharge-verify'">
+              <h4 style="margin:0;">Recharge Details</h4>
+              <p>Please confirm recharge details to proceed</p>
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Phone number</span> <span
+                  class="value">{{rechargeObj.receiverMsisdn | checkNull : ''}}</span></div>
+                <div class="block"><span class="title">Network</span> <span
+                  class="value">{{rechargeObj.networkName | checkNull : ''}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span
+                  class="value">NGN {{rechargeObj.amount | currency | moneyFormatter | checkNull : ''}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRecharging"> Back
+              </button>
+
+              <button md-raised-button type="button" (click)="generateTransaction()" [disabled]="isRecharging"
+                      color="accent">{{!isRecharging ? 'Pay' : 'Please wait'}}
+                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>
+              </button>
+
+            </div>
+            <!--recharge verify block-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

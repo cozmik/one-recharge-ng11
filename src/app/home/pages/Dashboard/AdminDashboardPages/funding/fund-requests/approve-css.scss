@@ -1,0 +1,37 @@
+.title{
+  display: block;
+  font-size: .8em;
+  font-weight: bold;
+  color: #444;
+}
+
+.main{
+  div{
+    div {
+      display: flex;
+      margin-bottom: 10px;
+      span:first-child{
+        width: 100px;
+      }
+    }
+  }
+}
+
+hr{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.name{
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+
+i{
+  font-weight: bold;
+}
+
+.no-image{
+  font-size:300px;
+  color: #ccc;
+}

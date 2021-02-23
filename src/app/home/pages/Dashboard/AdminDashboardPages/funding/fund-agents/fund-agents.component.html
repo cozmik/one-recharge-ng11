@@ -1,0 +1,74 @@
+
+<div class="row" style="margin:20px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+    <div class="custom-card" style="margin:0; padding-bottom:20px;" >
+      <header>Agents</header>
+      <div class="filter-section">
+        <div class="filter-block">
+
+        </div>
+        <div class="search-range filter-block"  style="float:right; margin-right:10px;">
+          <div style="display: inline-block; margin-right:0px;" class="row">
+            <input class="form-control" style="display: inline-block; width:250px;" type="text" placeholder="Filter by name, email or phone" (keyup)="filterData(searchText)" [(ngModel)]="searchText" name="search" id="searchText">
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-progress-bar *ngIf="isLoadingAgents" mode="indeterminate"></mat-progress-bar>
+
+        <div *ngIf="agents.length < 1 && !isLoadingAgents" style="padding:20px 10px;text-align:center">
+          <span>No data available at the moment</span>
+        </div>
+        <table class="table table-dark"  *ngIf="agents.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Wallet Balance</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'"  *ngFor="let agent of agents | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index;">
+<!--            <mat-progress-bar *ngIf="isloading && agent.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td scope="row">{{(itemsPerView * (page - 1)) + (i + 1)}}</td>
+            <td class="link"> {{agent.firstName}} {{agent.lastName}} </td>
+            <td class="link">{{agent.email}}</td>
+            <td class="link">{{agent.mobile}}</td>
+            <td class="link">₦{{agent.walletBalance| number:'1.2-2' }}
+              <span *ngIf="agent.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> <!--failed-->
+              <span *ngIf="agent.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> <!--successful-->
+            </td>  <!-- | currency | moneyFormatter-->
+            <td class="link"> <button class="fund-agent-btn" (click)="fundDialog(agent)">Fund</button></td>
+          </tr>
+
+          </tbody>
+        </table>
+        <div class="row" style="margin: 10px">
+          <div  class="text-left col-md-3">
+            items per page :
+            <select class="form-control-sm custom-select" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
+              <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
+
+            </select>
+            total : {{totalElements? totalElements : '-'}}
+          </div>
+          <div  class="text-right col-md-9">
+            <pagination-controls  style="text-align: right" (pageChange)="getPaginatedData($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

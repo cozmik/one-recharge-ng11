@@ -1,0 +1,52 @@
+<section>
+  <h3>{{servicePackage.name}}</h3>
+
+  <ng-template [ngIf]="!editPackage">
+    <div class="space">
+      <button (click)="editPackage = true" class="link-button">edit</button>
+    </div>
+    <div>
+      <span>Fee:</span>
+      <span [appPercentCurrency]="'currency'">{{servicePackage.fee}}</span>
+    </div>
+    <div>
+      <span>Amount:</span>
+      <span [appPercentCurrency]="'currency'">{{servicePackage.amount}}</span>
+    </div>
+    <div>
+      <span>Description:</span>
+      <span class="description">{{servicePackage.description}}</span>
+    </div>
+
+    <button (click)="dialogRef.close(null)" class="close-button">close</button>
+  </ng-template>
+  <ng-template [ngIf]="editPackage">
+    <form>
+      <label for="name">
+        <span>Package name</span>
+        <span class="input-pack">
+           <input id="name" type="text" name="name" [disabled]="isLoading" [(ngModel)]="packageData.name">
+        </span>
+      </label>
+      <label for="amount">
+        <span>Amount</span>
+        <span class="input-pack">
+          <input id="amount" type="text" [disabled]="isLoading" [appPercentCurrency]="'currency'" name="amount"
+                 [(ngModel)]="packageData.amount">
+        </span>
+      </label>
+      <label for="desc">
+        <span>Description</span>
+        <span class="input-pack">
+        <textarea id="desc" name="description" [disabled]="isLoading" [(ngModel)]="packageData.description"></textarea>
+        </span>
+      </label>
+
+      <div class="button-section">
+        <button class="btn-outline" (click)="editPackage = false">cancel</button>
+        <button class="btn-primary" (click)="update()" [disabled]="isLoading" [class.loading]="isLoading">submit
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</section>

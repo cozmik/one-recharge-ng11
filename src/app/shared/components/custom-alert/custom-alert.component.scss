@@ -1,0 +1,159 @@
+.custom-alert{
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-fill-mode: both;
+  &.fadeOut{
+    animation-name: fadeOut;
+    animation-duration: 3s;
+
+  }
+  &.fadeIn{
+    animation-name: fadeIn;
+    animation-duration: 1s;
+  }
+  ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+    li{
+      i{
+        margin-right: 5px;
+        font-style: normal;
+        &:after {
+          display: inline-block;
+          font-family: 'FontAwesome';
+        }
+      }
+    }
+  }
+
+  .single-text{
+    line-height: 1.4rem;
+    vertical-align: baseline;
+    i{
+      margin-right: 10px;
+      font-size:1.4rem;
+    }
+  }
+}
+
+.custom-alert-success {
+  background-color: #dff0d8;
+  border-color: #d0e9c6;
+  color: #3c763d;
+  ul{
+    li{
+      i{
+        &:after {
+          content: '\f058'; // fa fa-check
+        }
+      }
+    }
+  }
+  .single-text{
+    i{
+      &:after {
+        content: '\f058'; // fa fa-check
+        display: inline-block;
+        font-family: 'FontAwesome';
+        font-style: normal;
+      }
+    }
+  }
+}
+
+.custom-alert-danger {
+  background-color: #f2dede;
+  border-color: #ebcccc;
+  color: #a94442;
+  ul{
+    li{
+      i{
+        &:after {
+          content: '\f00d'; // fa fa-close
+        }
+      }
+    }
+  }
+  .single-text{
+    i{
+      &:after {
+        content: '\f06a'; // fa fa-close
+        display: inline-block;
+        font-family: 'FontAwesome';
+        font-style: normal;
+      }
+    }
+  }
+}
+
+
+.custom-alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faf2cc;
+  color: #8a6d3b;
+  ul{
+    li{
+      i{
+        &:after {
+          content: '\f071'; // warning
+        }
+      }
+    }
+  }
+  .single-text{
+    i{
+      &:after {
+        content: '\f071'; // warning
+        display: inline-block;
+        font-family: 'FontAwesome';
+        font-style: normal;
+      }
+    }
+  }
+}
+
+.custom-alert-info {
+  background-color: #d9edf7;
+  border-color: #bcdff1;
+  color: #31708f;
+  ul{
+    li{
+      i{
+        &:after {
+          content: '\f129'; // fa fa-info
+        }
+      }
+    }
+  }
+  .single-text{
+    i{
+      &:after {
+        content: '\f129'; // fa fa-info
+        display: inline-block;
+        font-family: 'FontAwesome';
+        font-style: normal;
+      }
+    }
+  }
+}
+
+
+/* basic fadeOut */
+@keyframes fadeOut {
+  0% { opacity: 0 }
+  20% { opacity: 1}
+  90% { opacity: 1}
+  100% { opacity: 0; transform: scaleY(0); }
+}
+
+/* basic fadein */
+@keyframes fadeIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+

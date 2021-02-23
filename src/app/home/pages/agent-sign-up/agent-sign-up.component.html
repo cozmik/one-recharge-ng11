@@ -1,0 +1,139 @@
+<div class="site-container">
+  <main class="main-content">
+    <app-logo-2></app-logo-2>
+    <div class="main-content-wrap">
+      <div class="form-cover" *ngIf="!isRegistrationSuccessful">
+        <div class="form-title">Agent Sign Up</div>
+        <div class="error text-center pt-3" style=" min-height: 30px;width: 90%;margin: auto;">
+          <app-custom-alert *ngIf="errorMsg" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="errorMsg" [textObject]=""></app-custom-alert>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="agentSignUpForm">
+          <div class="form-inline mb-2">
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="firstName">First Name</label>
+              <input matInput type="text" name="firstName" formControlName="firstName" id="firstName" placeholder="First Name" value="">
+              <div *ngIf="agentSignUpForm.get('firstName').invalid && (agentSignUpForm.get('firstName').dirty || agentSignUpForm.get('firstName').touched)">
+                <div *ngIf="agentSignUpForm.get('firstName').errors.required" class="errorText" >
+                  First name is required
+                </div>
+              </div>
+            </mat-form-field>
+
+
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="lname">Last Name</label>
+              <input matInput type="text" id="lname" formControlName="lastName" placeholder="Last Name" value="">
+              <div *ngIf="agentSignUpForm.get('lastName').invalid && (agentSignUpForm.get('lastName').dirty || agentSignUpForm.get('lastName').touched)">
+                <div *ngIf="agentSignUpForm.get('lastName').errors.required" class="errorText" >
+                  Last name is is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div class="form-inline mb-2">
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="mobileNo">Mobile phone</label>
+              <input matInput type="tel"   required id="mobileNo" (keyup)="checkMobileNo()" formControlName="mobileNo" placeholder="Mobile Phone" [(ngModel)]="mobile">
+              <div *ngIf="agentSignUpForm.get('mobileNo').invalid && (agentSignUpForm.get('mobileNo').dirty || agentSignUpForm.get('mobileNo').touched)">
+                <div *ngIf="agentSignUpForm.get('mobileNo').errors.required" class="errorText" >
+                  Phone number is required
+                </div>
+
+                <div *ngIf="agentSignUpForm.get('mobileNo').errors.pattern && !(agentSignUpForm.get('mobileNo').errors.required)" class="errorText" >
+                  Enter a valid phone number
+                </div>
+
+                <div *ngIf="agentSignUpForm.get('mobileNo').errors.numberValid" class="errorText" >
+                  Number length must be 11 digits
+                </div>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="altMobileNo">Alternate Mobile phone</label>
+              <input matInput type="tel"  id="altMobileNo" (keyup)="checkAltMobileNo()" formControlName="altMobileNo" placeholder="Alternate Mobile Phone">
+              <div *ngIf="agentSignUpForm.get('altMobileNo').invalid && (agentSignUpForm.get('altMobileNo').dirty || agentSignUpForm.get('altMobileNo').touched)">
+
+                <div *ngIf="agentSignUpForm.get('altMobileNo').errors.pattern" class="errorText" >
+                  Enter a valid phone number
+                </div>
+
+                <div *ngIf="agentSignUpForm.get('altMobileNo').errors.minLength" class="errorText" >
+                  Number length must be 11 digits
+                </div>
+              </div>
+            </mat-form-field>
+
+          </div>
+
+          <div class="form-inline mb-2">
+              <mat-form-field class="md-inline col-md-12">
+                <label class="sr-only" for="email">Email address</label>
+                <input matInput type="email"  id="email" formControlName="email" placeholder="Email address" value="">
+                <div *ngIf="agentSignUpForm.get('email').invalid && (agentSignUpForm.get('email').dirty || agentSignUpForm.get('email').touched)">
+                  <div *ngIf="agentSignUpForm.get('email').errors.email" class="errorText" >
+                    Enter a valid email address
+                  </div>
+                </div>
+              </mat-form-field>
+          </div>
+
+          <div class="md-container">
+            <div class="form-inline">
+              <mat-form-field class="col-md-12">
+                <label class="sr-only" for="address">Address</label>
+                <textarea matInput md-maxlength="200" rows="2"required id="address" formControlName="address" placeholder="Address" value=""></textarea>
+                <div *ngIf="agentSignUpForm.get('address').invalid && (agentSignUpForm.get('address').dirty || agentSignUpForm.get('address').touched)">
+                  <div class="errorText" >
+                    Address is required
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-inline mb-2">
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="password">Password</label>
+              <input matInput type="password" formControlName="password" id="password" name="password" placeholder="Password">
+              <div *ngIf="agentSignUpForm.get('password').invalid && (agentSignUpForm.get('password').dirty || agentSignUpForm.get('password').touched)">
+                <div *ngIf="agentSignUpForm.get('password').errors.required" class="errorText" >
+                  password is required
+                </div>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="confirm_password">Confirm Password</label>
+              <input matInput type="password" id="confirm_password" formControlName="confirm_password"  name="confirm_password" placeholder="Confirm Password">
+              <div *ngIf="agentSignUpForm.get('confirm_password').invalid && (agentSignUpForm.get('confirm_password').dirty || agentSignUpForm.get('confirm_password').touched)">
+                <div *ngIf="agentSignUpForm.get('confirm_password').errors.required" class="errorText" >
+                  re-enter your password
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div class="text-center">
+            <p>By Clicking <strong>Sign Up</strong>, you agree to {{vendorTitle}} <a href="">terms and conditions</a> </p>
+          </div>
+
+          <button md-raised-button type="submit" color="accent" [disabled]="agentSignUpForm.invalid">{{signUpText}} <mat-spinner *ngIf="creatingAccount" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+          <div class="additional-info">
+           Already have an agent account? <a routerLink="/sign-in">Sign In</a>
+          </div>
+        </form>
+      </div>
+      <div class="card registration-success-card text-center" *ngIf="isRegistrationSuccessful">
+        <h1 class="icon"><i class="fa fa-check-circle text-success"></i></h1>
+        <h2 class="card-title">Registration was successful</h2>
+        <p>An email was sent to <span class="email">{{registrationEmail}}</span> with a link to download our mobile app to perform transactions easier and quicker</p>
+        <a class="btn-outline" routerLink="/sign-in">Proceed to Sign in</a>
+      </div>
+
+      <div class="copy">&copy; 2020 {{vendorTitle}}</div>
+    </div>
+  </main>
+</div>

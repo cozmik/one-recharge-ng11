@@ -1,0 +1,49 @@
+
+<div class="custom-card"  style="margin:20px 5px 10px; padding-bottom: 20px;" >
+  <header>Agents</header>
+  <div class="filter-section">
+    <div class="search-range filter-block" *ngIf="agentWithId.length > 0">
+      <div style="display: inline-block; margin-right:0px;" class="row">
+        <input class="form-control" style="display: inline-block; width:250px;" type="text" placeholder="Filter by name, email or phone" [(ngModel)]="searchText" name="search" id="searchText">
+      </div>
+    </div>
+  </div>
+  <div>
+    <mat-progress-bar *ngIf="isLoadingUserAgents" mode="indeterminate"></mat-progress-bar>
+
+    <div *ngIf="agentWithId.length < 1 && !isLoadingUserAgents" style="padding:20px 10px;text-align:center">
+      <span style="color:#ccc; font-size:2rem;">No Agent available at the moment</span>
+    </div>
+    <table class="table table-dark"  *ngIf="agentWithId.length > 0">
+      <thead>
+      <tr>
+        <!--make table stable-->
+        <th></th>
+        <!---->
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Agent Type</th>
+        <th scope="col">Main Wallet</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Date created</th>
+      </tr>
+      </thead>
+      <tbody *ngFor="let agent of agentWithId | filter : searchText  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+      <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+        <!--make table stable-->
+        <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+        <td scope="row"> {{agent.id}}</td>
+        <td class="link">{{agent.data.fullName}} </td>
+        <td class="link">{{agent.data.email}}</td>
+        <td class="link">{{agent.data.agentTypeName}}</td>
+        <td class="link">₦{{agent.data.walletBalance| number:'1.2-2' }}</td>
+        <td class="link">{{agent.data.mobile}}</td>
+        <td class="link">{{agent.data.createdDate | date}} <span class="status" [style.background-color]="!agent.data.blocked ? '#5cb85c' : '#d9534f'" class="status"></span></td>
+      </tr>
+      </tbody>
+    </table>
+    <pagination-controls  *ngIf="agentWithId.length > 0" style="text-align: right" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="row" style="margin:20px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+    <div class="custom-card" style="margin:0; padding-bottom:20px;">
+      <header>Customers</header>
+      <div class="filter-section" *ngIf="customers.length > 0 && !isLoadingCustomers">
+        <div class="filter-block">
+          <ul class="list-group list-unstyled list-items" style="float:left; margin-left:10px;">
+            <li class="filter-title">Filter by : </li>
+            <li class="list-group-item select-all" style="color:#5cb85c">  <mat-checkbox [(ngModel)]="isActiveTicked">Active</mat-checkbox></li>
+            <li class="list-group-item" style="color: #d9534f"> <mat-checkbox [(ngModel)]="isBlockedTicked">Blocked</mat-checkbox></li>
+          </ul>
+        </div>
+        <div class="search-range filter-block">
+          <div style="display: inline-block; margin-right:0px;" class="row">
+            <input class="form-control" style="display: inline-block; width:250px;" type="text" placeholder="Filter by name, email or phone" [(ngModel)]="searchText" name="search" id="searchText">
+          </div>
+        </div>
+      </div>
+      <div style="min-height:300px;">
+        <mat-progress-bar *ngIf="isLoadingCustomers" mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="customers.length < 1 && !isLoadingCustomers" style="padding:20px 10px;text-align:center">
+            <p>No Customer(s) at the moment</p>
+        </div>
+        <table class="table table-dark"  *ngIf="customers.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Date created</th>
+            <th scope="col"> </th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let customer of customersWithId | userStatusFilter : isActiveTicked : isBlockedTicked | filter : searchText  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+            <mat-progress-bar *ngIf="isloading && customer.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td scope="row"> {{customer.id}}</td>
+            <td class="link" (click)="viewProfile(customer.data.id)"> {{customer.data.firstName}} {{customer.data.lastName}} </td>
+            <td class="link" (click)="viewProfile(customer.data.id)">{{customer.data.email}}</td>
+            <td class="link">{{customer.data.mobile}}</td>
+            <td class="link">{{customer.data.createdDate | date}}</td>
+            <td class="more"><div class="btn btn-link" (click)="getId(customer.data.id, customer.data.blocked)" [mat-menu-trigger-for]="action"><i class="fa fa-ellipsis-v"></i></div>
+              <span class="status" [style.background-color]="!customer.data.blocked ? '#5cb85c' : '#d9534f'" class="status"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="customers.length > 0 && !isLoadingCustomers">
+        <pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #action="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 160px;">
+    <div class="myItems" *ngIf="isBlocked" (click)="unBlockUser()"><i class="fa fa-unlock" style="color: #5cb85c"></i><span>Unblock</span></div>
+    <div class="myItems" *ngIf="!isBlocked" (click)="blockUser()"><i  style="color: #ff8c00"  class="material-icons">block</i><span>Block</span></div>
+    <div class="myItems" (click)="viewProfile()"><i class="fa fa-user" style="color: #373737"></i><span>Account</span></div>
+    <div class="myItems" (click)="confirmDelete()"><i class="fa fa-trash-o" style="color: #ff4444"></i><span>Delete</span></div>
+  </div>
+</mat-menu>

@@ -1,0 +1,16 @@
+<section>
+  <h3>Confirm Close</h3>
+  <div>
+    <div class="alert">
+      <fa-icon [icon]="alertSign"></fa-icon>
+    </div>
+
+    <span class="main"> You have unsaved changes that may be lost.</span>
+    <span class="secondary">Are you sure you want to proceed?</span>
+  </div>
+
+  <div class="button-section">
+    <button (click)="dialogRef.close(false)" class="btn-primary">cancel</button>
+    <button (click)="dialogRef.close(true)" class="btn-outline">close</button>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+@import "src/assets/sass/variable";
+
+section{
+  justify-content: space-between;
+  position: sticky;
+  height: 42px;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  >div{
+    display: flex;
+  }
+  background: $faded-primary-color;
+  color: white;
+  width: 100%;
+  padding: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  h2{
+    margin-right: 20px;
+    margin-bottom: 0;
+    font-size: 1.2em;
+  }
+
+  h4{
+    align-self: center;
+    margin-bottom: 0;
+    font-size: .9em;
+  }
+
+  .user{
+    display: inline-block;
+    margin-right: 50px;
+
+    button{
+      background: none;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      font-size: 2em;
+      color: white;
+      border: none;
+    }
+  }
+}

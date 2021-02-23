@@ -1,0 +1,78 @@
+@import "src/assets/sass/variable";
+
+section{
+  text-align: center;
+
+  h3{
+    background: $faded-primary-color;
+    color: white;
+    padding: 10px;
+    font-weight: 500;
+  }
+
+  h4{
+    font-size: .95rem;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: $text-color;
+  }
+
+  form{
+    margin: 20px 30px;
+
+    label:not(.slide-toggle){
+      position: relative;
+      margin-bottom: 10px;
+
+      span:not(.slider){
+        width: unset !important;
+        height: unset !important;
+        left: unset !important;
+        top: -20px;
+        font-size: .8rem;
+        color: $text-color;
+      }
+    }
+  }
+}
+
+.button-section{
+  text-align: center;
+  margin-top: 40px;
+  padding-bottom: 15px;
+  button{
+    padding: 5px 25px;
+    margin-right: 20px;
+    transition: 400ms all;
+    position: relative;
+    &::after{
+      content: '';
+    }
+
+    &.loading::after{
+      display: inline-block;
+      position: absolute;
+      padding-left: 5px;
+      animation: loadingDots forwards 1500ms infinite;
+    }
+
+    &.btn-primary{
+      @include btn-primary($brand-primary);
+    }
+    &.btn-outline{
+      @include btn-outline($danger-color);
+
+      &:hover{
+        @include btn-primary($danger-color);
+      }
+    }
+  }
+}
+
+
+::ng-deep .mat-dialog-container{
+  padding: 0 !important;
+  margin: 0;
+  border-radius: 15px;
+}

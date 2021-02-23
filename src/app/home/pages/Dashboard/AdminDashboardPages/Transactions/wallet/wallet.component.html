@@ -1,0 +1,165 @@
+<div class="row"  style="margin:20px 5px 10px;">
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap" style="background: #42ccb1">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Total Wallet Transactions</div>
+          <div class="count">{{dashboardData.transactionCount}}</div>
+          <i class="fa fa-exchange info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap" style="background: #42ccb1">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Total Today</div>
+          <div class="count">{{dashboardData.pendingTrans}}</div>
+          <i class="fa fa-calendar info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap" style="background: #42ccb1">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Total This Week</div>
+          <div class="count">{{dashboardData.pendingTrans}}</div>
+          <i class="fa fa-calendar info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap" style="background: #42ccb1">
+        <div class="card-content" style="padding: 1rem;">
+
+          <div class="title text-uppercase">Total This Month</div>
+          <div class="count">{{dashboardData.pendingTrans}}</div>
+          <i class="fa fa-calendar info-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="row" style="margin:20px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+
+    <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
+      <header>Wallet Transactions
+        <a class="download-btn" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
+      </header>
+      <div class="filter-section">
+        <div class="filter-block">
+          <div style="display: inline-block;">
+            <mat-select [(ngModel)]="range" (change)="getRange()" style="width:100px;"  >
+              <mat-option value="today">Today</mat-option>
+              <mat-option value="week">This Week</mat-option>
+              <mat-option value="month">This Month</mat-option>
+              <mat-option value="other">Range</mat-option>
+            </mat-select>
+          </div>
+          <div class="filter-form" [style.visibility]="range=='other' ? 'visible' : 'hidden'" style="display:inline-block;">
+            <label for="fromDate">From: </label>
+            <input type="date" [(ngModel)]="fromDate" id="fromDate" placeholder="from date"/>
+            <label for="toDate">To: </label>
+            <input type="date" [(ngModel)]="toDate" id="toDate" placeholder="to date"/>
+            <input type="submit" class="filter-btn" value="Search" (click)="getRangeTransaction()"/>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <ul class="list-group list-unstyled list-items flex-row align-items-center" style="float:left; margin-left:10px;">
+            <label for="list" class="mr-2 mb-n3"> Status :</label>
+            <select id="list" class="form-control-sm custom-select" [(ngModel)]="transactionStatus" (change)="getPaginatedData(1)" >
+              <option [value]="'2'">All</option>
+              <option [value]="'1'">Successful</option>
+              <option [value]="'0'">Failed</option>
+            </select>
+
+            <!--<li class="filter-title">Filter by : </li>-->
+            <!--<li class="list-group-item select-all">  <mat-checkbox [(ngModel)]="isSuccessTicked">Successful</mat-checkbox></li>-->
+            <!--&lt;!&ndash;<li class="list-group-item"> <mat-checkbox [(ngModel)]="isPendingTicked">Pending</mat-checkbox></li>&ndash;&gt;-->
+            <!--<li class="list-group-item"> <mat-checkbox [(ngModel)]="isFailedTicked">Failed</mat-checkbox> </li>-->
+            <!--&lt;!&ndash;<li class="list-group-item"> <mat-checkbox [checked]="vAgents" #viewAgents (click)="selectAgents()" >Agent</mat-checkbox> </li>&ndash;&gt;-->
+          </ul>
+        </div>
+        <div class="search-range filter-block" *ngIf="false">
+          <div style="display: inline-block; margin-right:0px;" class="row">
+            <input class="form-control" style="display: inline-block; width:250px;" type="text" placeholder="Filter by name, email or phone" [(ngModel)]="searchText" name="search" id="searchText">
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
+        <table class="table table-dark"  *ngIf="transactionsWithId.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Funded by</th>
+            <th scope="col">Date Performed</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let tranx of transactionsWithId | walletTransactionsFilter : searchText | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index">
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+<!--            <mat-progress-bar *ngIf="isloading && agent.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td scope="row">{{(itemsPerView * (page - 1)) + (i + 1)}}</td>
+            <td class="link"> {{tranx.firstName}} {{tranx.lastName}}</td>
+            <td class="link"> {{tranx.email}}</td>
+            <td class="link"> {{tranx.amount | currency | moneyFormatter }} </td>
+            <td scope="row">{{tranx.getFromFullname}}</td>
+            <td class="link"> {{tranx.createdDate| date}} , {{tranx.createdDate | date : 'shortTime'}}
+              <span *ngIf="tranx.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> <!--failed-->
+              <span *ngIf="tranx.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> <!--successful-->
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="transactionsWithId.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+          <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+        </div>
+        <div class="row" style="padding: 0 10px" *ngIf="totalElements > 5">
+          <div  class="text-left col-md-3 d-flex flex-row align-items-center">
+            <label for="per-view" class="mr-2"> items per page : </label>
+            <select id="per-view" class="form-control-sm" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
+              <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
+            </select>
+            <div class="ml-2"> total : {{ totalElements? totalElements : '0'}}</div>
+          </div>
+          <div  class="text-right col-md-9">
+            <pagination-controls  style="text-align: right" (pageChange)="getPaginatedData($event)"></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

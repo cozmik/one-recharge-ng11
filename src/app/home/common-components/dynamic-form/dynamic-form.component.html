@@ -1,0 +1,10 @@
+<form *ngIf="fields.length" (ngSubmit)="onSubmit()" [formGroup]="form">
+
+  <ng-template ngFor let-field [ngForOf]="fields" class="form-row">
+    <app-dynamic-field [field]="field" [form]="form"></app-dynamic-field>
+  </ng-template>
+
+  <div class="col-12 mt-2">
+    <button class="col-12" mat-raised-button type="submit" color="accent" [disabled]="form.invalid">Proceed</button>
+  </div>
+</form>

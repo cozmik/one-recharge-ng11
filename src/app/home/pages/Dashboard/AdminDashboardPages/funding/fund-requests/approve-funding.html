@@ -1,0 +1,52 @@
+<div class="main">
+  <h2 mat-dialog-title style="text-align: center">Fund Request</h2>
+  <div mat-dialog-content>
+    <div>
+      <span class="title">Name:</span>
+      <span class="name">{{data.fullName}}</span>
+    </div>
+
+    <div>
+      <span class="title">Number:</span>
+      <span>{{data.phone}}</span>
+    </div>
+
+    <div>
+      <span class="title">Wallet Balance:</span>
+      <span>{{data.Balance |  currency:currency:true}}</span>
+    </div>
+    <hr>
+    <span style="display: block; text-align: center">Fund Request Details</span>
+    <hr>
+
+    <div>
+      <span class="title">Depositors Name</span>
+      <span>{{data.depositorsName }}</span>
+    </div>
+
+    <div>
+      <span class="title">Amount:</span>
+      <span>{{data.amount | currency:currency:true}}</span>
+    </div>
+
+    <div>
+      <span class="title">Teller No/Ref No:</span>
+      <span>{{'#'+data.tellerNo}}</span>
+    </div>
+
+    <div>
+      <span class="title">Date:</span>
+      <span>{{data.date | date}}</span>
+    </div>
+
+  </div>
+  <div style="text-align: center; margin-top: 20px">
+    <div style="text-align: center; justify-content: center">
+      <span *ngIf="!data.isProofAvailable" style="background:#ededed; padding:5px 10px; color: #444;">Proof of Payment not Available</span>
+      <button *ngIf="data.isProofAvailable" [disabled]="!data.isProofAvailable" class="btn btn-outline-primary" (click)="viewProofOfPayment()">View Payment Evidence</button>
+    </div>
+    <button class="btn btn-outline-danger" (click)="dialogRef.close()" color="warn">Cancel</button>
+    <button class="btn btn-primary" style="width: 150px; margin-left: 10px;" (click)="approveFund()" type="submit" color="accent">Approve Request</button>
+  </div>
+
+</div>

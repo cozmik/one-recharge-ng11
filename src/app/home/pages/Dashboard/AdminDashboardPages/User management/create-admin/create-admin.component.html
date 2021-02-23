@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="container col-lg-11">
+
+    <div class="mat-card">
+      <div class="card">
+        <!--<h2 class="custom-card-title">Create Admin</h2>-->
+        <form [formGroup]="adminForm" (ngSubmit)="onSubmit()"novalidate>
+          <!--<app-custom-alert *ngIf="errorText" [type]="'danger'" [fadeOut]="false" [multiple]="true" [title]="errorTitle" [textObject]="errorText"></app-custom-alert>-->
+          <!--<app-custom-alert *ngIf="successText" [type]="'success'" [fadeOut]="false" [multiple]="false" [title]="successText" [textObject]=""></app-custom-alert>-->
+
+          <div class="md-container">
+            <div class=""><strong>Personal Information</strong></div>
+            <div class="divider"></div>
+            <div class="form-inline">
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="firstName">First Name</label>
+                <input matInput type="text" name="firstName" formControlName="firstName" id="firstName" placeholder="First Name" value="">
+                <div *ngIf="adminForm.get('firstName').invalid && (adminForm.get('firstName').dirty || adminForm.get('firstName').touched)">
+                  <div class="errorText" >
+                    First name is required
+                  </div>
+                </div>
+              </mat-form-field>
+
+
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="lname">Last Name</label>
+                <input matInput type="text" id="lname" formControlName="lastName" placeholder="Last Name" value="">
+                <div *ngIf="adminForm.get('lastName').invalid && (adminForm.get('lastName').dirty || adminForm.get('lastName').touched)">
+                  <div class="errorText" >
+                    Last name is required
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="form-inline">
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="phone1">Mobile phone</label>
+                <input matInput type="tel" required (blur)='checkNum()' id="phone1" formControlName="mobile" placeholder="Mobile Phone" value="">
+                <div *ngIf="adminForm.get('mobile').invalid && (adminForm.get('mobile').dirty || adminForm.get('mobile').touched)">
+                  <div *ngIf="adminForm.get('mobile').errors.required" class="errorText" >
+                    Phone number is required
+                  </div>
+
+                  <div *ngIf="adminForm.get('mobile').errors.pattern && !(adminForm.get('mobile').errors.required)" class="errorText" >
+                    Enter a valid phone number
+                  </div>
+
+                  <div *ngIf="adminForm.get('mobile').errors.numberExists" class="errorText" >
+                    Phone number already exists
+                  </div>
+                </div>
+              </mat-form-field>
+              <!--<span *ngIf="numberExists">Number already exists</span>-->
+              <mat-form-field class="md-inline col-md-6">
+                <label class="sr-only" for="email">Email address</label>
+                <input matInput type="email" (blur)='checkEmail()' id="email" formControlName="email" placeholder="Email address" value="">
+                <div *ngIf="adminForm.get('email').invalid && (adminForm.get('email').dirty || adminForm.get('email').touched)">
+                  <div *ngIf="adminForm.get('email').errors.required" class="errorText" >
+                    Email address is required
+                  </div>
+                  <div *ngIf="adminForm.get('email').errors.email && !(adminForm.get('email').errors.required)" class="errorText" >
+                    Enter a valid email address
+                  </div>
+
+                  <div *ngIf="adminForm.get('email').errors.emailExists" class="errorText" >
+                    Email already exists
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-container">
+            <div class="mat-card-header">Role</div>
+            <div class="divider"></div>
+
+            <div class="text-left mb-module col-md-12">
+              <mat-select placeholder="Choose Role" required formControlName="roleId" >
+                <mat-option [value]="role.id"  *ngFor="let role of roles">
+                  {{role.name}}
+                </mat-option>
+              </mat-select>
+              <div *ngIf="adminForm.get('roleId').invalid && (adminForm.get('roleId').dirty || adminForm.get('roleId').touched)">
+                <div class="errorText" >
+                  Role is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <button md-raised-button [disabled]="adminForm.invalid || isloading" type="submit">{{createText}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'warm'"></mat-spinner></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

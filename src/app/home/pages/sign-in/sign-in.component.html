@@ -1,0 +1,35 @@
+<div class="site-container">
+  <main class="main-content">
+    <app-logo-2></app-logo-2>
+    <div class="main-content-wrap">
+      <div class="form-cover">
+        <div class="form-title">Sign In</div>
+        <div class="error text-center pt-3" style=" min-height: 30px;width: 90%;margin: auto;">
+          <app-custom-alert *ngIf="errorMsg" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="errorMsg" [textObject]=""></app-custom-alert>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="signInForm">
+          <mat-form-field>
+            <input matInput type="text" formControlName="username" placeholder="Phone or Email">
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <input matInput [type]="showPass ? 'text': 'password'" formControlName="password" name="password" placeholder="Password">
+            <i class="fa fa-eye" (mousedown)="showPass = true" (mouseup)="showPass = false"></i>
+          </mat-form-field>
+
+          <button mat-raised-button type="submit" color="accent" [disabled]="signInForm.invalid || signingIn">{{signInText}} <i *ngIf="signingIn" style="color:#fff; font-size:30px;" class="fa fa-spinner fa-spin"></i></button>
+
+          <div class="additional-info">
+            <a routerLink="/forgot-password">Forgot your password?</a>
+          </div>
+          <div class="additional-info">
+            Are you a new Agent ? <a routerLink="/agent-signup">Create Account</a>
+          </div>
+        </form>
+      </div>
+
+      <div class="copy">&copy; 2020 {{vendorTitle}}</div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,18 @@
+<div class="container">
+  <mat-progress-bar *ngIf="isLoadingAccounts" mode="indeterminate"></mat-progress-bar>
+  <div class="row">
+
+    <div class="col-md-6 col-xl-3" *ngFor="let account of accountsWithId">
+      <div class="card-wrap info-card custom-card">
+        <div class="card-content">
+          <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
+          <div class="content-block-single">
+            <div class="title text-uppercase" style="color:#469408">{{account.data.name}}</div>
+            <div class="count">NGN {{ account.data.balance | currency | moneyFormatter}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

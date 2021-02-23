@@ -1,0 +1,36 @@
+<h2 md-dialog-title class="user-details"><span>Wallet Transactions Report</span></h2>
+<div md-dialog-content>
+  <div>
+      <span style="display: block; color:#777; font-size: 0.8em; margin:5px 0 5px;">Transaction Period</span>
+      <mat-select [(ngModel)]="range"  (change)="getRange()" style="width:100%;">
+        <mat-option value="today">Today</mat-option>
+        <mat-option value="week">This Week</mat-option>
+        <mat-option value="month">This Month</mat-option>
+        <mat-option value="other">Range</mat-option>
+      </mat-select>
+  </div>
+  <div class="" style="margin-top:10px;" [style.display]="range=='other' ? 'block' : 'none'">
+    <mat-form-field style="width:48%;">
+      <label class="sr-only" for="fromDate">From</label>
+      <input [(ngModel)]="fromDate" matInput name="fromDate" type="date" required id="fromDate" placeholder="From : "/>
+    </mat-form-field>
+
+    <mat-form-field style="width:48%;">
+      <label class="sr-only" for="toDate">To</label>
+      <input [(ngModel)]="toDate" matInput name="toDate" type="date" required id="toDate" placeholder="To : "/>
+    </mat-form-field>
+    <!--<input type="submit" class="filter-btn" value="Search" (click)="getRangeTransaction()"/>-->
+  </div>
+  <div>
+    <span style="display: block; color:#777; font-size: 0.8em; margin:10px 0 5px;">Transaction Status</span>
+    <mat-checkbox [(ngModel)]="isSuccessTicked">Successful</mat-checkbox>
+    <mat-checkbox [(ngModel)]="isPendingTicked">Pending</mat-checkbox>
+    <mat-checkbox [(ngModel)]="isFailedTicked">Failed</mat-checkbox>
+  </div>
+</div>
+
+<div md-dialog-actions style="display:flex; justify-content: center;">
+  <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
+  <button style="margin-left:20px;" md-button md-raised-button [disabled]="isDownloading"  (click)="downloadReport()" color="accent">{{isDownloading?'Downloading . . .' : 'Download'}}</button>
+</div>
+

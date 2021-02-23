@@ -1,0 +1,23 @@
+<div class="widget-content">
+  <mat-form-field class="col-12 m-md-1">
+    <span *ngIf="isLoadingServices" style="color:#777;">
+      <i class="fa fa-spinner fa-spin"></i> Loading Services . . .</span>
+    <mat-select [disabled]="isLoadingServices" placeholder="Select Category" required
+               [(ngModel)]="category" style="width:100%;" (ngModelChange)="setServices(category)">
+      <mat-option *ngFor="let category of serviceCategories" [value]="category">
+          {{category.categoryName | titlecase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="col-12 m-md-1">
+    <mat-select [disabled]="!services" placeholder="Select Service" required
+               [(ngModel)]="service" style="width:100%;" (ngModelChange)="prepareServiceForm()">
+      <mat-option *ngFor="let service of services" [value]="service">
+        {{cleanString(service.serviceName) | titlecase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <app-dynamic-form *ngIf="fields" [form]="form" [fields]="fields" (submitData)="submitServiceData($event)"></app-dynamic-form>
+
+</div>

@@ -1,0 +1,176 @@
+<div class="package-card">
+  <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
+  <header style="font-weight:700;">
+    <a *ngIf="switchState !== 'data'" (click)="goToPage('data')" class="back-btn"><i class="fa fa-arrow-left"></i><span>back</span></a>
+    Sell Data
+  </header>
+  <div>
+    <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div class="content-area">
+    <div class="container">
+      <div class="row mt-5 mb-5">
+        <div class="col-xl-2">
+
+        </div>
+        <div class="col-xl-8">
+          <div class="widget-content">
+
+            <!--recharge block -->
+            <div class="widget-content-block recharge"  [class.visible]="switchState === 'data'" *ngIf="switchState === 'data'">
+              <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="mb-5">
+                  <span *ngIf="isLoadingNetworks" style="color:#777;"><i class="fa fa-spinner fa-spin"></i> Loading Network Providers  . . .</span>
+                  <mat-select *ngIf="!isLoadingNetworks"  placeholder="Choose a network providers" required formControlName="networkId" [(ngModel)]="network" (change)="setNetwork(network)"  style="width:100%;">
+                    <mat-option [value]="network.data.id"   *ngFor="let network of networksDataWithId">
+                      <img width="20" height="20" [src]="network.logoPath" />  {{network.data.networkName}}
+                    </mat-option>
+                  </mat-select>
+                  <div *ngIf="dataForm.get('networkId').invalid && (dataForm.get('networkId').dirty || dataForm.get('networkId').touched)">
+                    <div class="errorText" >
+                      Network Provider is required
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-5">
+                  <mat-select *ngIf="selectedNetwork"  placeholder="Select a data bundle" required formControlName="product" [(ngModel)]="product" (change)="setPackage(product)"  style="width:100%;">
+                    <mat-option [value]="product.id"   *ngFor="let product of networkDataPackages">
+                      {{product.name}}
+                    </mat-option>
+                  </mat-select>
+                  <div *ngIf="dataForm.get('product').invalid && (dataForm.get('product').dirty || dataForm.get('product').touched)">
+                    <div class="errorText" >
+                      Data bundle is required
+                    </div>
+                  </div>
+                </div>
+
+                <mat-form-field class="mb-5">
+                  <label class="sr-only" for="phone">Mobile phone</label>
+                  <input matInput type="tel" required id="phone" (keyup)="checkNum()" (blur)="checkNum()" formControlName="mobile" placeholder="Mobile Phone" [(ngModel)]="mobile">
+                  <div *ngIf="dataForm.get('mobile').invalid && (dataForm.get('mobile').dirty || dataForm.get('mobile').touched)">
+                    <div *ngIf="dataForm.get('mobile').errors.required" class="errorText" >
+                      Phone number is required
+                    </div>
+
+                    <div *ngIf="dataForm.get('mobile').errors.pattern && !(dataForm.get('mobile').errors.required)" class="errorText" >
+                      Enter a valid phone number
+                    </div>
+
+                    <div *ngIf="dataForm.get('mobile').errors.numberValid" class="errorText" >
+                      Number length must be 11 digits
+                    </div>
+                  </div>
+                </mat-form-field>
+
+                <div class="mb-5" style="background-color: #ededed; color:#777; border:#444; padding:5px;">
+                  <strong>Amount : </strong>{{amount}}
+                </div>
+
+                <a md-raised-button color="" (click)="resetForm()"> Reset </a>
+
+                <button md-raised-button type="submit" color="accent" [disabled]="!dataForm.valid || !amount">Proceed </button>
+
+              </form>
+            </div>
+            <!--data block-->
+
+            <!--data verify block-->
+            <div class="widget-content-block verify-recharge"  *ngIf="switchState === 'data-verify'"  [class.visible]="switchState === 'data-verify'" >
+              <h4 style="margin:0;">Verify Details</h4>
+              <p>Please confirm details to proceed</p>
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Product name</span> <span class="value">{{productName | checkNull}}</span></div>
+                <div class="block"><span class="title">Phone number</span> <span class="value">{{dataObj.receiverMsisdn | checkNull}}</span></div>
+                <div class="block"><span class="title">Network</span> <span class="value">{{dataObj.networkName | checkNull}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{dataObj.amount | currency | moneyFormatter | checkNull}}</span></div>
+              </div>
+
+              <div class="inner-content-area-bottom">
+                <small>You have <strong [ngClass]="{'text-success': wallet.walletCommissionBalance >= amount, 'text-danger': wallet.walletCommissionBalance < amount}">NGN {{wallet.walletCommissionBalance | currency | moneyFormatter}}</strong> in your commission wallet</small>
+                <div class="toggle-btn">
+                  <mat-slide-toggle [labelPosition]="'before'" [checked]="isCommissionWallet" (change)="toggleWallet()" [disabled]="wallet.walletCommissionBalance <= amount" style="font-weight:700;">Use commission wallet</mat-slide-toggle>
+                </div>
+              </div>
+
+              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRecharging"> Back </button>
+
+              <button md-raised-button type="button" (click)="confirmData()" [disabled]="isRecharging"  color="accent">{{!isRecharging?'Pay':'Please wait'}}
+                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>
+              </button>
+
+            </div>
+            <!--data verify block-->
+
+            <!--recharge successful block-->
+            <div class="widget-content-block success-recharge" *ngIf="switchState === 'data-success'"  [class.visible]="switchState === 'data-success'">
+              <h1 class="icon"><i class="fa fa-check-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">Recharge Successful</h5>
+
+              <div class="inner-content-area">
+                <div class="block"><span class="title">MSISDN</span> <span class="value">{{dataResponse?.toMsisdn}}</span></div>
+                <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(dataResponse.network)}}</span></div>
+                <div class="block"><span class="title">Transaction ID</span> <span class="value">{{dataResponse?.transactionId}}</span></div>
+                <div class="inline-block"><span class="title">Date / Time</span> <span class="value">{{dataResponse?.createdDate | date}}</span></div>
+                <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{dataResponse?.amount | currency | moneyFormatter}}</span></div>
+                <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{dataResponse?.commission | currency | moneyFormatter}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New data<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--data successful block-->
+
+            <!--data failed block-->
+            <div class="widget-content-block failed-recharge" *ngIf="switchState === 'data-failed'"  [class.visible]="switchState === 'data-failed'">
+              <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">Recharge Failed</h5>
+
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(dataResponse.network)}}</span></div>
+                <div class="inline-block"><span class="title">Transaction ID</span> <span class="value">{{dataResponse?.transactionId}}</span></div>
+                <div class="inline-block"><span class="title">Date / Time</span><span class="value">{{dataResponse?.createdDate| date}}, {{dataResponse.createdDate | date : 'shortTime'}}</span></div>
+                <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{dataResponse?.amount | currency | moneyFormatter}}</span></div>
+                <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{dataResponse?.commission | currency | moneyFormatter}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New data<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--data failed block-->
+
+            <!--data pending block-->
+            <div class="widget-content-block pending-recharge" *ngIf="switchState === 'data-pending'"  [class.visible]="switchState === 'data-pending'">
+              <h1 class="icon"><i class="fa fa-hourglass-half fa-2x"></i></h1>
+              <h5 style="margin:0;">Recharge Pending</h5>
+              <p> Kindly contact the administrator</p>
+
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(dataResponse.network)}}</span></div>
+                <div class="inline-block"><span class="title">Transaction ID</span> <span class="value">{{dataResponse.transactionId}}</span></div>
+                <div class="inline-block"><span class="title">Date / Time</span><span class="value">{{dataResponse.createdDate| date}}, {{dataResponse.createdDate | date : 'shortTime'}}</span></div>
+                <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{dataResponse.amount | currency | moneyFormatter}}</span></div>
+                <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{dataResponse.commission | currency | moneyFormatter}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New data<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--data pending block-->
+
+            <!--failed block-->
+            <div class="widget-content-block"  [class.visible]="switchState === 'error'">
+              <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">OOPs something went wrong</h5>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New data<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--failed block-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

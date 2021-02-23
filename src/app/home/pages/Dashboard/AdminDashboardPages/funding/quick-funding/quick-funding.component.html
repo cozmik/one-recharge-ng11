@@ -1,0 +1,96 @@
+<div class="row" style="margin-top:20px;">
+  <div class="col-lg-5">
+    <div class="custom-card">
+      <header>Fund an Agent</header>
+      <div class="inner-section">
+        <div class="user_loader" *ngIf="isLoadingFromList">
+          <mat-spinner style="width: 35px; height: 35px; margin:30px auto;" [color]="'accent'"> </mat-spinner>
+          <p>loading ...</p>
+        </div>
+        <div *ngIf="!userExists && !fundingSuccessful && !isLoadingFromList">
+            <div class="md-container">
+              <div style="width: 95%;margin: auto;">
+                <app-custom-alert *ngIf="errorText" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="errorText" [textObject]=""></app-custom-alert>
+              </div>
+
+              <div class="form-inline">
+                <mat-form-field class="md-inline col-md-12" style="margin-top: 20px;  ">
+                  <label class="sr-only" for="user">Search by email or phone</label>
+                  <input matInput type="text" id="user" [disabled]="false" [(ngModel)]="searchData" required name="user" placeholder="Search by email or phone" value="">
+                </mat-form-field>
+              </div>
+            </div>
+            <button class="fund-btn" md-raised-button [disabled]="searchData.length < 5 || isloading" type="submit" color="accent" (click) ="searchUser()"> Search
+              <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'"> </mat-spinner>
+            </button>
+        </div>
+
+        <div *ngIf="userExists && !fundingSuccessful && !isLoadingFromList">
+          <div class="profile_container">
+            <h2 class="user-details"><span>Fund </span><span class="name">{{userData.fullName }}</span></h2>
+            <span class="user_info">{{userData.phone }}</span>
+            <span class="user_info">{{userData.email }}</span>
+            <div>
+              <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#a12121' : '#3aa507'">₦{{userData.walletBalance | currency | moneyFormatter}}</span></p>
+
+              <mat-form-field>
+                <label class="sr-only" for="amount">Amount</label>
+                <input [(ngModel)]="amount" matInput name="amount" type="number" required id="amount" placeholder="Enter Amount" value=""/>
+              </mat-form-field>
+              <button md-button style="border:1px solid #ff0000;" (click)="cancelAction()" color="warn">Cancel</button>
+              <button  *ngIf="fundStatus || isloading" (click)="fundAgent(userData.id, userData.fullName)"  md-raised-button  type="submit" color="accent"> {{fundStatus?'Funding...':'Fund'}}</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="fundingSuccessful">
+          <div class="success_container">
+            <!--<div class="success_icon">-->
+              <!--<i class="fa fa-check"></i>-->
+            <!--</div>-->
+            <img src="assets/img/success-spark.png" alt="success" />
+            <p>{{fundMessage}}</p>
+            <button [disabled]="" (click)="fundAnotherAgent()" md-raised-button >Fund Another Agent</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="custom-card">
+      <header>Some Agents with low wallet balance</header>
+      <div>
+        <mat-progress-bar style="visibility:hidden; margin-bottom:0;" *ngIf="!isLoadingAgents" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar *ngIf="isLoadingAgents" mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="agentsWithLowWallet.length === 0 && !isLoadingAgents" style="padding:20px 10px;text-align:center">
+          <span>No data at the moment</span>
+        </div>
+        <table class="table table-dark"  *ngIf="agentsWithLowWallet.length > 0">
+          <thead>
+          <tr style="border-top:none;">
+            <th scope="col">#</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Wallet Balance</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let agent of agentsWithLowWallet | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#eff3f8' : 'white'">
+            <td class="link"> {{i+1}} </td>
+            <td class="link"> {{agent.firstName}} {{agent.lastName}}</td>
+            <td class="link"> {{agent.mobile}}</td>
+            <td class="link"> {{agent.walletBalance | currency | moneyFormatter}} </td>
+            <td class="link"> <button style="background-color: #5dade0;color:#fff;border:none;border-radius:2px;" (click)="searchUser(agent.email,true)">Fund</button></td>
+          </tr>
+          </tbody>
+        </table>
+        <div style="height:50px;" *ngIf="agentsWithLowWallet > 0">
+          <pagination-controls style="text-align: right; margin-bottom:20px;" (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

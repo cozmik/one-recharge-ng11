@@ -1,0 +1,121 @@
+@import '../../../../../../assets/sass/variable';
+
+.widget-content{
+  //border-top:4px solid $accent-color;
+  background-color: #fff;
+  //padding:30px 20px;
+  //min-height:350px;
+  //box-shadow:
+  //  0 4px 8px 0 rgba(0,0,0,0.12),
+  //  0 2px 4px 0 rgba(0,0,0,0.08);
+  .widget-content-block{
+    display:none;
+    .inner-content-area{
+      margin:20px 0;
+      .block{
+        .title, .value{
+          display:inline-block;
+          text-align:left;
+        }
+        .title{
+          width:30%;
+
+        }
+        .value{
+          width:60%;
+          font-weight:700;
+        }
+      }
+    }
+    .inner-content-area-bottom{
+      position:relative;
+      margin-bottom:20px;
+      padding:5px;
+      background-color: #ededed;
+      .toggle-btn{
+        font-weight: 700;
+      }
+    }
+  }
+  .visible{
+    display:block !important;
+  }
+  .success-recharge, .failed-recharge, .pending-recharge{
+    text-align:center;
+    .icon{
+      i{
+        font-size:7rem;
+      }
+      margin:10px 0px;
+    }
+    h5{
+      color:#3fa043;
+    }
+    .inner-content-area{
+      margin:20px 0;
+      .block, .inline-block{
+        margin-bottom:5px;
+        .title, .value{
+          display:inline-block;
+          text-align:center;
+          width:100%;
+        }
+        .title{
+          color:$dark-grey;
+        }
+        .value{
+          font-weight:700;
+        }
+      }
+      .inline-block{
+        width:45%;
+        display:inline-block;
+      }
+    }
+    .inner-content-area-bottom{
+      position:relative;
+      margin-bottom:20px;
+      padding:5px;
+      background-color: #ededed;
+      .toggle-btn{
+        font-weight: 700;
+      }
+    }
+  }
+  .success-recharge {
+    .icon {
+      i { color: #3fa043; }
+    }
+    h5{ color:#3fa043; }
+  }
+  .failed-recharge {
+    .icon {
+      i { color: #ff594f;  }
+    }
+    h5{ color:#ff594f; }
+  }
+  .pending-recharge{
+    .icon {
+      i { color: #df9808;  }
+    }
+    h5{ color: #df9808; }
+  }
+  .verify-recharge{
+    //text-align:center;
+  }
+}
+
+form{
+  div.button{
+    text-align: center;
+  }
+}
+
+
+.errorText{
+  position: absolute;
+  padding-top: 10px;
+  font-size: .8em;
+  color: #f44336;
+}
+

@@ -1,0 +1,78 @@
+<section>
+  <div class="first-part">
+    <div class="logo" [class.inactive]="service.status === 0">
+      <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)" alt="logo">
+    </div>
+    <div>
+      <div class="details">
+        <div class="config-details">
+          <h4>
+            {{service.serviceName}}
+            <span>({{service.serviceProviderName ? service.serviceProviderName : 'No Service Provider'}})</span>
+          </h4>
+          <div>
+            <ng-template [ngIf]="!service.isCommissionPerFee">
+              <div>
+                <span>System Commission:</span>
+                <span [appPercentCurrency]="service.isCommissionFixed">{{service.systemCommission}}</span>
+              </div>
+              <div>
+                <span>Agent Commission:</span>
+                <span [appPercentCurrency]="service.isCommissionFixed">{{service.superAgentCommission}}</span>
+              </div>
+            </ng-template>
+            <div *ngIf="service.feeType === 1">
+              <span>Service Charge:</span>
+              <span *ngIf="service.serviceFees[0]?.feeAmount"
+                    [appPercentCurrency]="!service.serviceFees[0].isFeePercentage">
+                  {{service.serviceFees[0]?.feeAmount}}
+                </span>
+              <span *ngIf="!service.serviceFees[0]?.feeAmount"> Not configured </span>
+            </div>
+
+            <ng-template [ngIf]="service.feeType === 2">
+              <div>
+                <span>Commission Type: </span>
+                <span>{{service.isCommissionPerFee ? 'Tier based commission' : 'Service based commission'}}</span>
+              </div>
+
+              <div *ngIf="service.serviceProviderHasCommission">
+                <span>Service Providers Commission: </span>
+                <span>
+                  <span [appPercentCurrency]="service.isServiceProviderCommissionFixed">
+                  {{service.serviceProviderCommission}}
+                  </span>
+                </span>
+              </div>
+
+              <div>
+                <span>Fees and commission: </span>
+                <ng-template [ngIf]="service.hasFee">
+                  <span *ngIf="!service.isCommissionPerFee" [appPercentCurrency]="'currency'"
+                  >{{service.systemCommission | number:'1.2-2'}}</span>
+                  <button (click)="openCommissionList(service)" *ngIf="service.isCommissionPerFee == 1"
+                          class="text-button">view fees
+                  </button>
+                </ng-template>
+                <span *ngIf="!service.hasFee">Not Set</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="second-part">
+    <button (click)="toggleActivation(service)" [class.loading]="loading"
+            class="activate">{{service.status === 1 ? 'Deactivate' : 'Activate'}}
+      <fa-icon *ngIf="loading" [icon]="spinner" [spin]="true"></fa-icon>
+    </button>
+
+    <div class="actions">
+      <button [disabled]="service.isCommissionPerFee" (click)="quickConfig(service)" class="text-button">Quick Config</button>
+      <span class="line"></span>
+      <button class="text-button" (click)="gotoService()" >Configure</button>
+    </div>
+  </div>
+</section>

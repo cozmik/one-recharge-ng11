@@ -1,0 +1,167 @@
+<div class="main-card">
+  <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
+  <header style="font-weight:700;">
+    <a *ngIf="switchState !== 'new'" (click)="goToPage('new')" class="back-btn"><i class="fa fa-arrow-left"></i><span>back</span></a>
+    New Request
+  </header>
+  <div>
+    <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div class="content-area">
+    <div class="container">
+      <div class="row mt-5 mb-5">
+        <div class="col-xl-2">
+
+        </div>
+        <div class="col-xl-8">
+          <div class="widget-content">
+
+            <!--new block -->
+            <div class="widget-content-block new" *ngIf="switchState === 'new'" [class.visible]="switchState === 'new'">
+              <form (ngSubmit)="onSubmit(formData)" [formGroup]="fundRequestForm" #formData='ngForm' method="post" enctype="multipart/form-data">
+                <div class="mb-5">
+                  <mat-select placeholder="Select mode of payment" #selectPaymentMode required formControlName="paymentMode" style="width:100%;">
+                    <mat-option [value]="paymentMode" *ngFor="let paymentMode of paymentModes">
+                       {{paymentMode}}
+                    </mat-option>
+                  </mat-select>
+                  <div *ngIf="fundRequestForm.get('paymentMode').invalid && (fundRequestForm.get('paymentMode').dirty || fundRequestForm.get('paymentMode').touched)">
+                    <div class="errorText" >
+                      Payment method is required
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-inline">
+                  <mat-form-field class="md-inline mb-5 col-md-6">
+                    <label class="sr-only" for="referenceId">Teller number / Transaction Ref</label>
+                    <input matInput type="text" required  id="referenceId" formControlName="referenceId" placeholder="Teller number / Transaction Ref" value="">
+                    <div *ngIf="fundRequestForm.get('referenceId').invalid && (fundRequestForm.get('referenceId').dirty || fundRequestForm.get('referenceId').touched)">
+                      <div *ngIf="fundRequestForm.get('referenceId').errors.required" class="errorText" >
+                        Teller number / Transaction Ref is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+
+                  <mat-form-field class="md-inline mb-5 col-md-6">
+                    <label class="sr-only" for="depositorName">Depositor Name</label>
+                    <input matInput type="text" required  id="depositorName" formControlName="depositorName" placeholder="Depositor Name" value="">
+                    <div *ngIf="fundRequestForm.get('depositorName').invalid && (fundRequestForm.get('depositorName').dirty || fundRequestForm.get('depositorName').touched)">
+                      <div *ngIf="fundRequestForm.get('depositorName').errors.required" class="errorText" >
+                        Depositor's Name is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-inline">
+                  <mat-form-field class="md-inline mb-5 col-md-6">
+                    <label class="sr-only" for="amount">Enter Amount</label>
+                    <input matInput type="number" required  id="amount" formControlName="amount" placeholder="Enter Amount" value="">
+                    <div *ngIf="fundRequestForm.get('amount').invalid && (fundRequestForm.get('amount').dirty || fundRequestForm.get('amount').touched)">
+                      <div *ngIf="fundRequestForm.get('amount').errors.required" class="errorText" >
+                        Amount is required
+                      </div>
+
+                      <div *ngIf="!(fundRequestForm.get('amount').errors.required)" class="errorText">
+                        Enter a valid amount
+                      </div>
+                    </div>
+                  </mat-form-field>
+
+                  <mat-form-field class="md-inline mb-5 col-md-6">
+                    <label class="sr-only" for="paymentDate">Date payment was made</label>
+                    <input matInput type="date" required  id="paymentDate" formControlName="paymentDate" placeholder="Date of payment" value="">
+                    <div *ngIf="fundRequestForm.get('paymentDate').invalid && (fundRequestForm.get('paymentDate').dirty || fundRequestForm.get('paymentDate').touched)">
+                      <div *ngIf="fundRequestForm.get('paymentDate').errors.required" class="errorText" >
+                        Date of payment is required
+                      </div>
+                    </div>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group mb-5">
+                  <label>Upload Proof of Payment</label>
+                  <input class="form-control" type="file" #proofOfPaymentRef formControlName="proofOfPayment" (change)="fileEvent($event)">
+                </div>
+
+
+                <a md-raised-button color="" (click)="resetForm()"> Reset </a>
+
+                <button md-raised-button [disabled]="fundRequestForm.invalid || isloading" type="submit" color="accent">Proceed</button>
+
+              </form>
+            </div>
+            <!--new block-->
+
+            <!--verify block-->
+            <div class="widget-content-block verify" *ngIf="switchState=='verify'" [class.visible]="switchState === 'verify'" >
+              <h4 style="margin:0;">Fund Request Details</h4>
+              <p>Kindly confirm your fund request details below</p>
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Payment Mode</span> <span class="value">{{fundRequestObj.paymentMode}}</span></div>
+                <div class="block"><span class="title">Teller no / Ref</span> <span class="value">{{fundRequestObj.referenceId}}</span></div>
+                <div class="block"><span class="title">Depositors Name</span> <span class="value">{{fundRequestObj.depositorName}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{fundRequestObj.amount | currency | moneyFormatter}}</span></div>
+                <div class="block"><span class="title">Payment Date</span> <span class="value">{{fundRequestObj.paymentDate}}</span></div>
+              </div>
+              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRequesting"> Back </button>
+
+              <button md-raised-button type="button" [disabled]="isRequesting" (click)="confirmRequest()"  color="accent">{{!isRequesting?'Confirm':'Please wait'}}
+                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>
+              </button>
+
+            </div>
+            <!--verify block-->
+
+            <!--successful block-->
+            <div class="widget-content-block success" *ngIf="switchState === 'success'" [class.visible]="switchState === 'success'">
+              <h1 class="icon"><i class="fa fa-check-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">Fund Request is Successful</h5>
+
+              <div class="inner-content-area">
+                <div class="block" style="height: 200px; width:auto;"><img style=" height: 150px;max-width: 100%;" [src]="successfulFundRequest.proofOfPayment" alt="proof of payment" /></div>
+                <div class="inline-block"><span class="title">Payment Mode</span> <span class="value">{{successfulFundRequest.paymentMode}}</span></div>
+                <div class="inline-block"><span class="title">Teller no / Ref</span> <span class="value">{{successfulFundRequest.referenceId}}</span></div>
+                <div class="inline-block"><span class="title">Depositors Name</span> <span class="value">{{successfulFundRequest.depositorName}}</span></div>
+                <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{successfulFundRequest.amount | currency | moneyFormatter}}</span></div>
+                <div class="inline-block"><span class="title">Payment Date</span> <span class="value">{{successfulFundRequest.paymentDate}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New Request</button>
+
+            </div>
+            <!--successful block-->
+
+            <!--failed block-->
+            <div class="widget-content-block failed"  [class.visible]="switchState === 'failed'">
+              <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">Recharge Failed</h5>
+
+              <div class="inner-content-area">
+                <div class="block"><span class="title">Phone number</span> <span class="value">11111</span></div>
+                <div class="block"><span class="title">Network</span> <span class="value">343434343</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{30000 | currency | moneyFormatter}}</span></div>
+              </div>
+
+              <button md-raised-button type="button" (click)="newRecharge()"  color="accent"> New Request<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--failed block-->
+
+            <!--failed block-->
+            <div class="widget-content-block"  [class.visible]="switchState === 'error'">
+              <h1 class="icon"><i class="fa fa-times-circle fa-2x"></i></h1>
+              <h5 style="margin:0;">OOPs something went wrong</h5>
+
+              <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New recharge<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </div>
+            <!--failed block-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

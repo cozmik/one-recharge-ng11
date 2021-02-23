@@ -1,0 +1,109 @@
+<div class="site-container">
+  <main class="main-content">
+    <app-logo-2></app-logo-2>
+    <div class="main-content-wrap">
+      <div class="form-cover" *ngIf="!isRegistrationSuccessful">
+        <div class="form-title">Customer Sign Up</div>
+        <div class="error text-center pt-3" style=" min-height: 30px;width: 90%;margin: auto;">
+          <app-custom-alert *ngIf="errorMsg" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="errorMsg" [textObject]=""></app-custom-alert>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="customerSignUpForm">
+          <div class="form-inline mb-2">
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="firstName">First Name</label>
+              <input matInput type="text" name="firstName" formControlName="firstName" id="firstName" placeholder="First Name" value="">
+              <div *ngIf="customerSignUpForm.get('firstName').invalid && (customerSignUpForm.get('firstName').dirty || customerSignUpForm.get('firstName').touched)">
+                <div *ngIf="customerSignUpForm.get('firstName').errors.required" class="errorText" >
+                  First name is required
+                </div>
+              </div>
+            </mat-form-field>
+
+
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="lname">Last Name</label>
+              <input matInput type="text" id="lname" formControlName="lastName" placeholder="Last Name" value="">
+              <div *ngIf="customerSignUpForm.get('lastName').invalid && (customerSignUpForm.get('lastName').dirty || customerSignUpForm.get('lastName').touched)">
+                <div *ngIf="customerSignUpForm.get('lastName').errors.required" class="errorText" >
+                  Last name is is required
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div class="form-inline mb-2">
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="mobileNo">Mobile phone</label>
+              <input matInput type="tel"   required id="mobileNo" (keyup)="checkMobileNo()" formControlName="mobile" placeholder="Mobile Phone" [(ngModel)]="mobile">
+              <div *ngIf="customerSignUpForm.get('mobile').invalid && (customerSignUpForm.get('mobile').dirty || customerSignUpForm.get('mobile').touched)">
+                <div *ngIf="customerSignUpForm.get('mobile').errors.required" class="errorText" >
+                  Phone number is required
+                </div>
+
+                <div *ngIf="customerSignUpForm.get('mobile').errors.pattern && !(customerSignUpForm.get('mobile').errors.required)" class="errorText" >
+                  Enter a valid phone number
+                </div>
+
+                <div *ngIf="customerSignUpForm.get('mobile').errors.numberValid" class="errorText" >
+                  Number length must be 11 digits
+                </div>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class="md-inline col-md-6">
+              <label class="sr-only" for="email">Email address</label>
+              <input matInput type="email"  id="email" formControlName="email" placeholder="Email address" value="">
+              <div *ngIf="customerSignUpForm.get('email').invalid && (customerSignUpForm.get('email').dirty || customerSignUpForm.get('email').touched)">
+                <div *ngIf="customerSignUpForm.get('email').errors.email" class="errorText" >
+                  Enter a valid email address
+                </div>
+              </div>
+            </mat-form-field>
+
+          </div>
+
+
+          <div class="form-inline mb-2">
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="password">Password</label>
+              <input matInput type="password" formControlName="password" id="password" name="password" placeholder="Password">
+              <div *ngIf="customerSignUpForm.get('password').invalid && (customerSignUpForm.get('password').dirty || customerSignUpForm.get('password').touched)">
+                <div *ngIf="customerSignUpForm.get('password').errors.required" class="errorText" >
+                  password is required
+                </div>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class=" md-inline col-md-6">
+              <label class="sr-only" for="confirm_password">Confirm Password</label>
+              <input matInput type="password" id="confirm_password" formControlName="confirm_password"  name="confirm_password" placeholder="Confirm Password">
+              <div *ngIf="customerSignUpForm.get('confirm_password').invalid && (customerSignUpForm.get('confirm_password').dirty || customerSignUpForm.get('confirm_password').touched)">
+                <div *ngIf="customerSignUpForm.get('confirm_password').errors.required" class="errorText" >
+                  re-enter your password
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+
+          <div class="text-center">
+            <p>By Clicking <strong>Sign Up</strong>, you agree to {{vendorTitle}} <a href="">terms and conditions</a> </p>
+          </div>
+
+          <button md-raised-button type="submit" color="accent" [disabled]="customerSignUpForm.invalid">{{signUpText}} <i *ngIf="creatingAccount" style="color:#fff; font-size:30px;" class="fa fa-spinner fa-spin"></i></button>
+
+          <div class="additional-info">
+            Already have an account? <a routerLink="/sign-in">Sign In</a>
+          </div>
+        </form>
+      </div>
+      <div class="card registration-success-card text-center" *ngIf="isRegistrationSuccessful">
+        <h1 class="icon"><i class="fa fa-check-circle text-success"></i></h1>
+        <h2 class="card-title">Registration was successful</h2>
+        <p>An email was sent to <span class="email">{{registrationEmail}}</span> with a link to download our mobile app to perform transactions easier and quicker</p>
+        <a class="btn-outline" routerLink="/sign-in">Proceed to Sign in</a>
+      </div>
+
+      <div class="copy">&copy; 2020 {{vendorTitle}}</div>
+    </div>
+  </main>
+</div>

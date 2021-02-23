@@ -1,0 +1,476 @@
+<div class="row">
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #56a53c">
+        <div class="card-content" style="padding: 1.57143rem;">
+
+          <div class="title text-uppercase">Transactions</div>
+          <div class="count">{{dashboardData.transactionCount}}</div>
+          <i class="fa fa-exchange"></i>
+          <div class="count-section">
+              <div class="count-item">
+                <h5>{{dashboardData.successfulTran}}</h5>
+                <span>Successful</span>
+              </div>
+              <div class="count-item">
+                <h5>{{dashboardData.failedTrans}}</h5>
+                <span>failed</span>
+              </div>
+              <div class="count-item">
+                <h5>{{dashboardData.pendingTrans}}</h5>
+                <span>pending</span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #ff6265">
+        <div class="card-content" style="padding: 1.57143rem;">
+
+          <div class="title text-uppercase">Admins</div>
+          <div class="count">{{dashboardData.admins}}</div>
+          <i class="fa fa-user-secret"></i>
+          <div class="count-section">
+            <div class="count-item">
+              <h5>{{dashboardData.activeAdmins}}</h5>
+              <span>Active</span>
+            </div>
+            <div class="count-item">
+              <h5>{{dashboardData.inActiveAdmin}}</h5>
+              <span>Blocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #3b7fc4">
+        <div class="card-content" style="padding: 1.57143rem;">
+
+          <div class="title text-uppercase">Agents</div>
+          <div class="count">{{dashboardData.agents}}</div>
+          <i class="fa fa-users"></i>
+          <div class="count-section">
+            <div class="count-item">
+              <h5>{{dashboardData.activeAgents}}</h5>
+              <span>Active</span>
+            </div>
+            <div class="count-item">
+              <h5>{{dashboardData.blockedAgents}}</h5>
+              <span>Blocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3">
+    <div class="info-card custom-card">
+      <div class="card-wrap danger-card" style="background: #00bfff">
+        <div class="card-content" style="padding: 1.57143rem;">
+
+          <div class="title text-uppercase">Customers</div>
+          <div class="count">{{dashboardData.customers}}</div>
+          <i class="fa fa-users"></i>
+          <div class="count-section">
+            <div class="count-item">
+              <h5>{{dashboardData.activeCustomers}}</h5>
+              <span>Active</span>
+            </div>
+            <div class="count-item">
+              <h5>{{dashboardData.inActiveCustomers}}</h5>
+              <span>Blocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row" style=" margin-top:30px;">
+  <div class="col-lg-6">
+    <div class="custom-card" style="margin:0; min-height: 420px;">
+      <div class="loader" *ngIf="isLoadingCharts"><span class="fa fa-spinner icon-loader"></span></div>
+      <header style="font-weight:700;">Airtime Transactions by Networks</header>
+      <mat-tab-group style="width:100%;">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Value(₦)
+          </ng-template>
+          <div class="col-md-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="display: block;">
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkValuePeriod" (change)="renderPieChartAirtimeTransactionsPerNetworkValueStatistics()" style="width:100px;"  >
+                <mat-option value="today">Today</mat-option>
+                <mat-option value="yesterday">Yesterday</mat-option>
+                <mat-option value="this week">This Week</mat-option>
+                <mat-option value="last week">Last Week</mat-option>
+                <mat-option value="this month">This Month</mat-option>
+                <mat-option value="last month">Last Month</mat-option>
+              </mat-select>
+            </div>
+            <div style="margin-top: 20px; position:relative;">
+              <div style="position:absolute; top:40%; color:#ccc; font-size:1.5rem; width:100%; text-align: center;"
+              *ngIf="!pieChartAirtimeTransactionsPerNetworkValueIsDataAvailable">
+                No transactions {{pieChartAirtimeTransactionsPerNetworkValuePeriod}}
+              </div>
+
+              <canvas baseChart height="180"
+                      [data]="pieChartAirtimeTransactionsPerNetworkValueChartDataView"
+                      [labels]="pieChartAirtimeTransactionsPerNetworkValueLabels"
+                      [colors]="networkPieChartColors"
+                      [options]="pieChartOptions"
+                      [chartType]="pieChartType"
+                      [legend]="ChartLegend">
+              </canvas>
+
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Volume
+          </ng-template>
+          <div class="col-md-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="display: block;">
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkVolumePeriod" (change)="renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics()" style="width:100px;"  >
+                <mat-option value="today">Today</mat-option>
+                <mat-option value="yesterday">Yesterday</mat-option>
+                <mat-option value="this week">This Week</mat-option>
+                <mat-option value="last week">Last Week</mat-option>
+                <mat-option value="this month">This Month</mat-option>
+                <mat-option value="last month">Last Month</mat-option>
+              </mat-select>
+            </div>
+            <div style="margin-top: 20px; position:relative;">
+              <div style="position:absolute; top:40%; color:#ccc; font-size:1.5rem; width:100%; text-align: center;"
+                   *ngIf="!pieChartAirtimeTransactionsPerNetworkVolumeIsDataAvailable">
+                No transactions {{pieChartAirtimeTransactionsPerNetworkVolumePeriod}}
+              </div>
+
+              <canvas baseChart height="180"
+                      [data]="pieChartAirtimeTransactionsPerNetworkVolumeChartDataView"
+                      [labels]="pieChartAirtimeTransactionsPerNetworkVolumeLabels"
+                      [colors]="networkPieChartColors"
+                      [options]="pieChartOptions"
+                      [chartType]="pieChartType"
+                      [legend]="ChartLegend">
+              </canvas>
+
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="custom-card" style="margin:0; min-height: 420px;">
+      <div class="loader" *ngIf="isLoadingCharts"><span class="fa fa-spinner icon-loader"></span></div>
+      <header style="font-weight:700;">Airtime Transactions by Channels</header>
+      <mat-tab-group style="width:100%;">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Value(₦)
+          </ng-template>
+          <div class="col-md-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="display: block;">
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelValuePeriod" (change)="renderPieChartAirtimeTransactionsPerChannelValueStatistics()" style="width:100px;"  >
+                <mat-option value="today">Today</mat-option>
+                <mat-option value="yesterday">Yesterday</mat-option>
+                <mat-option value="this week">This Week</mat-option>
+                <mat-option value="last week">Last Week</mat-option>
+                <mat-option value="this month">This Month</mat-option>
+                <mat-option value="last month">Last Month</mat-option>
+              </mat-select>
+            </div>
+            <div style="margin-top: 20px; position:relative;">
+              <div style="position:absolute; top:40%; color:#ccc; font-size:1.5rem; width:100%; text-align: center;"
+                   *ngIf="!pieChartAirtimeTransactionsPerChannelValueIsDataAvailable">
+                No transactions {{pieChartAirtimeTransactionsPerChannelValuePeriod}}
+              </div>
+
+              <canvas baseChart height="180"
+                      [data]="pieChartAirtimeTransactionsPerChannelValueChartDataView"
+                      [labels]="pieChartAirtimeTransactionsPerChannelValueLabels"
+                      [colors]="channelPieChartColors"
+                      [options]="pieChartOptions"
+                      [chartType]="pieChartType"
+                      [legend]="ChartLegend">
+              </canvas>
+
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Volume
+          </ng-template>
+          <div class="col-md-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="display: block;">
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelVolumePeriod" (change)="renderPieChartAirtimeTransactionsPerChannelVolumeStatistics()" style="width:100px;"  >
+                <mat-option value="today">Today</mat-option>
+                <mat-option value="yesterday">Yesterday</mat-option>
+                <mat-option value="this week">This Week</mat-option>
+                <mat-option value="last week">Last Week</mat-option>
+                <mat-option value="this month">This Month</mat-option>
+                <mat-option value="last month">Last Month</mat-option>
+              </mat-select>
+            </div>
+            <div style="margin-top: 20px; position:relative;">
+              <div style="position:absolute; top:40%; color:#ccc; font-size:1.5rem; width:100%; text-align: center;"
+                   *ngIf="!pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable">
+                No transactions {{pieChartAirtimeTransactionsPerChannelVolumePeriod}}
+              </div>
+
+              <canvas baseChart height="180"
+                      [data]="pieChartAirtimeTransactionsPerChannelVolumeChartDataView"
+                      [labels]="pieChartAirtimeTransactionsPerChannelVolumeLabels"
+                      [colors]="channelPieChartColors"
+                      [options]="pieChartOptions"
+                      [chartType]="pieChartType"
+                      [legend]="ChartLegend">
+              </canvas>
+
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="row" style=" margin-top:30px;">
+  <div class="col-lg-12">
+    <div class="custom-card" style="margin:0; min-height: 400px;">
+      <div class="loader" *ngIf="isLoadingCharts"><i class="fa fa-spinner fa-spin icon-loader"></i></div>
+      <header style="font-weight:700;">Airtime Transactions Today</header>
+      <mat-tab-group style="width:100%;">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Volume by Networks
+          </ng-template>
+          <div class="col-md-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last24HoursNetworksTransactionsVolumeChartData"
+                [labels]="last24HoursNetworksTransactionsVolumeLabels"
+                [colors]="networkChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType"></canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Value(₦) by Networks
+          </ng-template>
+          <div class="col-md-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last24HoursNetworksTransactionsValueChartData"
+                [labels]="last24HoursNetworksTransactionsValueLabels"
+                [colors]="networkChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+             Volume by Channels
+          </ng-template>
+          <div class="col-lg-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last24HoursChannelsTransactionsVolumeChartData"
+                [labels]="last24HoursChannelsTransactionsVolumeLabels"
+                [colors]="channelsChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Value(₦) by Channels
+          </ng-template>
+          <div class="col-lg-12 canva_style">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last24HoursChannelsTransactionsValueChartData"
+                [labels]="last24HoursChannelsTransactionsValueLabels"
+                [colors]="channelsChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+<div class="row" style=" margin-top:30px;">
+  <div class="col-lg-12">
+    <div class="custom-card" style="margin:0; min-height: 400px;">
+      <div class="loader" *ngIf="isLoadingCharts"><span class="fa fa-spinner icon-loader"></span></div>
+      <header style="font-weight:700;">Airtime Transactions By Value (₦)</header>
+      <mat-tab-group style="width:100%;">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Last 12 months
+          </ng-template>
+          <div class="col-md-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+              <div style="margin-top: 20px;">
+                <canvas
+                  baseChart height="100"
+                  [datasets]="Last12MonthsTransactionChartData"
+                  [labels]="last12MonthsAirtimeTransactionsLabels"
+                  [colors]="networkChartColors"
+                  [options]="ChartOptions"
+                  [legend]="ChartLegend"
+                  [chartType]="barChartType"></canvas>
+              </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Last 7 days
+          </ng-template>
+          <div class="col-md-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="Last7DaysTransactionChartData"
+                [labels]="last7DaysAirtimeTransactionsLabels"
+                [colors]="networkChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Last 12 months by channel
+          </ng-template>
+          <div class="col-lg-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last12MonthsAirtimeTransactionsByChannelChartData"
+                [labels]="last12MonthsAirtimeTransactionsByChannelLabels"
+                [colors]="channelsChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Last 12 months by user type
+          </ng-template>
+          <div class="col-lg-12" style="min-height:400px;">
+            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+            <div style="margin-top: 20px;">
+              <canvas
+                baseChart height="100"
+                [datasets]="last12MonthAirtimeTransactionsByFromTypeChartData"
+                [labels]="last12MonthAirtimeTransactionsByFromTypeLabels"
+                [colors]="usersChartColors"
+                [options]="ChartOptions"
+                [legend]="ChartLegend"
+                [chartType]="barChartType">
+              </canvas>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="margin-top:40px;" *ngIf="true">
+  <div class="col-lg-12">
+    <div class="custom-card canva_style">
+      <div class="loader" *ngIf="isLoadingCharts"><span class="fa fa-spinner icon-loader"></span></div>
+      <header style="font-weight:700;">Top Selling Agents of the month</header>
+      <div>
+        <mat-progress-bar *ngIf="isLoadingCharts" mode="indeterminate"></mat-progress-bar>
+        <table class="table table-dark"  *ngIf="topSellingAgentsOfTheMonth.length > 0">
+          <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Transaction value (₦)</th>
+            <th scope="col">Transaction Volume</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let agent of topSellingAgentsOfTheMonth; let i = index" [style.backgroundColor] = "i%2 === 0 ? '#eff3f8' : 'white'">
+            <td class="link"> {{agent.firstName}} {{agent.lastName}}</td>
+            <td class="link"> {{agent.email}}</td>
+            <td class="link"> {{agent.mobile}}</td>
+            <td class="link"> {{agent.amount | currency | moneyFormatter}} </td>
+            <td class="link"> {{agent.count }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="topSellingAgentsOfTheMonth.length === 0 && !isLoadingCharts"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+          <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

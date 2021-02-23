@@ -1,0 +1,236 @@
+
+<!--general configuration-->
+<div class="row" style="margin:10px 5px 10px;"*ngIf="false" >
+  <div class="col-lg-12 filter-container">
+    <div class="custom-card" style="margin:0;">
+      <header>General Networks</header>
+      <div>
+        <mat-progress-bar *ngIf="isLoadingNetworks" mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="networks.length < 1 && !isLoadingNetworks" style="padding:20px 10px;text-align:center">
+          <span>No Networks at the moment</span>
+        </div>
+
+        <table class="table table-dark"  *ngIf="networks.length > 0">
+          <thead>
+          <tr>
+            <!--make table stable-->
+            <th></th>
+            <!---->
+            <th scope="col">#</th>
+            <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+            <th scope="col">Network Name</th>
+            <th scope="col">Airtime Status</th>
+            <th scope="col">Data Status</th>
+            <th scope="col">Date created</th>
+            <th scope="col"> </th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let network of networksWithId; let i = index">
+          <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+            <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+            <!--make table stable-->
+            <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+            <td class="link"> {{network.id}}</td>
+            <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+            <td class="link"> {{network.data.networkName}}</td>
+            <td class="link" [style.color]="network.data.isAirtimeActive ? '#5cb85c':'#d9534f'"> {{network.data.airtimeStatus}}</td>
+            <td class="link" [style.color]="network.data.isDataActive ? '#5cb85c':'#d9534f'">{{network.data.dataStatus}}</td>
+            <td class="link">{{network.data.createdDate | date}}</td>
+            <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data)" [mat-menu-trigger-for]="action">
+              <i class="fa fa-ellipsis-v"></i></div>
+
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <!--<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--general configuration-->
+
+<!--general, airtime and data configuration-->
+<div class="row" style="margin:10px 5px 10px;">
+  <div class="col-lg-12 filter-container">
+    <div class="custom-card" style="margin:0;">
+      <header>NETWORK CONFIGURATION</header>
+      <div style="min-height: 300px;">
+        <mat-tab-group>
+
+          <mat-tab label="GENERAL">
+            <div>
+              <mat-progress-bar *ngIf="isLoadingNetworks" mode="indeterminate"></mat-progress-bar>
+              <div *ngIf="networks.length < 1 && !isLoadingNetworks" style="padding:20px 10px;text-align:center">
+                <span>No Networks at the moment</span>
+              </div>
+
+              <table class="table table-dark"  *ngIf="networks.length > 0">
+                <thead>
+                <tr>
+                  <!--make table stable-->
+                  <th></th>
+                  <!---->
+                  <th scope="col">#</th>
+                  <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+                  <th scope="col">Network Name</th>
+                  <th scope="col">Airtime Status</th>
+                  <th scope="col">Data Status</th>
+                  <th scope="col">Date created</th>
+                  <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let network of networksWithId; let i = index">
+                <tr [style.background]="network.id === activeNetworkId ? '#ededed':'#fff'">
+                  <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                  <!--make table stable-->
+                  <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                  <td class="link"> {{network.id}}</td>
+                  <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+                  <td class="link">
+                    <input [disabled]="network.id !== activeNetworkId"
+                           (focus)="true"
+                           #networkName
+                           class="editable-field"
+                           value="{{network.data.networkName}}" />
+                  </td>
+                  <td class="link" [style.color]="network.data.isAirtimeActive ? '#5cb85c':'#d9534f'"> {{network.data.airtimeStatus}}</td>
+                  <td class="link" [style.color]="network.data.isDataActive ? '#5cb85c':'#d9534f'">{{network.data.dataStatus}}</td>
+                  <td class="link">{{network.data.createdDate | date}}</td>
+                  <td class="link" style="width:15%;">
+                    <button *ngIf="network.id !== activeNetworkId" class="btn btn-sm btn-primary" (click)="editNetwork(network.id)"><span class="fa fa-edit"></span> Edit </button>
+                    <button *ngIf="network.id === activeNetworkId" [disabled]="isSavingNetwork" class="btn btn-sm btn-success" (click)="saveNetwork(network.id, networkName.value)"><span class="fa fa-save"></span> {{!isSavingNetwork ? 'Save' : 'Saving'}}</button>
+                    <button *ngIf="network.id === activeNetworkId && !isSavingNetwork" class="btn btn-sm btn-outline-danger" (click)="cancelEditNetwork()"><span class="fa fa-cancel"></span> Cancel </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <!--<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>-->
+            </div>
+          </mat-tab>
+
+          <mat-tab label="AIRTIME">
+            <mat-progress-bar *ngIf="isLoadingAirtimeNetworkConfig" mode="indeterminate"></mat-progress-bar>
+            <div *ngIf="airtimeNetworkConfig.length < 1 && !isLoadingAirtimeNetworkConfig" style="padding:20px 10px;text-align:center">
+              <span>No Networks at the moment</span>
+            </div>
+
+            <table class="table table-dark"  *ngIf="airtimeNetworkConfig.length > 0">
+              <thead>
+              <tr>
+                <!--make table stable-->
+                <th></th>
+                <!---->
+                <th scope="col">#</th>
+                <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+                <th scope="col">Network Name</th>
+                <th scope="col">System Commission</th>
+                <th scope="col">Swifta Commission</th>
+                <th scope="col">Agent Commission</th>
+                <th scope="col">Date created</th>
+                <th scope="col"> </th>
+              </tr>
+              </thead>
+              <tbody *ngFor="let network of airtimeNetworkConfigWithId; let i = index">
+              <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                <!--make table stable-->
+                <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                <td class="link"> {{network.id}}</td>
+                <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+                <td class="link"> {{network.data.network.networkName}}</td>
+                <td class="link"> {{network.data.systemCommission}} </td>
+                <td class="link"> {{network.data.swiftaCommission}} </td>
+                <td class="link"> {{network.data.agentCommission}} </td>
+                <td class="link">{{network.data.createdDate | date}}</td>
+                <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Airtime')" [mat-menu-trigger-for]="airtimeAction">
+                  <i class="fa fa-ellipsis-v"></i></div>
+                  <span class="status" [style.background-color]="network.data.network.isAirtimeActive ? '#5cb85c' : '#d9534f'" class="status"></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </mat-tab>
+
+          <mat-tab label="DATA">
+            <mat-progress-bar *ngIf="isLoadingDataNetworkConfig" mode="indeterminate"></mat-progress-bar>
+            <div *ngIf="dataNetworkConfig.length < 1 && !isLoadingDataNetworkConfig" style="padding:20px 10px;text-align:center">
+              <span>No Networks at the moment</span>
+            </div>
+
+            <table class="table table-dark"  *ngIf="dataNetworkConfig.length > 0">
+              <thead>
+              <tr>
+                <!--make table stable-->
+                <th></th>
+                <!---->
+                <th scope="col">#</th>
+                <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
+                <th scope="col">Network Name</th>
+                <th scope="col">System Commission</th>
+                <th scope="col">Swifta Commission</th>
+                <th scope="col">Agent Commission</th>
+                <th scope="col">Date created</th>
+                <th scope="col"> </th>
+              </tr>
+              </thead>
+              <tbody *ngFor="let network of dataNetworkConfigWithId; let i = index">
+              <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                <!--make table stable-->
+                <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                <td class="link"> {{network.id}}</td>
+                <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
+                <td class="link"> {{network.data.network.networkName}}</td>
+                <td class="link"> {{network.data.systemCommission}} </td>
+                <td class="link"> {{network.data.swiftaCommission}} </td>
+                <td class="link"> {{network.data.agentCommission}} </td>
+                <td class="link">{{network.data.createdDate | date}}</td>
+                <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Data')" [mat-menu-trigger-for]="dataAction">
+                  <i class="fa fa-ellipsis-v"></i></div>
+                  <span class="status" [style.background-color]="network.data.network.isDataActive ? '#5cb85c' : '#d9534f'" class="status"></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <!--<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>-->
+          </mat-tab>
+
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>
+<!--data and data configuration-->
+
+<!--general action-->
+<mat-menu #networkAction="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 160px;">
+    <div class="myItems" (click)="configureDialog()"><i class="fa fa-edit" style="color: #5984df"></i><span>Edit Airtime</span></div>
+  </div>
+</mat-menu>
+<!--data action-->
+
+<!--airtime action-->
+<mat-menu #airtimeAction="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 160px;">
+    <div class="myItems" *ngIf="!isAirtimeActive" (click)="unblockAirtimeNetwork()"><i class="fa fa-unlock" style="color: #5cb85c"></i><span>UnBlock</span></div>
+    <div class="myItems" *ngIf="isAirtimeActive" (click)="blockAirtimeNetwork()"><i style="color: #d9534f" class="material-icons">block</i><span>Block</span></div>
+    <div class="myItems" (click)="configureDialog()"><i class="fa fa-edit" style="color: #5984df"></i><span>commission</span></div>
+  </div>
+</mat-menu>
+<!--airtime action-->
+
+<!--data action-->
+<mat-menu #dataAction="matMenu" class="actionMenu" style="width: 240px;">
+  <div style="width: 160px;">
+    <div class="myItems" *ngIf="!isDataActive" (click)="unblockDataNetwork()"><i class="fa fa-unlock" style="color: #5cb85c"></i><span>UnBlock</span></div>
+    <div class="myItems" *ngIf="isDataActive" (click)="blockDataNetwork()"><i style="color: #d9534f" class="material-icons">block</i><span>Block</span></div>
+    <div class="myItems" (click)="configureDialog()"><i class="fa fa-edit" style="color: #5984df"></i><span>commission</span></div>
+  </div>
+</mat-menu>
+<!--data action-->

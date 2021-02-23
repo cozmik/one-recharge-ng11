@@ -1,0 +1,88 @@
+@import '../../../../../../../assets/sass/variable';
+
+.divider{
+  display: block;
+  margin: 5px 0 30px 0;
+  border-top: 2px solid rgba(0, 0, 0, .12);
+  width: 100%
+}
+
+.container{
+  background: white;
+  padding: 40px 60px;
+  min-height: 80vh;
+}
+
+.mat-card{
+  width: 100%;
+}
+
+.myItems{
+  width: 80px !important;
+  height: 80px !important;
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+  margin: -5px 2px;
+  cursor: pointer;
+
+  span{
+    display: block;
+    text-align: center;
+    font-size: .7em;
+  }
+
+  i{
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    padding-top: 10px;
+  }
+}
+.roles {
+  margin-bottom: 10px !important;
+
+  mat-panel-description {
+    padding: 10px !important;
+    border-top: 2px rgba(0,0,0, .2) solid !important;
+  }
+
+  button{
+    padding: 10px;
+    margin-right: 10px;
+    float: right;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    width: 120px;
+  }
+  .perm-title{
+    font-weight: bold;
+    color: rgba(0,0,0, .6) !important;
+  }
+
+  .permissions {
+    margin-left: 10px;
+    margin-top: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border: 2px rgba(0,0,0, .1) dotted;
+    width: 97%;
+
+    div {
+      margin-top: 20px;
+    }
+  }
+}
+
+.primary-btn-outline{
+  color: $primary-light;
+  border: 1px $primary-light solid;
+  background: white;
+  margin-right: 2% !important;
+}
+
+.primary-btn-outline:hover{
+  color: white;
+  border: 1px $primary-light solid;
+  background: $primary-light;
+}

@@ -1,0 +1,251 @@
+<section class="main">
+  <h4>Configure {{testService.serviceName}}</h4>
+  <section>
+    <form>
+      <label for="name">
+        <span>Service Name</span>
+        <input type="text" id="name" name="name" [(ngModel)]="serviceData.serviceName">
+      </label>
+      <label for="description">
+        <span>Description</span>
+        <textarea id="description" [(ngModel)]="serviceData.description" name="description"></textarea>
+      </label>
+    </form>
+  </section>
+  <section>
+    <form>
+      <div class="checkboxes">
+        <div>
+          <span class="label">Has Service Fee?</span>
+          <div class="toggle-container">
+            <div [class.highlight]="serviceData.hasFee === 0">No</div>
+            <label for="hasFee" class="slide-toggle">
+              <input type="checkbox" name="name" id="hasFee"
+                     (change)="toggleData('hasFee')" [checked]="serviceData.hasFee == 1">
+              <span class="slider"></span>
+            </label>
+            <div [class.highlight]="serviceData.hasFee === 1">Yes</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="label">SP has Commission?</span>
+          <div class="toggle-container">
+            <div [class.highlight]="!serviceData.serviceProviderHasCommission">No</div>
+            <label for="isCommission" class="slide-toggle">
+              <input type="checkbox" name="name" id="isCommission"
+                     [(ngModel)]="serviceData.serviceProviderHasCommission">
+              <span class="slider"></span>
+            </label>
+            <div [class.highlight]="serviceData.serviceProviderHasCommission">Yes</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="label"> Is Commission From Amount?</span>
+          <div class="toggle-container">
+            <div [class.highlight]="serviceData.isCommissionFromAmount !== 1">No</div>
+            <label class="slide-toggle" for="chargeAccount">
+              <input type="checkbox" name="name" id="chargeAccount"
+                     [checked]="serviceData.isCommissionFromAmount
+                === 1"
+                     (change)="toggleData('isCommissionFromAmount')">
+              <span class="slider"></span>
+            </label>
+            <div [class.highlight]="serviceData.isCommissionFromAmount === 1">Yes</div>
+          </div>
+        </div>
+
+        <div>
+          <span class="label">Has Convenience Fee?</span>
+          <div class="toggle-container">
+            <div [class.highlight]="serviceData.hasConvenienceFee !== 1">No</div>
+            <label class="slide-toggle" for="hasConvenience">
+              <input type="checkbox" name="name" [checked]="serviceData.hasConvenienceFee === 1"
+                     (change)="toggleData('hasConvenienceFee')"
+                     id="hasConvenience">
+              <span class="slider"></span>
+            </label>
+            <div [class.highlight]="serviceData.hasConvenienceFee === 1">Yes</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="container-2" *ngIf="serviceData.hasFee">
+          <div class="block">
+            <span class="label block">Fee Type</span>
+            <div class="input-container">
+              <div class="toggle-container">
+                <div [class.highlight]="serviceData.feeType !== 1">Tiered</div>
+                <label class="slide-toggle" for="feeType">
+                  <input type="checkbox" name="name" [checked]="serviceData.feeType === 1"
+                         (change)="serviceData.feeType = serviceData.feeType === 1 ? 2 : 1"
+                         id="feeType">
+                  <span class="slider"></span>
+                </label>
+                <div [class.highlight]="serviceData.feeType === 1">One-off</div>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="serviceData.feeType !== 2">
+              <div class="input-container stand-alone">
+                <div class="toggle-container">
+                  <div [class.highlight]="!serviceData.serviceFees[0].isFeePercentage">₦</div>
+                  <label class="slide-toggle" for="fee">
+                    <input type="checkbox" name="fee" id="fee"
+                           (change)="serviceData.serviceFees[0].isFeePercentage =
+                             serviceData.serviceFees[0].isFeePercentage === 1 ? 0 : 1"
+                           [checked]="serviceData.serviceFees[0].isFeePercentage">
+                    <span class="slider"></span>
+                  </label>
+                  <div [class.highlight]="serviceData.serviceFees[0].isFeePercentage">%</div>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template [ngIf]="serviceData.feeType === 2">
+              <div class="input-container stand-alone">
+                <div class="toggle-container">
+                  <div [class.highlight]="serviceData.isCommissionPerFee !== 1">Service Level comm</div>
+                  <label class="slide-toggle" for="tiered">
+                    <input type="checkbox" name="name" [checked]="serviceData.isCommissionPerFee === 1"
+                           (change)="toggleData('isCommissionPerFee')" id="tiered">
+                    <span class="slider"></span>
+                  </label>
+                  <div [class.highlight]="serviceData.isCommissionPerFee === 1">Tier Level comm</div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="input-container input" *ngIf="serviceData.feeType !== 2">
+            <span [class.highlight]="!serviceData.serviceFees[0].isFeePercentage">₦</span>
+            <label for="serviceFee">
+              <span class="label">Fee</span>
+              <input type="text" id="serviceFee" name="serviceFee" [(ngModel)]="serviceData.serviceFees[0].feeAmount">
+            </label>
+            <span [class.highlight]="serviceData.serviceFees[0].isFeePercentage">%</span>
+          </div>
+        </div>
+
+        <div class="container-2" *ngIf="serviceData.serviceProviderHasCommission">
+          <div class="input-container input">
+            <span *ngIf="serviceData.isServiceProviderCommissionFixed">₦</span>
+            <label for="SPComm">
+              <span class="label">SP Commission</span>
+              <input type="text" id="SPComm" name="spComm"
+                     [(ngModel)]="serviceData.serviceProviderCommission"
+                     (ngModelChange)="serviceData.serviceProviderCommission =
+                       !serviceData.isServiceProviderCommissionFixed ?
+                       (serviceData.serviceProviderCommission.valueOf() > 100 ? 100 : serviceData.serviceProviderCommission) :
+                       serviceData.serviceProviderCommission"
+              >
+            </label>
+            <span *ngIf="!serviceData.isServiceProviderCommissionFixed">%</span>
+          </div>
+          <div class="input-container">
+            <div class="toggle-container">
+              <span [class.highlight]="serviceData.isServiceProviderCommissionFixed">₦</span>
+              <label class="slide-toggle" for="spType">
+                <input type="checkbox" name="name"
+                       [checked]="!serviceData.isServiceProviderCommissionFixed"
+                       (change)="toggleData('isServiceProviderCommissionFixed')"
+                       id="spType">
+                <span class="slider"></span>
+              </label>
+              <span [class.highlight]="!serviceData.isServiceProviderCommissionFixed">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-2" *ngIf="serviceData.hasConvenienceFee">
+          <div class="input-container input">
+            <span>₦</span>
+            <label for="convenienceFee">
+              <span class="label">Convenience Fee</span>
+              <input type="text" id="convenienceFee" name="convenienceFee" [(ngModel)]="serviceData.convenienceFee">
+            </label>
+          </div>
+        </div>
+
+        <div class="container-2" *ngIf="!serviceData.isCommissionPerFee">
+          <div class="block">
+            <span class="label block">Commission Split</span>
+            <div class="input-container input">
+              <label for="systemCommission">
+                <span class="label">System Comm</span>
+                <input type="text" id="systemCommission" name="convenienceFee"
+                       [(ngModel)]="serviceData.systemCommission"
+                       (ngModelChange)="serviceData.systemCommission = serviceData.systemCommission > 100 ? 100 :
+                         serviceData.systemCommission"
+                >
+              </label>
+              <span class="relative">of 100%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tiers" *ngIf="serviceData.feeType === 2">
+          <ng-template ngFor let-fee [ngForOf]="serviceData.serviceFees" let-i = "index">
+          <div class="tier-card" *ngIf="!(serviceData.serviceFees.length === 1 && fee.upperBound < 0)">
+            <h4>Tier {{i + 1}}</h4>
+            <div class="contain">
+              <div class="section">
+                <span class="title">Range: </span>
+                <div class="range">
+                  <div>
+                      <span class="highlight">
+                        <span [appPercentCurrency]="'currency'">{{fee.lowerBound}}</span>
+                      </span>
+                  </div>
+                  <div>to</div>
+                  <div class="range">
+                      <span class="highlight">
+                        <span [appPercentCurrency]="'currency'">{{fee.upperBound}}</span>
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="section">
+                <span class="title">Fee:</span>
+                <span class="highlight">
+                    <span
+                      [appPercentCurrency]="!fee.isFeePercentage">{{fee.feeAmount}}</span>
+                  </span>
+              </div>
+              <div class="section" *ngIf="serviceData.isCommissionPerFee">
+                <span class="title">Commission split:</span>
+                <div>
+                  <span class="title block">System:</span>
+                  <span class="highlight">
+                      <span
+                        [appPercentCurrency]="fee.isSystemCommissionFixed">
+                        {{fee.systemCommission}}
+                      </span>
+                    </span>
+                  <span class="title block">Superagent:</span>
+                  <span class="highlight">
+                    <span [appPercentCurrency]="fee.isSuperAgentCommissionFixed">{{fee.superAgentCommission}}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </ng-template>
+          <div class="tier-card add" (click)="addTier(serviceData)">
+            <h4>Next Tier</h4>
+            <div class="contain">
+              <fa-icon [icon]="plusIcon"></fa-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-section">
+        <button class="btn-primary" [class.loading]="loading" (click)="updateService()">update config</button>
+        <button class="btn-outline" (click)="cancelEdit()">cancel</button>
+      </div>
+    </form>
+  </section>
+</section>

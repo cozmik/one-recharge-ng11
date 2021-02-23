@@ -1,0 +1,43 @@
+<div class="site-navbar">
+  <div class="navbar-button" [ngClass]="{ 'open' : openedSidebar }" (click)="openSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <h1 class="page-title">{{ title }}</h1>
+
+  <div class="nav-items">
+    <div class="nav-item" [ngClass]="{ 'opened' : false }">
+      <button mat-button (click)="open($event)">
+        <div class="avatar"><i style="font-size: 2.5em" class="fa fa-user-circle"></i> </div>
+        <div class="name">{{fullName}}</div>
+      </button>
+
+      <div class="dropdown-menu mini-menu">
+        <ul>
+          <!--<li>-->
+            <!--<a href="#"><i class="fa fa-home"></i> My Account</a>-->
+          <!--</li>-->
+          <li>
+            <a href="#" routerLink="profile"><i class="fa fa-user-o"></i> Profile</a>
+          </li>
+
+          <li>
+            <a href="#" routerLink="change-password"><i class="fa fa-lock"></i> Change Password</a>
+          </li>
+          <!--<li>-->
+            <!--<a href="#" routerLink="/default-layout/calendar"><i class="fa fa-calendar"></i> Calendar</a>-->
+          <!--</li>-->
+          <li>
+            <a (click)="logout()"><i class="fa fa-sign-out"></i> Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="items-overlay" (click)="close($event)"></div>
+  </div>
+</div>

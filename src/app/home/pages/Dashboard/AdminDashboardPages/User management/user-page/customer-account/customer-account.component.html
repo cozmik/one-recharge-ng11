@@ -1,0 +1,192 @@
+<div class="selectorDiv card viewInfo">
+  <div class="user_loader" *ngIf="allLoading.profile || allLoading.roles || allLoading.transaction">
+    <div style="margin-top: 20%;">
+      <mat-spinner style="width: 35px; height: 35px; margin:30px auto;" [color]="'accent'"> </mat-spinner>
+      <p>loading profile...</p>
+    </div>
+
+  </div>
+  <div style="margin: 30px 0px;">
+    <div class="row">
+      <div class="col-md-6 col-xl-6">
+        <div class="info-card custom-card">
+          <div class="card-wrap danger-card" style="background: #56a53c">
+            <div class="card-content" style="padding: 1.57143rem;">
+              <div class="title text-uppercase">Main wallet</div>
+              <div class="money_count">
+                <span>NGN</span>
+                {{userFormData.mainWallet | currency | moneyFormatter}}
+                <!--<span>.00</span>-->
+              </div>
+              <i class="material-icons">account_balance_wallet</i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-6">
+        <div class="info-card custom-card">
+          <div class="card-wrap danger-card" style="background: #56a53c">
+            <div class="card-content" style="padding: 1.57143rem;">
+              <div class="title text-uppercase">Commission wallet</div>
+              <div class="money_count">
+                <span>NGN</span>
+                {{userFormData.commissionWallet | currency | moneyFormatter}}
+                <!--<span>.00</span>-->
+              </div>
+              <i class="material-icons">account_balance_wallet</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <mat-tab-group style="width:100%; margin-top:40px;">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>perm_identity</mat-icon> Profile
+          </ng-template>
+          <div class="col-md-12" style="min-height:200px;">
+            <form (ngSubmit)="onSubmit()" class="">
+              <div class="md-container" style="margin-top: 30px;">
+                <div ><strong>User Information</strong>
+                  <span *ngIf="isNotEdit"  style="color: #3b7fc4; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editProfile()"><span>[ Edit ]</span> </span>
+                  <span *ngIf="!isNotEdit" style="color: #ff6265; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editProfile()"><span>[ Cancel Edit ]</span></span>
+                </div>
+
+                <div class="profile_container" *ngIf="isNotEdit">
+                  <div class="row profile_item">
+                    <div class="col-xs-6 col-md-6">
+                      <span class="title">First name</span>
+                      <p class="content">{{userFormData.firstName}}</p>
+                    </div>
+                    <div class="col-xs-6 col-md-6">
+                      <span class="title">Last name</span>
+                      <p class="content">{{userFormData.lastName}}</p>
+                    </div>
+                  </div>
+                  <div class="row profile_item">
+                    <div class="col-xs-12 col-md-6">
+                      <span class="title">Mobile no</span>
+                      <p class="content">{{userFormData.mobileNo}}</p>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                      <span class="title">Email Address</span>
+                      <p class="content">{{userFormData.email}}</p>
+                    </div>
+                  </div>
+                  <div class="row profile_item">
+                    <div class="col-xs-12 col-md-12">
+                      <span class="title">Address</span>
+                      <p class="content">{{userFormData.address?userFormData.address:'-'}}</p>
+                    </div>
+                  </div>
+                  <div class="row profile_item">
+                    <div class="col-xs-6 col-md-6">
+                      <span class="title">Date Created</span>
+                      <p class="content">{{userFormData.dateCreated | date}}</p>
+                    </div>
+                    <div class="col-xs-6 col-md-6">
+                      <span class="title">Last Login</span>
+                      <p *ngIf="userFormData.lastLogin" class="content">{{userFormData.lastLogin | date}}</p>
+                      <p *ngIf="!userFormData.lastLogin" class="content"> - </p>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!isNotEdit">
+                  <div style=" width: 100%;margin: auto;">
+                    <app-custom-alert *ngIf="error" [type]="'danger'" [fadeOut]="false" [multiple]="false" [title]="error" [textObject]=""></app-custom-alert>
+                  </div>
+                  <div class="form-inline">
+                    <mat-form-field class="md-inline col-md-6">
+                      <label class="sr-only" for="firstName">First Name</label>
+                      <input matInput type="text" [disabled]="isNotEdit" id="firstName" [(ngModel)]="userFormData.firstName" [ngModelOptions] ="{standalone: true}" required name="firstName" placeholder="First Name" value="">
+                    </mat-form-field>
+
+                    <mat-form-field class="md-inline col-md-6">
+                      <label class="sr-only" for="lname">Last Name</label>
+                      <input matInput type="text" id="lname" [disabled]="isNotEdit" required  [(ngModel)]="userFormData.lastName" [ngModelOptions] ="{standalone: true}" name="lastName" placeholder="Last Name" value="">
+                    </mat-form-field>
+
+                  </div>
+                  <div class="form-inline">
+                    <mat-form-field class="md-inline col-md-6">
+                      <label class="sr-only" for="phone1">Mobile phone</label>
+                      <input matInput type="tel" required id="phone1" [disabled]="isNotEdit" [(ngModel)]="userFormData.mobileNo" [ngModelOptions] ="{standalone: true}" name="mobile" placeholder="Mobile Phone" value="">
+                    </mat-form-field>
+                    <mat-form-field class="md-inline col-md-6">
+                      <label class="sr-only" for="email">Email address</label>
+                      <input matInput type="email" id="email" [disabled]="isNotEdit" required [(ngModel)]="userFormData.email" [ngModelOptions] ="{standalone: true}" name="email" placeholder="Email address" value="">
+                    </mat-form-field>
+
+                  </div>
+                  <!--<div class="form-inline" style="margin-bottom: 10px;">-->
+                    <!--<mat-form-field class="col-md-12" style="margin-top: 60px;">-->
+                      <!--<label class="sr-only" for="address">Address</label>-->
+                      <!--<textarea matInput md-maxlength="200" [disabled]="isNotEdit" [(ngModel)]="userFormData.address" rows="2"required id="address" name="address" placeholder="Address" value=""></textarea>-->
+                    <!--</mat-form-field>-->
+                  <!--</div>-->
+                  <button *ngIf="!isNotEdit || isloading" [disabled]="isloading" md-raised-button type="submit" color="accent">Update User<mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'accent'"> </mat-spinner></button>
+
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>timeline</mat-icon> Recent Transactions
+          </ng-template>
+          <div class="col-md-12" style="min-height:200px;">
+            <div>
+              <mat-progress-bar *ngIf="isLoadingrecentTransactions" mode="indeterminate"></mat-progress-bar>
+              <table class="table table-dark"  *ngIf="recentAgentTransactions.length > 0">
+                <thead>
+                <tr>
+                  <!--make table stable-->
+                  <th></th>
+                  <!---->
+                  <th scope="col">#</th>
+                  <th scope="col">Channel</th>
+                  <th scope="col">Network</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Phone</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Date / Time</th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let tranx of recentAgentTransactions; let i = index">
+                <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                  <!--make table stable-->
+                  <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+                  <td scope="row">{{i+1}}</td>
+                  <td scope="row">{{tranx.channel}}</td>
+                  <td class="link">{{tranx.networkName}}</td>
+                  <td class="row">{{tranx.toType}}</td>
+                  <td class="link">{{tranx.toMsisdn}}</td>
+                  <td class="link">{{tranx.amount | currency | moneyFormatter}}</td>
+                  <td class="link">{{tranx.createdDate | date}}, , {{tranx.createdDate | date : 'shortTime'}}
+                    <span *ngIf="tranx.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> <!--failed-->
+                    <span *ngIf="tranx.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span><!--pending-->
+                    <span *ngIf="tranx.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> <!--successful-->
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <div *ngIf="recentAgentTransactions.length === 0 && !isLoadingrecentTransactions"  style="text-align:center; padding:20px 0px;">
+                <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+
+</div>

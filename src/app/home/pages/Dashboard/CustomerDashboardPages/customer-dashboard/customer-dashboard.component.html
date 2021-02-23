@@ -1,0 +1,88 @@
+<section class="container-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-xl-12 col-lg-12">
+
+        <h5 class="greetings">Welcome, <span> <i *ngIf="!customerDetails?.firstName" class="fa fa-spinner fa-spin"></i>{{customerDetails?.firstName}}</span></h5>
+
+        <!--package section-->
+        <router-outlet></router-outlet>
+
+      </div>
+
+      <!--<h3 class="package-heading">What would you like to buy ?</h3>-->
+      <!--<div class="package-section">-->
+        <!--<div class="package" routerLink="airtime">-->
+          <!--<h1><i class="fa fa-mobile"></i></h1>-->
+          <!--<p>Airtime</p>-->
+        <!--</div>-->
+        <!--<div class="package" routerLink="data">-->
+          <!--<h1><i class="fa fa-globe"></i></h1>-->
+          <!--<p>Data</p>-->
+        <!--</div>-->
+        <!--<div class="package coming-soon">-->
+          <!--<h1><i class="fa fa-flash"></i></h1>-->
+          <!--<p>Electricity</p>-->
+        <!--</div>-->
+        <!--<div class="package coming-soon">-->
+          <!--<h1><i class="fa fa-television"></i></h1>-->
+          <!--<p>Cable TV</p>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+
+
+    <div class="row" style="margin-bottom:30px;">
+      <div class="col-xl-12 col-md-12">
+        <div class="transaction-card">
+          <header style="font-weight:700;">Recent Transactions</header>
+          <div>
+            <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
+            <table class="table table-dark mobile-table"  *ngIf="transactionsWithId.length > 0  && !isTransactionsLoaded">
+              <thead>
+              <tr>
+                <!--make table stable-->
+                <th></th>
+                <!---->
+                <th scope="col">Transaction Ref</th>
+                <th scope="col">Type</th>
+                <th scope="col">Phone number</th>
+                <th scope="col">Network</th>
+                <th scope="col">Amount (₦)</th>
+                <th scope="col">Date / Time</th>
+                <!--<th scope="col">Action</th>-->
+              </tr>
+              </thead>
+                <tbody *ngFor="let tranx of transactionsWithId; let i = index">
+                <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
+                  <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+                  <!--make table stable-->
+                  <mat-progress-bar mode="indeterminate" style="visibility: hidden; margin:0; padding:0;"></mat-progress-bar>
+                  <td scope="row"><span class="title">Ref : </span>{{tranx.data.transactionId}}</td>
+                  <td scope="row">{{getTransactionType(tranx.data.transactionType.toLowerCase())}}</td>
+                  <td scope="row">{{tranx.data.toMsisdn}}</td>
+                  <td scope="row">{{tranx.data.networkName}}</td>
+                  <td scope="row">{{tranx.data.amount | currency | moneyFormatter}}</td>
+                  <td class="more">
+                    {{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
+                    <span *ngIf="tranx.data.status === 0" [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
+                    <span *ngIf="tranx.data.status === -1" [style.background-color]="'#dfac2d'" class="status desktopOnly"></span><!--pending-->
+                    <span *ngIf="tranx.data.status === 1" [style.background-color]="'#5cb85c'" class="status desktopOnly"></span> <!--successful-->
+                  </td>
+                  <td class="mobileOnly" *ngIf="tranx.data.status === 0"><span [style.background-color]="'#d9534f'" class="status-badge mobileOnly">Failed</span></td>
+                  <td class="mobileOnly" *ngIf="tranx.data.status === -1"><span [style.background-color]="'#dfac2d'" class="status-badge mobileOnly">Pending</span></td>
+                  <td class="mobileOnly" *ngIf="tranx.data.status === 1"><span [style.background-color]="'#5cb85c'" class="status-badge mobileOnly">Success</span></td>
+
+                </tr>
+                </tbody>
+            </table>
+            <div *ngIf="transactionsWithId.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:60px 0px;">
+              <span style="color:#ccc; font-size:2rem;">No Airtime Data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

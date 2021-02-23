@@ -1,0 +1,62 @@
+@import "src/assets/sass/variable";
+
+section{
+  .top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button{
+      background: $brand-primary;
+      color: white;
+      padding: 5px 10px;
+      font-size: 1.4em;
+      border: none;
+      border-radius: 3px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    }
+  };
+
+  article{
+    padding-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 30px;
+
+
+    .card{
+      position: relative;
+
+      .icon{
+        height: 45px;
+        margin-bottom: 20px;
+
+        img{
+          height: 100%;
+        }
+      }
+      .service-name{
+        font-weight: bold;
+        color: $text-color;
+        height: 40px;
+      }
+
+      .service-count{
+        color: $text-color;
+        font-size: .8em;
+      }
+    }
+
+    button{
+      border: none;
+      background: none;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 1.4em;
+      fa-icon {
+        color: #565656;
+      }
+    }
+  }
+}

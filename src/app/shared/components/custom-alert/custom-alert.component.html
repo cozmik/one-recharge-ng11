@@ -1,0 +1,7 @@
+<div [class]="customAlertClasses">
+   <ul *ngIf="multiple === true">
+     <li *ngIf="title"><strong>{{title}}</strong></li>
+     <li *ngFor="let text of textObject"><i></i> {{text}}</li>
+   </ul>
+  <span *ngIf="multiple === false" class="single-text"><i></i>{{title}}</span>
+</div>

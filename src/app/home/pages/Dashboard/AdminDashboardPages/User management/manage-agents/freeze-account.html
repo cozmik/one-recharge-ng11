@@ -1,0 +1,33 @@
+<h2 mat-dialog-title class="user-details"><span>Freeze </span><span style="font-weight:600;">{{firstName}} {{lastName}}</span></h2>
+<div mat-dialog-content>
+  <!--<mat-form-field class="md-inline col-md-6">-->
+    <!--<label class="sr-only" for="amount">Amount</label>-->
+    <!--<input matInput type="number" required id="amount" [(ngModel)]="name" [ngModelOptions] ="{standalone: true}" name="amount" placeholder="Enter Amount" value="">-->
+  <!--</mat-form-field>-->
+  <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#3aa507' : '#a12121'">₦{{(walletBalance==null?0:walletBalance) | currency | moneyFormatter}}</span></p>
+
+  <mat-form-field>
+    <input [(ngModel)]="freezeAmount" matInput  type="number" required id="amount" placeholder="Enter amount to freeze" value=""/>
+  </mat-form-field>
+
+  <div class="md-container">
+    <div class="form-inline">
+      <mat-form-field >
+        <textarea matInput md-maxlength="200" [(ngModel)]="freezeReason" rows="3"required placeholder="Reason" value=""></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!--<mat-form-field>-->
+    <!--<label class="sr-only" for="amount">Reason</label>-->
+    <!--<textarea [(ngModel)]="amount" matInput name="amount" type="text" required id="amount" placeholder="Enter Amount" value=""/>-->
+    <!--<textarea matInput placeholder="Autosize textarea" matTextareaAutosize matAutosizeMinRows="2"-->
+              <!--matAutosizeMaxRows="5"></textarea>-->
+  <!--</mat-form-field>-->
+
+</div>
+
+<div md-dialog-actions style="display:flex; justify-content: center;">
+  <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
+  <button style="margin-left:20px;" md-button md-raised-button [disabled]="(freezeAmount === null) || (freezeAmount < 50) || isFreezing"  (click)="freezeAccount()" color="accent">{{isFreezing?'Freezing':'Freeze'}} ₦{{(freezeAmount==null?0:freezeAmount) | currency | moneyFormatter}}</button>
+</div>

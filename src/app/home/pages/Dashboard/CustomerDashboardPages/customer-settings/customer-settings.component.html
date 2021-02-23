@@ -1,0 +1,82 @@
+  <section class="container-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-11">
+
+        <div class="mat-card">
+         <form (ngSubmit)="onSubmit()" class="card viewInfo">
+              <div class="md-container">
+                <div class="mat-card-header">My Profile
+                  <span *ngIf="isNotEdit"  style="color: #3b7fc4; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editToggle()"><span>[ Edit Profile ]</span> </span>
+                  <span *ngIf="!isNotEdit" style="color: #ff6265; cursor: pointer; display:inline-block; margin-left:10px;" (click)="editToggle()"><span>[ Cancel Edit ]</span></span>
+                </div>
+                <div class="divider"></div>
+                <div class="form-inline">
+
+                  <mat-form-field class="md-inline col-md-6">
+                    <label class="sr-only" for="firstName">First Name</label>
+                    <input matInput type="text" [disabled]="isNotEdit" id="firstName" [(ngModel)]="userFormData.firstName" [ngModelOptions] ="{standalone: true}" required name="firstName" placeholder="First Name" value="">
+                  </mat-form-field>
+
+                  <mat-form-field class="md-inline col-md-6">
+                    <label class="sr-only" for="lname">Last Name</label>
+                    <input matInput type="text" id="lname" [disabled]="isNotEdit" required  [(ngModel)]="userFormData.lastName" [ngModelOptions] ="{standalone: true}" name="lastName" placeholder="Last Name" value="">
+                  </mat-form-field>
+
+                </div>
+
+                <div class="form-inline">
+                  <mat-form-field class="md-inline col-md-6">
+                    <label class="sr-only" for="phone1">Mobile phone</label>
+                    <input matInput type="tel" required id="phone1" [disabled]="true" [(ngModel)]="userFormData.mobile" [ngModelOptions] ="{standalone: true}" name="mobile" placeholder="Mobile Phone" value="">
+                  </mat-form-field>
+
+
+                  <mat-form-field class="md-inline col-md-6">
+                    <label class="sr-only" for="email">Email address</label>
+                    <input matInput type="email" id="email" [disabled]="true" required [(ngModel)]="userFormData.email" [ngModelOptions] ="{standalone: true}" name="email" placeholder="Email address" value="">
+                  </mat-form-field>
+                </div>
+              </div>
+              <button *ngIf="!isNotEdit"  [disabled]="isUpdating" md-raised-button type="submit" color="accent" >Update Profile<mat-spinner *ngIf="isUpdating" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+            </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+      <div class="col-lg-11">
+        <div class="mat-card">
+          <form (ngSubmit)="onSubmitPassword()" [formGroup]="changePasswordForm"  class="card viewInfo">
+            <div class="md-container">
+              <div class="mat-card-header">Change Password</div>
+              <div class="divider"></div>
+              <mat-form-field class="md-inline col-md-12">
+                <label class="sr-only" for="oPassword">Old Password</label>
+                <input matInput type="password" id="oPassword" formControlName="oldPassword" name="oldPassword" placeholder="Old Password" value="">
+              </mat-form-field>
+
+              <mat-form-field class="md-inline col-md-12">
+                <label class="sr-only" for="nPassword1">New Password</label>
+                <input matInput type="password" id="nPassword1" formControlName= "password" name="password" placeholder="Enter New Password" value="">
+              </mat-form-field>
+
+              <mat-form-field class="md-inline col-md-12">
+                <label class="sr-only" for="nPassword2">New Password</label>
+                <input matInput type="password" id="nPassword2" formControlName="confirmPassword" name="confirmPassword" placeholder="Re-enter Password" value="">
+              </mat-form-field>
+
+            </div>
+            <button md-raised-button type="submit" color="accent" [disabled]="changePasswordForm.invalid || changePasswordStatus"> Change Password <mat-spinner *ngIf="changePasswordStatus" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+

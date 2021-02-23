@@ -1,0 +1,84 @@
+<section>
+  <h3>Add Tier</h3>
+  <h4>Tier {{count}}</h4>
+
+  <form>
+    <div class="form-contain">
+      <div>
+        <label for="lowerBound" [appPercentCurrency]="true">
+          <span>Lower Bound</span>
+          <input id="lowerBound" type="text" name="lowerBound" [(ngModel)]="tier.lowerBound">
+        </label>
+      </div>
+      <div>
+        <label for="upperBound" [appPercentCurrency]="true">
+          <span>Upper Bound</span>
+          <input id="upperBound" type="text" name="upperBound" [(ngModel)]="tier.upperBound">
+        </label>
+      </div>
+    </div>
+
+    <div class="form-contain">
+      <div class="toggle-container">
+        <div [class.highlight]="!tier.isFeePercentage">₦</div>
+        <label class="slide-toggle" for="isFeePercentage">
+          <input type="checkbox" name="isFeePercentage" id="isFeePercentage"
+                 (change)="tier.isFeePercentage =
+                             tier.isFeePercentage === 1 ? 0 : 1"
+                 [checked]="tier.isFeePercentage">
+          <span class="slider"></span>
+        </label>
+        <div [class.highlight]="tier.isFeePercentage">%</div>
+      </div>
+
+      <div>
+        <span *ngIf="!tier.isFeePercentage">₦</span>
+        <label for="fee">
+          <span>Fee</span>
+          <input id="fee" type="text" name="feeAmount"
+                 [(ngModel)]="tier.feeAmount"
+                 (ngModelChange)="tier.feeAmount = tier.isFeePercentage ? tier.feeAmount > 100 ? 100 : tier.feeAmount
+                  : tier.feeAmount"
+          >
+        </label>
+        <span *ngIf="tier.isFeePercentage">%</span>
+      </div>
+
+    </div>
+
+    <div class="form-contain" *ngIf="service.isCommissionPerFee">
+      <div class="toggle-container">
+        <div [class.highlight]="tier.isSystemCommissionFixed">₦</div>
+        <label class="slide-toggle" for="isSystemCommissionFixed">
+          <input type="checkbox" name="isSystemCommissionFixed" id="isSystemCommissionFixed"
+                 (change)="tier.isSystemCommissionFixed =
+                             tier.isSystemCommissionFixed === 1 ? 0 : 1"
+                 [checked]="!tier.isSystemCommissionFixed">
+          <span class="slider"></span>
+        </label>
+        <div [class.highlight]="!tier.isSystemCommissionFixed">%</div>
+      </div>
+
+      <div>
+        <span *ngIf="tier.isSystemCommissionFixed">₦</span>
+        <label for="sysComm">
+          <span>Sys Commission</span>
+          <input id="sysComm" type="text" name="systemCommission"
+                 [(ngModel)]="tier.systemCommission"
+                 (ngModelChange)="
+                 tier.systemCommission = tier.isSystemCommissionFixed ? (tier.systemCommission > tier.feeAmount ?
+                 tier.feeAmount : tier.systemCommission) : (tier.systemCommission > 100 ? 100 : tier.systemCommission)"
+          >
+          <!-- make sure fee split doesn't exceed 100% for percentages and feeAmount for fixed -->
+        </label>
+        <span *ngIf="!tier.isSystemCommissionFixed">%</span>
+      </div>
+
+    </div>
+
+    <div class="button-section">
+      <button class="btn-outline" (click)="dialogRef.close(null)">cancel</button>
+      <button class="btn-primary" (click)="addTier()">update</button>
+    </div>
+  </form>
+</section>

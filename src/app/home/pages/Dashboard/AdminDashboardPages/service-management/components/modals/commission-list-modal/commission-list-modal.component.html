@@ -1,0 +1,44 @@
+<section>
+  <h3>Commission</h3>
+  <h4>Commission list for {{service.serviceName}}</h4>
+
+  <div class="table-section">
+    <table>
+      <thead>
+      <tr>
+        <th>Tiers</th>
+        <th>Lower Bound</th>
+        <th>Upper Bound</th>
+        <th>Fee Type</th>
+        <th>Fee</th>
+        <th *ngIf="service.isCommissionPerFee">Sys Commission</th>
+        <th *ngIf="service.isCommissionPerFee">SA Commission</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let feeList of service.serviceFees; let i = index;">
+        <td>{{'Tier ' + (i + 1)}}</td>
+        <td><span [appPercentCurrency]="'currency'">{{feeList.lowerBound | number:'1.2-2'}}</span></td>
+        <td><span [appPercentCurrency]="'currency'">{{feeList.upperBound |  number:'1.2-2'}}</span></td>
+        <td>{{feeList.isFeePercentage == 1 ? 'percentage' : 'amount'}}</td>
+        <td>
+          <span [appPercentCurrency]="!feeList.isFeePercentage">{{feeList.feeAmount}}</span>
+        </td>
+        <td *ngIf="service.isCommissionPerFee">
+        <span [appPercentCurrency]="feeList.isSystemCommissionFixed">
+          {{ feeList.systemCommission | number:'1.2-2'}}
+        </span>
+        </td>
+
+        <td *ngIf="service.isCommissionPerFee">
+        <span [appPercentCurrency]="feeList.isSystemCommissionFixed">
+          {{ feeList.superAgentCommission | number:'1.2-2'}}
+        </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button (click)="dialogRef.close(null)">close</button>
+</section>

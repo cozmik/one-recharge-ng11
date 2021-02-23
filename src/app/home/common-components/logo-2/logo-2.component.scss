@@ -1,0 +1,13 @@
+.logo{
+  height: 60px;
+  text-align: center;
+  padding-top: 5vh;
+  box-sizing:content-box;
+  img{
+    height: 100%;
+    width: auto;
+  }
+  &:hover{
+    cursor:pointer;
+  }
+}

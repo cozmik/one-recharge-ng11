@@ -1,0 +1,30 @@
+<section>
+  <div class="top">
+    <div>
+    <span>
+      Showing:
+    </span>
+      <span>
+      A - Z
+    </span>
+    </div>
+    <button>
+      <fa-icon [icon]="plus"></fa-icon>
+    </button>
+  </div>
+
+  <article>
+    <div class="card" *ngFor="let category of serviceCategories">
+      <div class="icon">
+        <img [src]="sanitizer.bypassSecurityTrustResourceUrl(category.categoryLogo)" >
+      </div>
+      <div class="service-name">{{category.categoryName}}</div>
+      <span class="service-count"> {{category.services.length}} services</span>
+
+      <button [routerLink]="category.id.toString()">
+        <fa-icon [icon]="arrow"></fa-icon>
+      </button>
+    </div>
+  </article>
+
+</section>

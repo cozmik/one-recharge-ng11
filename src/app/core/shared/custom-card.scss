@@ -1,0 +1,97 @@
+@import 'src/assets/sass/variable';
+
+.custom-card{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin-left: 10px;
+  flex: 0 0 24%;
+  padding: 0;
+  color:#444;
+  background-color: #fff;
+  header{
+    background: $accent-color;
+    border-radius: 0;
+    text-transform: uppercase;
+    color: #fff;
+    display: block;
+    margin: -1px -1px 0 -1px;
+    padding: 0.7857143rem 1.5714286rem;
+    position: relative;
+  }
+
+  h3{
+    padding: 0 10px 10px;
+    color: #fff;
+    font-size: 2.2em;
+    font-weight: 700;
+  }
+
+  .background{
+    height: 120px;
+  }
+
+  .card-content{
+    .title{
+      font-weight: 700;
+    }
+    .count-section{
+      border-top: 3px solid rgba(0, 0, 0, 0.06);
+      min-width: 20px;
+      padding: 5px 0 0;
+      margin-top:10px;
+      display:flex;
+      justify-content: space-around;
+      .count-item{
+        text-align: center;
+        h5{
+          font-size:1.2em;
+          padding:2px 0;
+          margin:0;
+          font-weight: 600;
+        }
+        span{
+          font-size:80%;
+        }
+      }
+    }
+  }
+
+  .info{
+    height: 100px;
+    background: white;
+    padding: 15px;
+
+    .main{
+      font-size: 2.6em;
+    }
+
+    .header{
+      display: block;
+      font-weight: bold;
+    }
+
+    .superscript{
+      font-size: 1.2em;
+      vertical-align: top;
+      margin: 6px;
+      display: inline-block;
+      padding-top: 5px;
+    }
+  }
+
+
+  .sectioning{
+    display: inline-block;
+    width: 23%;
+    text-align: center;
+    margin-top: 15px;
+
+    .header{
+      font-size: .9em;
+    }
+
+    .main{
+      font-size: 1.3em;
+    }
+  }
+}
