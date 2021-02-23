@@ -51,9 +51,9 @@
   </div>
 
   <ul class="service-lists">
-    <ng-template ngFor let-service [ngForOf]="category?.services" [ngForTrackBy]="trackFn" let-i="index">
+    <ng-template ngFor let-service [ngForOf]="categoryInterface?.serviceResponses" [ngForTrackBy]="trackFn" let-i="index">
     <li>
-      <sm-service-list [service]="service"></sm-service-list>
+      <app-service-list [serviceInterface]="service"></app-service-list>
     </li>
     </ng-template>
   </ul>

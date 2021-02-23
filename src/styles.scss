@@ -119,7 +119,7 @@ input, textarea {
   font-weight: 500;
   transition: 400ms all;
 
-  &:hover {
+  &:hover:not(&:disabled) {
     background: $tertiary-color;
     color: white;
   }

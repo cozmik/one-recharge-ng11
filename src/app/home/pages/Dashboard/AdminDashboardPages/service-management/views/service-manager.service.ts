@@ -16,6 +16,7 @@ export class ServiceManagerService {
   selectedService = new BehaviorSubject<ServiceModel>(null);
   selectedCategory = new BehaviorSubject<ServiceCategoryModel>(null);
   startLoading = new BehaviorSubject<boolean>(false);
+  title = new BehaviorSubject<string>('');
 
   constructor(private http: HttpClient, public serviceStore: ServiceStoreService) {
   }

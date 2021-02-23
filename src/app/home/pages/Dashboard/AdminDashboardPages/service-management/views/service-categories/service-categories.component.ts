@@ -18,7 +18,11 @@ export class ServiceCategoriesComponent implements OnInit {
   arrow = faArrowRight;
   plus = faPlus;
 
-  constructor(private servService: ServiceManagerService, public sanitizer: DomSanitizer, private serviceStore: ServiceStoreService) { }
+  constructor(private servService: ServiceManagerService, public sanitizer: DomSanitizer, private serviceStore: ServiceStoreService) {
+    setTimeout(() => {
+      this.servService.title.next('Categories');
+    }, 500);
+  }
 
   ngOnInit(): void {
     this.servService.getAllServicesByCategories();

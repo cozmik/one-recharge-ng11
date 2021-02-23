@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSidenav} from '@angular/material/sidenav';
 import {PanelService} from './panel.service';
 import {MatDialog} from '@angular/material/dialog';
+import {ServiceManagerService} from './views/service-manager.service';
 
 @Component({
   selector: 'app-service-management',
@@ -14,7 +15,8 @@ export class ServiceManagementComponent implements OnInit {
   @ViewChild('rightPanel', {static: true}) private rightPanel: MatSidenav;
 
   constructor(
-    public panelService: PanelService, public dialog: MatDialog) {
+    public panelService: PanelService, public dialog: MatDialog, private smService: ServiceManagerService) {
+    this.smService.title.next('');
   }
 
 

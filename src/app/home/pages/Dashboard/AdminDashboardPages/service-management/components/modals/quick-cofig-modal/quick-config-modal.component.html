@@ -5,15 +5,15 @@
   <form>
     <label for="agent" class='d-flex align-items-baseline justify-content-center' [appPercentCurrency]="false">
       <span class="mr-3">System commission: </span>
-      <input class="mr-2" id="agent" type="text" [(ngModel)]="commission" name="system-comm"
+      <input [disabled]="updating" class="mr-2" id="agent" type="text" [(ngModel)]="commission" name="system-comm"
              (keyup)="commission = commission > 100 ? 100 : commission.valueOf() < 0 ? 0 : commission.valueOf()">
     </label>
 
     <div class="button-section">
-      <button class="btn-outline">cancel</button>
-      <button class="btn-primary" (click)="quickUpdate()">
+      <button class="btn-outline" [disabled]="updating">cancel</button>
+      <button class="btn-primary" [disabled]="updating" (click)="quickUpdate()">
         update
-        <fa-icon icon="spinner" spin></fa-icon>
+        <fa-icon *ngIf="updating" [icon]="spinner" [spin]="true"></fa-icon>
       </button>
     </div>
   </form>

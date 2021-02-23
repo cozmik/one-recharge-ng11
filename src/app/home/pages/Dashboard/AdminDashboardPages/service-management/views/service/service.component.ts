@@ -49,7 +49,9 @@ export class ServiceComponent implements OnInit {
     this.serviceId = +this.ar.snapshot.paramMap.get('serviceId');
     const catId = +this.ar.snapshot.paramMap.get('id');
     this.getServiceDetails(catId, this.serviceId);
-    this.getAllServices();
+    this.servService.getAllServicesByCategories(() => {
+      this.getAllServices();
+    });
   }
 
   getServiceDetails(catId: number, serviceId: number): void {
@@ -69,6 +71,7 @@ export class ServiceComponent implements OnInit {
         this.service = new ServiceModel(this.serviceStore.getSelectedService(catId, serviceId));
         this.serviceData = JSON.parse(JSON.stringify(this.serviceStore.getSelectedService(catId, serviceId))) as ServiceInterface;
         this.testService = JSON.parse(JSON.stringify(this.serviceData)) as ServiceInterface;
+        this.servService.title.next(this.testService.serviceName);
         if (this.serviceData.feeType === undefined) {
           this.serviceData.feeType = 0;
           this.testService.feeType = 0;

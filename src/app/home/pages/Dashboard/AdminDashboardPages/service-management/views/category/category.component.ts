@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ServiceManagerService} from '../service-manager.service';
 import {ActivatedRoute} from '@angular/router';
-import {ServiceCategoryModel} from '../../models/service-category.model';
+import {CategoryInterface, ServiceCategoryModel} from '../../models/service-category.model';
 import {ServiceModel} from '../../models/service.model';
 import {ServiceStoreService} from '../../store/service-store.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -17,6 +17,7 @@ export class CategoryComponent implements OnInit {
   editCategory = false;
   editLogo = false;
   category: ServiceCategoryModel;
+  categoryInterface: CategoryInterface;
 
   constructor(private servService: ServiceManagerService,
               private ar: ActivatedRoute,
@@ -39,7 +40,9 @@ export class CategoryComponent implements OnInit {
   getServiceCategory(id: number): void {
     this.serviceStore.categories.subscribe(res => {
       if (res.length) {
-        this.category = new ServiceCategoryModel(this.serviceStore.getCategory(id));
+        this.categoryInterface = this.serviceStore.getCategory(id);
+        this.category = new ServiceCategoryModel(this.categoryInterface);
+        this.servService.title.next(this.category.categoryName + ' - Services');
       }
     });
   }

@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuickConfigModalComponent} from '../modals/quick-cofig-modal/quick-config-modal.component';
 import {MatDialog} from '@angular/material/dialog';
-import {ServiceModel} from '../../models/service.model';
+import {ServiceInterface, ServiceModel} from '../../models/service.model';
 import {CommissionListModalComponent} from '../modals/commission-list-modal/commission-list-modal.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceManagerService} from '../../views/service-manager.service';
@@ -9,16 +9,17 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons/faSpinner';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  selector: 'sm-service-list',
+  selector: 'app-service-list',
   templateUrl: './service-list.component.html',
   styleUrls: ['./service-list.component.scss'],
 })
 export class ServiceListComponent implements OnInit {
 
-  @Input() service: ServiceModel;
+  @Input() serviceInterface: ServiceInterface;
   spinner = faSpinner;
   loading: boolean;
   status: number;
+  service: ServiceModel;
 
   constructor(public dialog: MatDialog,
               private router: Router,
@@ -26,11 +27,12 @@ export class ServiceListComponent implements OnInit {
               private route: ActivatedRoute, private sms: ServiceManagerService) { }
 
   ngOnInit(): void {
+    this.service = new ServiceModel(this.serviceInterface);
     this.status = this.service.status;
   }
 
 
-  quickConfig(service: ServiceModel): void {
+  quickConfig(service: ServiceInterface): void {
     const dialogRef = this.dialog.open(QuickConfigModalComponent, {
       width: '350px',
       data: {service}
