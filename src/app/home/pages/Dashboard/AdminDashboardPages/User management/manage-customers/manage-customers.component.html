@@ -4,10 +4,12 @@
       <header>Customers</header>
       <div class="filter-section" *ngIf="customers.length > 0 && !isLoadingCustomers">
         <div class="filter-block">
-          <ul class="list-group list-unstyled list-items" style="float:left; margin-left:10px;">
+          <ul class="list-group list-unstyled list-items list-items flex-row align-items-center" style="float:left; margin-left:10px;">
             <li class="filter-title">Filter by : </li>
-            <li class="list-group-item select-all" style="color:#5cb85c">  <mat-checkbox [(ngModel)]="isActiveTicked">Active</mat-checkbox></li>
-            <li class="list-group-item" style="color: #d9534f"> <mat-checkbox [(ngModel)]="isBlockedTicked">Blocked</mat-checkbox></li>
+            <li class="select-all" style="color:#5cb85c">
+              <mat-checkbox [(ngModel)]="isActiveTicked">Active</mat-checkbox></li>
+            <li style="color: #d9534f">
+              <mat-checkbox [(ngModel)]="isBlockedTicked">Blocked</mat-checkbox></li>
           </ul>
         </div>
         <div class="search-range filter-block">
@@ -21,7 +23,7 @@
         <div *ngIf="customers.length < 1 && !isLoadingCustomers" style="padding:20px 10px;text-align:center">
             <p>No Customer(s) at the moment</p>
         </div>
-        <table class="table table-dark"  *ngIf="customers.length > 0">
+        <table class="table table-primary"  *ngIf="customers.length > 0">
           <thead>
           <tr>
             <!--make table stable-->

@@ -32,13 +32,16 @@ export class AddTierComponent implements OnInit {
   setUpNextTire(): void {
     if (this.count) {
       const tierDiff = this.lastTier.upperBound - this.lastTier.lowerBound;
-      const currUpper = tierDiff + this.lastTier.upperBound + 1;
+      let currUpper = +tierDiff + +this.lastTier.upperBound.valueOf();
+      if (this.count > 1){
+        currUpper += 1;
+      }
       this.tier = {
         feeAmount: this.lastTier.feeAmount,
         isFeePercentage: this.lastTier.isFeePercentage,
         isSuperAgentCommissionFixed: this.lastTier.isSuperAgentCommissionFixed,
         isSystemCommissionFixed: this.lastTier.isSystemCommissionFixed,
-        lowerBound: this.lastTier.upperBound + 1,
+        lowerBound: +this.lastTier.upperBound + 1,
         superAgentCommission: 0,
         systemCommission: 0,
         upperBound: currUpper

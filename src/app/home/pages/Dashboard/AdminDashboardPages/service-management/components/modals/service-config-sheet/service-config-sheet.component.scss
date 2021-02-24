@@ -26,6 +26,9 @@ h4{
 
     &.add {
       transition: 300ms all;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
 
       &:active {
         transform-origin: center;
@@ -33,10 +36,8 @@ h4{
       }
 
       .contain {
-        display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 15%;
 
         fa-icon {
           font-size: 8rem;
@@ -49,7 +50,17 @@ h4{
       margin: 0;
       background: rgba($brand-primary, .5);
       color: white;
+      height: 35px;
+      width: 100%;
+      font-size: .9em;
       padding: 5px 10px;
+
+      .trash{
+        margin: 0;
+        background: none;
+        border: none;
+        color: white;
+      }
     }
 
     .contain {
@@ -208,7 +219,12 @@ h4{
 }
 
 ::ng-deep .mat-bottom-sheet-container-large{
-  min-width: 100vw;
+  min-width: 70vw;
   max-width: unset;
+}
+
+::ng-deep .cdk-overlay-pane{
+  transform: translateX($sidebar-width/2) !important;
+  transform-origin: left;
 }
 

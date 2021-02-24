@@ -18,6 +18,7 @@ export class ManageCustomersComponent implements OnInit {
   p = 1;
   public customersWithId = [];
 
+  searchText = '';
   public setId = null;
   public isBlocked: boolean;
   public customers: any;
@@ -135,7 +136,7 @@ export class ManageCustomersComponent implements OnInit {
   }
 
   // Sort data ////////////////////
-  getCustomerWithId() {
+  getCustomerWithId(): void {
     this.customersWithId = [];
     for (let i = 0; i < this.customers.length; i++ ) {
       const sortedAgents: any = {id: 0, data: {}};
@@ -151,26 +152,15 @@ export class ManageCustomersComponent implements OnInit {
 
   ////////////////// get all customers info ////////////////////////////////////////////////////
   getAllCustomers = (newLoad = false) => {
-    if (newLoad) {
-      this.isLoadingCustomers = true;
-    } else {
-      this.isLoadingCustomers = false;
-    }
+    this.isLoadingCustomers = newLoad;
     this.userService.getCustomers().subscribe(
       response => {
         this.isLoadingCustomers = false;
         // console.log('************ Customers list ****************');
         // console.log(response.data);
-        this.customers = response.data.filter(customers => customers.deleted  !==  1);
+        this.customers = response.data[0].filter(customer => customer.deleted  !==  1);
+        console.log(this.customers);
         this.getCustomerWithId();
-      },
-      err => {
-        this.isLoadingCustomers = false;
-        // console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAllCustomers, err);
-        this.isLoadingCustomers = false;
-        // console.log(this.errorResponse);
-
       }
     );
   }

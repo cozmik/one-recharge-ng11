@@ -6,6 +6,8 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
 import {ServiceManagerService} from '../../../views/service-manager.service';
 import {MatDialog} from '@angular/material/dialog';
 import {NotSavedWarningComponent} from '../not-saved-warning/not-saved-warning.component';
+import {faTrashAlt} from '@fortawesome/free-regular-svg-icons';
+import {ServiceFeeInterface} from '../../../models/service-fee.model';
 
 @Component({
   selector: 'app-service-config-sheet',
@@ -18,8 +20,10 @@ export class ServiceConfigSheetComponent implements OnInit {
   loading: boolean;
   testService: ServiceInterface;
   private stillUpdating: boolean;
+  bin = faTrashAlt;
 
-  constructor(private bottomSheetRef: MatBottomSheetRef<ServiceConfigSheetComponent>, public servService: ServiceManagerService,
+  constructor(private bottomSheetRef: MatBottomSheetRef<ServiceConfigSheetComponent>,
+              public servService: ServiceManagerService,
               private modal: MatDialog,
               @Inject(MAT_BOTTOM_SHEET_DATA) public data: {service: ServiceInterface, testService: ServiceInterface} ) { }
 
@@ -55,6 +59,7 @@ export class ServiceConfigSheetComponent implements OnInit {
       }
     });
   }
+
   showWarningMessage(): void {
     const dialogRef = this.modal.open(NotSavedWarningComponent, {
       width: '320px'
@@ -71,6 +76,7 @@ export class ServiceConfigSheetComponent implements OnInit {
     this.servService.updateService(this.serviceData, () => {
       this.loading = false;
       this.stillUpdating = false;
+      this.bottomSheetRef.dismiss('success');
     });
   }
 
@@ -82,4 +88,8 @@ export class ServiceConfigSheetComponent implements OnInit {
     }
   }
 
+  deleteTier(fee: ServiceFeeInterface): void {
+    this.serviceData.serviceFees = this.testService.serviceFees.filter(d => !((fee.upperBound === d.upperBound)
+      && (fee.lowerBound === d.lowerBound)));
+  }
 }

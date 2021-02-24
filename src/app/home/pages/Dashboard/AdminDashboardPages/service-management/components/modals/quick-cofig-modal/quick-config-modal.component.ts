@@ -17,9 +17,10 @@ export class QuickConfigModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<QuickConfigModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {service: ServiceInterface},
+    @Inject(MAT_DIALOG_DATA) public data: {service: ServiceModel},
     private smService: ServiceManagerService) {
     this.service = data.service;
+    console.log(data);
     this.commission = this.service.systemCommission;
   }
 
@@ -30,6 +31,7 @@ export class QuickConfigModalComponent implements OnInit {
     this.updating = true;
     const service = {
       ...this.service,
+      categoryId: this.service.serviceCategory.id,
       systemCommission: this.commission,
       superAgentCommission: 100 - this.commission
     };

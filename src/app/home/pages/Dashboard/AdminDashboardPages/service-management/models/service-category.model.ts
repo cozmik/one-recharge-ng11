@@ -13,33 +13,25 @@ export interface CategoryInterface {
 
 export class ServiceCategoryModel implements CategoryInterface {
   serviceUrl = Constants.SERVICE_URL + '/';
-  private _categoryCode: string;
+  categoryCode: string;
   private _categoryLogo: string;
-  private _categoryName: string;
-  private _createdDate: Date;
-  private _description: string;
-  private _id: number;
+  categoryName: string;
+  createdDate: Date;
+  description: string;
+  id: number;
   private _services: ServiceModel[];
   serviceResponses: ServiceModel[];
 
 
   constructor(object: any) {
     this._services = object.serviceResponses;
-    this._categoryCode = object.categoryCode;
+    this.categoryCode = object.categoryCode;
     this._categoryLogo = object.categoryLogo;
-    this._categoryName = object.categoryName;
-    this._createdDate = object.createdDate;
-    this._description = object.description;
-    this._id = object.id;
-  }
-
-
-  get categoryCode(): string {
-    return this._categoryCode;
-  }
-
-  set categoryCode(value: string) {
-    this._categoryCode = value;
+    this.categoryName = object.categoryName;
+    this.createdDate = object.createdDate;
+    this.description = object.description;
+    this.id = object.id;
+    this.serviceResponses = object.serviceResponses;
   }
 
   get categoryLogo(): string {
@@ -60,38 +52,6 @@ export class ServiceCategoryModel implements CategoryInterface {
     } else {
       return this._categoryLogo;
     }
-  }
-
-  get categoryName(): string {
-    return this._categoryName;
-  }
-
-  set categoryName(value: string) {
-    this._categoryName = value;
-  }
-
-  get createdDate(): Date {
-    return this._createdDate;
-  }
-
-  set createdDate(value: Date) {
-    this._createdDate = value;
-  }
-
-  get description(): string {
-    return this._description;
-  }
-
-  set description(value: string) {
-    this._description = value;
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
   }
 
   get services(): ServiceModel[] {

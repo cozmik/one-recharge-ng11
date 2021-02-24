@@ -25,7 +25,6 @@ export class ServiceCategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.servService.getAllServicesByCategories();
     this.serviceStore.categories.subscribe(res => {
        if (res.length > 0) {
          this.serviceCategories = res.map(cat => new ServiceCategoryModel(cat));

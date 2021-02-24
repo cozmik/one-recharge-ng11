@@ -22,8 +22,8 @@ export class ServiceManagerService {
   }
 
   getAllServicesByCategories(callBack?: () => void): void {
-    if (this.serviceStore.serviceCategories.getValue()){
-      this.serviceStore.setCategories(this.serviceStore.serviceCategories.getValue());
+    if (this.serviceStore.allCategories){
+      this.serviceStore.setCategories(this.serviceStore.allCategories);
       if (callBack) {
         callBack();
       }
@@ -45,7 +45,7 @@ export class ServiceManagerService {
     }
     this.http.put(`${this.serviceApi}${action}/${serviceId}`, null, Constants.getTokenHttpHeaders()).pipe(
       map((res: ServiceInterface) => {
-        this.serviceStore.toggleServiceActivation(res.id, res.status);
+        this.serviceStore.updateService(res);
         if (callBack) {
           callBack();
         }
@@ -65,7 +65,11 @@ export class ServiceManagerService {
   }
 
   updateService(service: ServiceInterface, callBack?: () => void): void {
-    this.http.put(this.serviceApi + 'update/' + service.id, service, Constants.getTokenHttpHeaders()).pipe(
+    const data = {
+      ...service,
+      categoryId: service.serviceCategory.id
+    };
+    this.http.put(this.serviceApi + 'update/' + service.id, data, Constants.getTokenHttpHeaders()).pipe(
       map(res => {
         this.serviceStore.updateService(res as ServiceInterface);
         if (callBack) {
@@ -108,7 +112,6 @@ export class ServiceManagerService {
     const payload = {fromServiceId, toServiceId};
     this.http.post(this.serviceApi + 'copy-config', payload, {...Constants.getTokenHttpHeaders(), responseType: 'text'}).pipe(
       map(res => {
-        console.log(res);
         if (callBack) {
           callBack();
         }
@@ -116,18 +119,23 @@ export class ServiceManagerService {
     ).subscribe();
   }
 
-  convertImageToBase64(file): any {
-    const reader = new FileReader();
-    let result = null;
-    return this.http.get(file).pipe(
-      map((res: any) => {
-        console.log(res);
-        reader.onload = (e) => {
-          result = e.target.result;
-        };
-        reader.readAsDataURL(res);
-        return result;
+  updateCategory(categoryData: {categoryName: string, description: string}, catId: number, callback: () => void): void {
+    this.http.put(this.serviceApi + 'category/' + catId, categoryData,
+      {...Constants.getTokenHttpHeaders(), responseType: 'text'}).pipe(
+      map(res => {
+        this.serviceStore.updateCategory(catId, categoryData);
+        if (callback) {
+          callback();
+        }
       })
-    );
+    ).subscribe();
+  }
+
+  updateCatLogo(catId: number, fileData: FormData, callback?: () => void): void {
+    this.http.put(this.serviceApi + 'category/upload-image/' + catId, fileData, Constants.getTokenHttpHeaders()).pipe(
+      map(res => {
+        console.log(res);
+      })
+    ).subscribe();
   }
 }

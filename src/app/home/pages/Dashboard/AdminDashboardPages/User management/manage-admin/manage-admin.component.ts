@@ -14,7 +14,6 @@ import {Admin} from '../../../../../../core/mocks/user/admin.model';
   styleUrls: ['../../../../../../core/shared/custom-card.scss', './manage-admin.component.scss']
 })
 export class ManageAdminComponent implements OnInit {
-
   p = 1;
   public vAll: boolean;
   public activeUser: boolean;

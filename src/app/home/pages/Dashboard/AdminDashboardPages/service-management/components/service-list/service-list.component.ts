@@ -15,11 +15,10 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class ServiceListComponent implements OnInit {
 
-  @Input() serviceInterface: ServiceInterface;
+  @Input() service: ServiceModel;
   spinner = faSpinner;
   loading: boolean;
   status: number;
-  service: ServiceModel;
 
   constructor(public dialog: MatDialog,
               private router: Router,
@@ -27,12 +26,11 @@ export class ServiceListComponent implements OnInit {
               private route: ActivatedRoute, private sms: ServiceManagerService) { }
 
   ngOnInit(): void {
-    this.service = new ServiceModel(this.serviceInterface);
     this.status = this.service.status;
   }
 
 
-  quickConfig(service: ServiceInterface): void {
+  quickConfig(service: ServiceModel): void {
     const dialogRef = this.dialog.open(QuickConfigModalComponent, {
       width: '350px',
       data: {service}

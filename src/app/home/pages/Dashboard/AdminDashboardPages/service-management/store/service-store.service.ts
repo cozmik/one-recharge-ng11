@@ -9,10 +9,9 @@ import {ServicePackageInterface} from '../models/service-package.model';
 })
 export class ServiceStoreService {
 
-  constructor() {
-  }
+  constructor() { }
 
-  readonly serviceCategories = new BehaviorSubject<CategoryInterface[]>([]);
+  private readonly _serviceCategories = new BehaviorSubject<CategoryInterface[]>([]);
   private readonly _selectedCategory = new BehaviorSubject<CategoryInterface>(null);
   private readonly _catServices = new BehaviorSubject<ServiceInterface[]>([]);
   private readonly _selectedService = new BehaviorSubject<ServiceInterface>(null);
@@ -22,12 +21,12 @@ export class ServiceStoreService {
 
   get categories(): Observable<CategoryInterface[]> {
     this.setAllServices();
-    return this.serviceCategories as Observable<CategoryInterface[]>;
+    return this._serviceCategories as Observable<CategoryInterface[]>;
   }
 
   setAllServices(): void {
     const services = [];
-    this.serviceCategories.subscribe(res => {
+    this._serviceCategories.subscribe(res => {
       res.forEach((cat) => {
         services.push(...cat.serviceResponses);
       });
@@ -40,16 +39,16 @@ export class ServiceStoreService {
   }
 
   setCategories(categories): void {
-    this.serviceCategories.next(categories);
+    this._serviceCategories.next(categories);
   }
 
-  setCategory(cat: CategoryInterface): void {
+  setCategory(cat: CategoryInterface): void{
     this._selectedCategory.next(cat);
   }
 
   getCategory(id: number): CategoryInterface {
-    if (this.serviceCategories.getValue().length) {
-      this.setCategory(this.serviceCategories.getValue().find(c => c.id === id));
+    if (this.allCategories.length) {
+      this._selectedCategory.next(this.allCategories.find(c => c.id === id));
       this._catServices.next(this._selectedCategory.getValue().serviceResponses);
     }
     return this._selectedCategory.getValue();
@@ -59,7 +58,11 @@ export class ServiceStoreService {
     return this._catServices.getValue();
   }
 
-  get servicePackages(): ServicePackageInterface[] {
+  get allCategories(): CategoryInterface[] {
+    return this._serviceCategories.getValue();
+  }
+
+  get servicePackages(): ServicePackageInterface[]{
     return this._servicePackages.getValue();
   }
 
@@ -70,9 +73,22 @@ export class ServiceStoreService {
   }
 
   getSelectedPackage(packageId: number): ServicePackageInterface {
-    this._selectedServicePackage.next(
-      this._selectedService.getValue().servicePackages.find(p => p.id === packageId));
-    return this._selectedServicePackage.getValue();
+     this._selectedServicePackage.next(
+       this._selectedService.getValue().servicePackages.find(p => p.id === packageId));
+     return this._selectedServicePackage.getValue();
+  }
+
+  updateCategory(catId: number, data): void {
+    const cat = this.getCategory(catId);
+    if (cat) {
+      const index = this.allCategories.indexOf(cat);
+      console.log(data);
+      this.allCategories[index] = {
+        ...cat,
+        ...data
+      };
+      console.log(this.allCategories);
+    }
   }
 
   updateServicePackage(packageId: number, data): void {
@@ -87,21 +103,10 @@ export class ServiceStoreService {
 
   updateService(service: ServiceInterface): void {
     const serv = this.getSelectedService(service.serviceCategory.id, service.id);
-    if (serv) {
+    if (serv){
       const index = this.services.indexOf(serv);
       this.services[index] = {
-        ...serv
-      };
-    }
-  }
-
-  toggleServiceActivation(id: number, status: number): void {
-    const serv = this.services.find(s => s.id === id);
-    if (serv) {
-      const index = this.services.indexOf(serv);
-      this.services[index] = {
-        ...serv,
-        status
+        ...service
       };
     }
   }

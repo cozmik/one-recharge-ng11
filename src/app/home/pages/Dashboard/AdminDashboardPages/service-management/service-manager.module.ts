@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, OnInit} from '@angular/core';
 
 import {TitleComponent} from './components/title/title.component';
 import {ServiceCategoriesComponent} from './views/service-categories/service-categories.component';
@@ -20,6 +20,7 @@ import {NotSavedWarningComponent} from './components/modals/not-saved-warning/no
 import {ServiceManagementComponent} from './service-management.component';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../../../../../core/shared/shared.module';
+import {ServiceManagerService} from './views/service-manager.service';
 
 @NgModule({
   declarations: [
@@ -47,4 +48,10 @@ import {SharedModule} from '../../../../../core/shared/shared.module';
   ]
 })
 export class ServiceManagerModule {
+  constructor(private smService: ServiceManagerService) {
+    console.log('call this');
+    this.smService.getAllServicesByCategories();
+
+  }
+
 }

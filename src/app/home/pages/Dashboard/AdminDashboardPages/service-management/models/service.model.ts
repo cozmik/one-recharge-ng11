@@ -37,212 +37,62 @@ export class ServiceModel implements ServiceInterface{
 
   serviceUrl = Constants.SERVICE_URL + '/';
 
-  private _agentCommission: number;
-  private _convenienceFee: number;
-  private _createdDate: Date;
-  private _description: string;
-  private _feeType: number;
-  private _hasConvenienceFee: number;
-  private _hasFee: number;
-  private _hasProducts: number;
-  private _id: number;
-  private _isCommissionFixed: number;
-  private _isCommissionFromAmount: number;
-  private _isCommissionPerFee: number;
-  private _isDownLineCommissionFixed: number;
-  private _isServiceProviderCommissionFixed: number;
-  private _isUpLineCommissionFixed: number;
-  private _serviceCategory: ServiceCategoryModel;
-  private _serviceCode: string;
-  private _serviceFees: ServiceFee[];
+  agentCommission: number;
+  convenienceFee: number;
+  createdDate: Date;
+  description: string;
+  feeType: number;
+  hasConvenienceFee: number;
+  hasFee: number;
+  hasProducts: number;
+  id: number;
+  isCommissionFixed: number;
+  isCommissionFromAmount: number;
+  isCommissionPerFee: number;
+  isDownLineCommissionFixed: number;
+  isServiceProviderCommissionFixed: number;
+  isUpLineCommissionFixed: number;
+  serviceCategory: ServiceCategoryModel;
+  serviceCode: string;
+  serviceFees: ServiceFee[];
   private _serviceLogo: string;
-  private _serviceName: string;
-  private _servicePackages: ServicePackageModel[];
-  private _serviceProviderCommission: number;
-  private _serviceProviderHasCommission: number;
-  private _serviceProviderName: string;
-  private _status: number;
-  private _superAgentCommission: number;
-  private _systemCommission: number;
+  serviceName: string;
+  servicePackages: ServicePackageModel[];
+  serviceProviderCommission: number;
+  serviceProviderHasCommission: number;
+  serviceProviderName: string;
+  status: number;
+  superAgentCommission: number;
+  systemCommission: number;
 
   constructor(object: any) {
-    this._agentCommission = object.agentCommission;
-    this._convenienceFee = object.convenienceFee;
-    this._createdDate = object.createdDate;
-    this._description = object.description;
-    this._feeType = object.feeType;
-    this._hasConvenienceFee = object.hasConvenienceFee;
-    this._hasFee = object.hasFee;
-    this._hasProducts = object.hasProducts;
-    this._id = object.id;
-    this._isCommissionFixed = object.isCommissionFixed;
-    this._isCommissionFromAmount = object.isCommissionFromAmount;
-    this._isCommissionPerFee = object.isCommissionPerFee;
-    this._isDownLineCommissionFixed = object.isDownLineCommissionFixed;
-    this._isServiceProviderCommissionFixed = object.isServiceProviderCommissionFixed;
-    this._isUpLineCommissionFixed = object.isUpLineCommissionFixed;
-    this._serviceCategory = object.serviceCategories;
-    this._serviceCode = object.serviceCode;
-    this._serviceFees = object.serviceFees;
+    this.agentCommission = object.agentCommission;
+    this.convenienceFee = object.convenienceFee;
+    this.createdDate = object.createdDate;
+    this.description = object.description;
+    this.feeType = object.feeType;
+    this.hasConvenienceFee = object.hasConvenienceFee;
+    this.hasFee = object.hasFee;
+    this.hasProducts = object.hasProducts;
+    this.id = object.id;
+    this.isCommissionFixed = object.isCommissionFixed;
+    this.isCommissionFromAmount = object.isCommissionFromAmount;
+    this.isCommissionPerFee = object.isCommissionPerFee;
+    this.isDownLineCommissionFixed = object.isDownLineCommissionFixed;
+    this.isServiceProviderCommissionFixed = object.isServiceProviderCommissionFixed;
+    this.isUpLineCommissionFixed = object.isUpLineCommissionFixed;
+    this.serviceCategory = object.serviceCategory;
+    this.serviceCode = object.serviceCode;
+    this.serviceFees = object.serviceFees;
     this._serviceLogo = object.serviceLogo;
-    this._serviceName = object.serviceName;
-    this._servicePackages = object.servicePackages;
-    this._serviceProviderCommission = object.serviceProviderCommission;
-    this._serviceProviderHasCommission = object.serviceProviderHasCommission;
-    this._serviceProviderName = object.serviceProviderName;
-    this._status = object.status;
-    this._superAgentCommission = object.superAgentCommission;
-    this._systemCommission = object.systemCommission;
-  }
-
-  get agentCommission(): number {
-    return this._agentCommission;
-  }
-
-  set agentCommission(value: number) {
-    this._agentCommission = value;
-  }
-
-  get convenienceFee(): number {
-    return this._convenienceFee;
-  }
-
-  set convenienceFee(value: number) {
-    this._convenienceFee = value;
-  }
-
-  get createdDate(): Date {
-    return this._createdDate;
-  }
-
-  set createdDate(value: Date) {
-    this._createdDate = value;
-  }
-
-  get description(): string {
-    return this._description;
-  }
-
-  set description(value: string) {
-    this._description = value;
-  }
-
-  get feeType(): number {
-    return this._feeType;
-  }
-
-  set feeType(value: number) {
-    this._feeType = value;
-  }
-
-  get hasConvenienceFee(): number {
-    return this._hasConvenienceFee;
-  }
-
-  set hasConvenienceFee(value: number) {
-    this._hasConvenienceFee = value;
-  }
-
-  get hasFee(): number {
-    return this._hasFee;
-  }
-
-  set hasFee(value: number) {
-    this._hasFee = value;
-  }
-
-  get hasProducts(): number {
-    return this._hasProducts;
-  }
-
-  set hasProducts(value: number) {
-    this._hasProducts = value;
-  }
-
-  get id(): number {
-    return this._id;
-  }
-
-  set id(value: number) {
-    this._id = value;
-  }
-
-  get isCommissionFixed(): number {
-    return this._isCommissionFixed;
-  }
-
-  set isCommissionFixed(value: number) {
-    this._isCommissionFixed = value;
-  }
-
-  get isCommissionFromAmount(): number {
-    return this._isCommissionFromAmount;
-  }
-
-  set isCommissionFromAmount(value: number) {
-    this._isCommissionFromAmount = value;
-  }
-
-  get isCommissionPerFee(): number {
-    return this._isCommissionPerFee;
-  }
-
-  set isCommissionPerFee(value: number) {
-    this._isCommissionPerFee = value;
-  }
-
-  get isDownLineCommissionFixed(): number {
-    return this._isDownLineCommissionFixed;
-  }
-
-  set isDownLineCommissionFixed(value: number) {
-    this._isDownLineCommissionFixed = value;
-  }
-
-  get isServiceProviderCommissionFixed(): number {
-    return this._isServiceProviderCommissionFixed;
-  }
-
-  set isServiceProviderCommissionFixed(value: number) {
-    this._isServiceProviderCommissionFixed = value;
-  }
-
-  get isUpLineCommissionFixed(): number {
-    return this._isUpLineCommissionFixed;
-  }
-
-  set isUpLineCommissionFixed(value: number) {
-    this._isUpLineCommissionFixed = value;
-  }
-
-  get serviceCategory(): ServiceCategoryModel {
-    return this._serviceCategory;
-  }
-
-  set serviceCategory(value: ServiceCategoryModel) {
-    this._serviceCategory = value;
-  }
-
-  get serviceCode(): string {
-    return this._serviceCode;
-  }
-
-  set serviceCode(value: string) {
-    this._serviceCode = value;
-  }
-
-  get serviceFees(): ServiceFee[] {
-    const serviceFees = [];
-    if (this._serviceFees) {
-      this._serviceFees.forEach(sf => {
-        serviceFees.push(new ServiceFee(sf));
-      });
-    }
-    return serviceFees;
-  }
-
-  set serviceFees(value: ServiceFee[]) {
-    this._serviceFees = value;
+    this.serviceName = object.serviceName;
+    this.servicePackages = object.servicePackages;
+    this.serviceProviderCommission = object.serviceProviderCommission;
+    this.serviceProviderHasCommission = object.serviceProviderHasCommission;
+    this.serviceProviderName = object.serviceProviderName;
+    this.status = object.status;
+    this.superAgentCommission = object.superAgentCommission;
+    this.systemCommission = object.systemCommission;
   }
 
   get serviceLogo(): string {
@@ -259,76 +109,5 @@ export class ServiceModel implements ServiceInterface{
 
   set serviceLogo(value: string) {
     this._serviceLogo = value;
-  }
-
-  get serviceName(): string {
-    return this._serviceName;
-  }
-
-  set serviceName(value: string) {
-    this._serviceName = value;
-  }
-
-  get servicePackages(): ServicePackageModel[] {
-    const servicePackageModel = [];
-    if (this._servicePackages && this._servicePackages.length) {
-      this._servicePackages.forEach(sp => {
-        servicePackageModel.push(new ServicePackageModel(sp));
-      });
-      return servicePackageModel;
-    }
-    return null;
-  }
-
-  set servicePackages(value: ServicePackageModel[]) {
-    this._servicePackages = value;
-  }
-
-  get serviceProviderCommission(): number {
-    return this._serviceProviderCommission;
-  }
-
-  set serviceProviderCommission(value: number) {
-    this._serviceProviderCommission = value;
-  }
-
-  get serviceProviderHasCommission(): number {
-    return this._serviceProviderHasCommission;
-  }
-
-  set serviceProviderHasCommission(value: number) {
-    this._serviceProviderHasCommission = value;
-  }
-
-  get serviceProviderName(): string {
-    return this._serviceProviderName;
-  }
-
-  set serviceProviderName(value: string) {
-    this._serviceProviderName = value;
-  }
-
-  get status(): number {
-    return this._status;
-  }
-
-  set status(value: number) {
-    this._status = value;
-  }
-
-  get superAgentCommission(): number {
-    return this._superAgentCommission;
-  }
-
-  set superAgentCommission(value: number) {
-    this._superAgentCommission = value;
-  }
-
-  get systemCommission(): number {
-    return this._systemCommission;
-  }
-
-  set systemCommission(value: number) {
-    this._systemCommission = value;
   }
 }

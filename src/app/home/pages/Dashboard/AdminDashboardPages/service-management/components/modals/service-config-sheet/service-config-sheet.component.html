@@ -144,7 +144,7 @@
             </label>
             <span *ngIf="!serviceData.isServiceProviderCommissionFixed">%</span>
           </div>
-          <div class="input-container">
+          <div class="input-container ml-4">
             <div class="toggle-container">
               <span [class.highlight]="serviceData.isServiceProviderCommissionFixed">₦</span>
               <label class="slide-toggle" for="spType">
@@ -189,7 +189,10 @@
         <div class="tiers" *ngIf="serviceData.feeType === 2">
           <ng-template ngFor let-fee [ngForOf]="serviceData.serviceFees" let-i = "index">
           <div class="tier-card" *ngIf="!(serviceData.serviceFees.length === 1 && fee.upperBound < 0)">
-            <h4>Tier {{i + 1}}</h4>
+            <h4 class="d-flex flex-row justify-content-between">
+              <span>Tier {{i + 1}}</span>
+              <button class="trash" (click)="deleteTier(fee)"><fa-icon [icon]="bin"></fa-icon> </button>
+            </h4>
             <div class="contain">
               <div class="section">
                 <span class="title">Range: </span>
@@ -242,9 +245,9 @@
         </div>
       </div>
 
-      <div class="button-section">
-        <button class="btn-primary" [class.loading]="loading" (click)="updateService()">update config</button>
-        <button class="btn-outline" (click)="cancelEdit()">cancel</button>
+      <div class="button-section mb-4">
+        <button class="btn-primary" [disabled]="loading" [class.loading]="loading" (click)="updateService()">update config</button>
+        <button class="btn-outline" [disabled]="loading" (click)="cancelEdit()">cancel</button>
       </div>
     </form>
   </section>
