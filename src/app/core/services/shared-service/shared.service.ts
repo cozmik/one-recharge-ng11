@@ -110,8 +110,9 @@ export class SharedService {
 
   toFormGroup(fields: ServiceFormBase<string>[] ): FormGroup {
     const group: any = {};
-    fields.forEach(question => {
-      group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) : new FormControl(question.value || '');
+    fields.forEach(field => {
+      group[field.key] = field.required ? new FormControl(field.value || '', Validators.required) :
+        new FormControl(field.value || '');
     });
     return new FormGroup(group);
   }

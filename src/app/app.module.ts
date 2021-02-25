@@ -72,10 +72,6 @@ import {
   Report3DialogComponent,
   TransactionDialogComponent
 } from './home/pages/Dashboard/AdminDashboardPages/Transactions/airtime/airtime.component';
-import {
-  WalletComponent,
-  WalletReportDialogComponent
-} from './home/pages/Dashboard/AdminDashboardPages/transactions/wallet/wallet.component';
 
 // pipes
 import {FilterPipe} from './shared/pipes/filter/filter.pipe';
@@ -159,10 +155,13 @@ import {
   AgentWalletTransactionHistoryComponent
 } from './home/pages/Dashboard/AgentDashboardPages/agent-wallet-transaction-history/agent-wallet-transaction-history.component';
 import {A2CardComponent} from './home/common-components/card/card.component';
-import {ServiceManagerModule} from './home/pages/Dashboard/AdminDashboardPages/service-management/service-manager.module';
 import {PortalModule} from '@angular/cdk/portal';
 import {InterceptorsProvider} from './shared/services/_helpers';
 import {SharedModule} from './core/shared/shared.module';
+import {
+  WalletComponent,
+  WalletReportDialogComponent
+} from './home/pages/Dashboard/AdminDashboardPages/Transactions/wallet/wallet.component';
 
 @NgModule({
   imports: [

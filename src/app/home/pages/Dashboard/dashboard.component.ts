@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import { SharedService} from '../../../core/services/shared-service/shared.service';
-import { NavbarComponent } from './menus/top-navbar/top-navbar.component';
+import {SharedService} from '../../../core/services/shared-service/shared.service';
 
 
 @Component({

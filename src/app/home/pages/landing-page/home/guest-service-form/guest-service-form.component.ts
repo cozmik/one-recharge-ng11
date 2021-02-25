@@ -43,13 +43,13 @@ export class GuestServiceFormComponent implements OnInit {
   form: FormGroup;
   fields = [];
 
-  constructor( public sharedService: SharedService,
-               public anonymousService: AnonymousService,
-               public snackBar: MatSnackBar, public error: ErrorService,
-               public authService: AuthService, public fb: FormBuilder,
-               public errorService: ErrorService,
-               public toast: ToastService,
-               public router: Router) {
+  constructor(public sharedService: SharedService,
+              public anonymousService: AnonymousService,
+              public snackBar: MatSnackBar, public error: ErrorService,
+              public authService: AuthService, public fb: FormBuilder,
+              public errorService: ErrorService,
+              public toast: ToastService,
+              public router: Router) {
     this.isLoadingServices = false;
     this.isVerifyDetails = false;
     this.isloading = false;
@@ -59,7 +59,9 @@ export class GuestServiceFormComponent implements OnInit {
   private getServices(): void {
     this.isLoadingServices = true;
     this.anonymousService.getServices().subscribe((res: any) => {
-      this.serviceCategories = res;
+      this.serviceCategories = res.filter(cat => {
+        return cat.serviceResponses.some(ser => ser.meta.fields !== null);
+      });
       this.isLoadingServices = false;
     });
   }
@@ -274,9 +276,12 @@ export class GuestServiceFormComponent implements OnInit {
   // }
 
   setServices(category: any): void {
-    this.services = category.serviceResponses;
-    if (this.form){
+    this.services = category.serviceResponses.filter(service => service.meta.fields !== null);
+    if (this.form) {
       this.form.reset();
+      // Object.entries(this.form.controls).forEach(
+      //   ([key, value]) => this.form.removeControl(key)
+      // );
     }
   }
 
@@ -289,13 +294,13 @@ export class GuestServiceFormComponent implements OnInit {
     this.form = this.sharedService.toFormGroup(this.fields);
   }
 
-  cleanString(str): string{
+  cleanString(str): string {
     return str.replace(/_/g, ' ');
   }
 
   submitServiceData(e: Event, confirm = false): void {
-    const {hasConfirmation , url, confirmationUrl} = this.service.meta;
-    if (hasConfirmation){
+    const {hasConfirmation, url, confirmationUrl} = this.service.meta;
+    if (hasConfirmation) {
       this.anonymousService.performService(confirmationUrl, e).subscribe(res => {
         console.log(res);
       });
