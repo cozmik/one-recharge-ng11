@@ -131,7 +131,7 @@
         <fa-icon [icon]="close"></fa-icon>
       </button>
       <label>
-        <input #data placeholder="Type to filter by service name" (keypress)="filterServices(data.value)" type="text"
+        <input placeholder="Type to filter by service name" [(ngModel)]="search" (ngModelChange)="filterServices(search)" type="text"
                name="search">
       </label>
     </div>
@@ -141,7 +141,7 @@
           <span class="img">
             <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)">
           </span>
-          <span>{{service.serviceName}}</span><span class="sp"
+          <span>{{sharedService.prettifyString(service.serviceName)}}</span><span class="sp"
                                                     *ngIf="service.serviceProviderName">({{service.serviceProviderName}}
           )</span>
         </button>

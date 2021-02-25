@@ -13,6 +13,7 @@ import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ServiceConfigSheetComponent} from '../../components/modals/service-config-sheet/service-config-sheet.component';
+import {SharedService} from '../../../../../../../core/services/shared-service/shared.service';
 
 @Component({
   selector: 'app-service',
@@ -33,6 +34,7 @@ export class ServiceComponent implements OnInit {
   services: ServiceModel[] = [];
   filteredServices: ServiceModel[];
   private serviceId: number;
+  search = '';
 
   constructor(private ar: ActivatedRoute,
               public servService: ServiceManagerService,
@@ -41,7 +43,8 @@ export class ServiceComponent implements OnInit {
               private serviceStore: ServiceStoreService,
               private sidenavService: PanelService,
               private vcf: ViewContainerRef,
-              private bottomSheet: MatBottomSheet
+              private bottomSheet: MatBottomSheet,
+              public sharedService: SharedService
   ) {
   }
 
@@ -103,6 +106,7 @@ export class ServiceComponent implements OnInit {
   }
 
   filterServices(searchText): void {
+    console.log(searchText);
     this.filteredServices = this.services.filter(res => res.serviceName.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
   }
 

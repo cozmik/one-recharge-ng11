@@ -109,7 +109,7 @@ export class SignInComponent implements OnInit {
 
   private saveProfile(data: any): void {
     // console.log(data);
-    this.status = data.status;
+    this.status = data.status || data.active;
     // console.log(data.userType);
     const userType = data.userType.toLowerCase();
     // console.log('user : ' + userType);

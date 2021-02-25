@@ -9,7 +9,8 @@ import {ServicePackageInterface} from '../models/service-package.model';
 })
 export class ServiceStoreService {
 
-  constructor() { }
+  constructor() {
+  }
 
   private readonly _serviceCategories = new BehaviorSubject<CategoryInterface[]>([]);
   private readonly _selectedCategory = new BehaviorSubject<CategoryInterface>(null);
@@ -20,16 +21,13 @@ export class ServiceStoreService {
   private readonly _servicePackages = new BehaviorSubject<ServicePackageInterface[]>([]);
 
   get categories(): Observable<CategoryInterface[]> {
-    this.setAllServices();
     return this._serviceCategories as Observable<CategoryInterface[]>;
   }
 
-  setAllServices(): void {
+  setAllServices(categories: CategoryInterface[]): void {
     const services = [];
-    this._serviceCategories.subscribe(res => {
-      res.forEach((cat) => {
-        services.push(...cat.serviceResponses);
-      });
+    categories.forEach((cat) => {
+      services.push(...cat.serviceResponses);
       this._allServices.next(services);
     });
   }
@@ -38,11 +36,12 @@ export class ServiceStoreService {
     return this._allServices as Observable<ServiceInterface[]>;
   }
 
-  setCategories(categories): void {
+  setCategories(categories: CategoryInterface[]): void {
     this._serviceCategories.next(categories);
+    this.setAllServices(categories);
   }
 
-  setCategory(cat: CategoryInterface): void{
+  setCategory(cat: CategoryInterface): void {
     this._selectedCategory.next(cat);
   }
 
@@ -62,7 +61,7 @@ export class ServiceStoreService {
     return this._serviceCategories.getValue();
   }
 
-  get servicePackages(): ServicePackageInterface[]{
+  get servicePackages(): ServicePackageInterface[] {
     return this._servicePackages.getValue();
   }
 
@@ -73,9 +72,9 @@ export class ServiceStoreService {
   }
 
   getSelectedPackage(packageId: number): ServicePackageInterface {
-     this._selectedServicePackage.next(
-       this._selectedService.getValue().servicePackages.find(p => p.id === packageId));
-     return this._selectedServicePackage.getValue();
+    this._selectedServicePackage.next(
+      this._selectedService.getValue().servicePackages.find(p => p.id === packageId));
+    return this._selectedServicePackage.getValue();
   }
 
   updateCategory(catId: number, data): void {
@@ -103,7 +102,7 @@ export class ServiceStoreService {
 
   updateService(service: ServiceInterface): void {
     const serv = this.getSelectedService(service.serviceCategory.id, service.id);
-    if (serv){
+    if (serv) {
       const index = this.services.indexOf(serv);
       this.services[index] = {
         ...service

@@ -2,7 +2,6 @@ import {NgModule, OnInit} from '@angular/core';
 
 import {TitleComponent} from './components/title/title.component';
 import {ServiceCategoriesComponent} from './views/service-categories/service-categories.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServiceRoutingModule} from './service-routing.module';
 import {RouterModule} from '@angular/router';
 import {CategoryComponent} from './views/category/category.component';
@@ -49,9 +48,6 @@ import {ServiceManagerService} from './views/service-manager.service';
 })
 export class ServiceManagerModule {
   constructor(private smService: ServiceManagerService) {
-    console.log('call this');
     this.smService.getAllServicesByCategories();
-
   }
-
 }

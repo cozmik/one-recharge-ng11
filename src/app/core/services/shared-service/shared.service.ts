@@ -110,10 +110,13 @@ export class SharedService {
 
   toFormGroup(fields: ServiceFormBase<string>[] ): FormGroup {
     const group: any = {};
-    console.log(fields);
     fields.forEach(question => {
       group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) : new FormControl(question.value || '');
     });
     return new FormGroup(group);
+  }
+
+  prettifyString(str: string): string {
+    return str.replace(/_/g, ' ');
   }
 }

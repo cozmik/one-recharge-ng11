@@ -28,14 +28,14 @@ export class ServiceManagerService {
         callBack();
       }
     }
-    this.http.get(this.serviceApi + 'categories', Constants.getTokenHttpHeaders()).pipe(
-      map((res: any) => {
+    this.http.get(this.serviceApi + 'categories', Constants.getTokenHttpHeaders()).subscribe(
+      (res: any) => {
         this.serviceStore.setCategories(res);
         if (callBack) {
           callBack();
         }
-      })
-    ).subscribe();
+      }
+    );
   }
 
   toggleActivation(serviceId: number, status: boolean | number, callBack?: () => void): void {
@@ -43,25 +43,25 @@ export class ServiceManagerService {
     if (status) {
       action = 'deactivate';
     }
-    this.http.put(`${this.serviceApi}${action}/${serviceId}`, null, Constants.getTokenHttpHeaders()).pipe(
-      map((res: ServiceInterface) => {
+    this.http.put(`${this.serviceApi}${action}/${serviceId}`, null, Constants.getTokenHttpHeaders()).subscribe(
+      (res: ServiceInterface) => {
         this.serviceStore.updateService(res);
         if (callBack) {
           callBack();
         }
-      })).subscribe();
+      }
+    );
   }
 
   getCategoryDetails(id: number, callBack?: () => void): void {
     this.http.get(this.serviceApi + 'categories/' + id,
-      Constants.getTokenHttpHeaders()).pipe(
-      map(res => {
+      Constants.getTokenHttpHeaders()).subscribe(
+      res => {
         this.serviceStore.setCategory(res as CategoryInterface);
         if (callBack) {
           callBack();
         }
-      })
-    ).subscribe();
+      });
   }
 
   updateService(service: ServiceInterface, callBack?: () => void): void {
@@ -69,66 +69,66 @@ export class ServiceManagerService {
       ...service,
       categoryId: service.serviceCategory.id
     };
-    this.http.put(this.serviceApi + 'update/' + service.id, data, Constants.getTokenHttpHeaders()).pipe(
-      map(res => {
+    this.http.put(this.serviceApi + 'update/' + service.id, data, Constants.getTokenHttpHeaders())
+    .subscribe(res => {
         this.serviceStore.updateService(res as ServiceInterface);
         if (callBack) {
           callBack();
         }
-      })
-    ).subscribe();
+      });
   }
 
-  getServiceDetails(id: number, callBack?: () => void): Observable<ServiceModel> {
-    if (this.selectedService.getValue() && this.selectedService.getValue().id === id) {
-      return this.selectedService;
-    } else {
-      return this.http.get(this.serviceApi + id, Constants.getNoTokenHeaders()).pipe(
-        map(res => {
-          if (callBack) {
-            callBack();
-          }
-          return new ServiceModel(res);
-        })
-      );
-    }
-  }
+  // getServiceDetails(id: number, callBack?: () => void): Observable<ServiceModel> {
+  //   if (this.selectedService.getValue() && this.selectedService.getValue().id === id) {
+  //     return this.selectedService;
+  //   } else {
+  //     return this.http.get(this.serviceApi + id, Constants.getNoTokenHeaders()).pipe(
+  //       map(res => {
+  //         if (callBack) {
+  //           callBack();
+  //         }
+  //         return new ServiceModel(res);
+  //       })
+  //     );
+  //   }
+  // }
 
   updateServicePackage(servicePackageId: number,
                        packageData: { amount: number; name: string; description: string },
                        callBack?: () => void): void {
     this.http.put(this.serviceApi + '/service-package/' + servicePackageId, packageData,
-      Constants.getTokenHttpHeaders()).pipe(
-      map(res => {
+      Constants.getTokenHttpHeaders()).subscribe(
+      res => {
         this.serviceStore.updateServicePackage(servicePackageId, res);
         if (callBack) {
           callBack();
         }
-        // console.log(res);
-      })).subscribe();
+      }
+    );
   }
 
   pasteServiceConfig(fromServiceId: number, toServiceId: number, callBack: () => void): void {
     const payload = {fromServiceId, toServiceId};
-    this.http.post(this.serviceApi + 'copy-config', payload, {...Constants.getTokenHttpHeaders(), responseType: 'text'}).pipe(
-      map(res => {
+    this.http.post(this.serviceApi + 'copy-config', payload, {...Constants.getTokenHttpHeaders(), responseType: 'text'})
+    .subscribe(
+      res => {
         if (callBack) {
           callBack();
         }
-      })
-    ).subscribe();
+      }
+    );
   }
 
   updateCategory(categoryData: {categoryName: string, description: string}, catId: number, callback: () => void): void {
     this.http.put(this.serviceApi + 'category/' + catId, categoryData,
-      {...Constants.getTokenHttpHeaders(), responseType: 'text'}).pipe(
-      map(res => {
+      {...Constants.getTokenHttpHeaders(), responseType: 'text'}).subscribe(
+      res => {
         this.serviceStore.updateCategory(catId, categoryData);
         if (callback) {
           callback();
         }
-      })
-    ).subscribe();
+      }
+    );
   }
 
   updateCatLogo(catId: number, fileData: FormData, callback?: () => void): void {

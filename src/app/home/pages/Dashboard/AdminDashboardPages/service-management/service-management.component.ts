@@ -3,6 +3,7 @@ import {MatSidenav} from '@angular/material/sidenav';
 import {PanelService} from './panel.service';
 import {MatDialog} from '@angular/material/dialog';
 import {ServiceManagerService} from './views/service-manager.service';
+import {ServiceStoreService} from './store/service-store.service';
 
 @Component({
   selector: 'app-service-management',
@@ -15,17 +16,17 @@ export class ServiceManagementComponent implements OnInit {
   @ViewChild('rightPanel', {static: true}) private rightPanel: MatSidenav;
 
   constructor(
-    public panelService: PanelService, public dialog: MatDialog, private smService: ServiceManagerService) {
+    public panelService: PanelService, public dialog: MatDialog, private storeService: ServiceStoreService,
+    private smService: ServiceManagerService) {
     this.smService.title.next('');
+    if (!this.storeService.allCategories){
+      this.smService.getAllServicesByCategories();
+    }
   }
 
 
   ngOnInit(): void {
     this.panelService.panel = this.rightPanel;
-  }
-
-  toggleSideNav(): boolean {
-    return this.closed = !this.closed;
   }
 
 }

@@ -1,5 +1,4 @@
-
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Constants} from '../../shared/Constants';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -13,7 +12,9 @@ import {Router} from '@angular/router';
 export class AuthService {
 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
+
   static refreshTokenSub = new BehaviorSubject<any>(null);
   static refreshTokenInProgress = false;
   currentUser = new BehaviorSubject<User>(null);
@@ -34,7 +35,7 @@ export class AuthService {
       .pipe(map(res => {
           // login successful if there's a jwt token in the response
           if (res && res.accessToken) {
-            if (res.user.status) {
+            if (res.user.status || res.user.active) {
               this.saveLoggedInUser(res.accessToken, res.refreshToken, res.user);
               return res;
               // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -57,61 +58,66 @@ export class AuthService {
     // Refresh token function here...
     console.log('Refresh here....');
     return this.http.get<string>(Constants.REFRESH_TOKEN_URL, Constants.RefreshTokenHttpHeaders('true', 'false')).pipe(
-      res => res );
+      res => res);
   }
 
 // get user profile data
-  public getProfile(token: string): Observable<any>{
+  public getProfile(token: string): Observable<any> {
     return this.http.get(Constants.PROFILE_URL, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
+
   // get agent profile data
-  public getAgentProfile(token: string): Observable<any>{
+  public getAgentProfile(token: string): Observable<any> {
     return this.http.get(Constants.AGENT_PROFILE_URL, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
   // get customer profile data
-  public getCustomerProfile(id: number, token: string): Observable<any>{
+  public getCustomerProfile(id: number, token: string): Observable<any> {
     return this.http.get(Constants.USERS_URL + id, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
 
 // reset password
-  public resetPassword(email: string): Observable<any>{
+  public resetPassword(email: string): Observable<any> {
     return this.http.get(Constants.RESET_PASSWORD_URL + '?email=' + email, Constants.getRequestHeader()).pipe(
       map(res => res));
   }
+
 // create password
-  createPassword(password: any): Observable<any>{
-    return this.http.put(Constants.CREATE_PASSWORD_URL, password,  Constants.getRequestHeader());
+  createPassword(password: any): Observable<any> {
+    return this.http.put(Constants.CREATE_PASSWORD_URL, password, Constants.getRequestHeader());
   }
+
 // create roles
-  createRoles(rolesPayload: any): Observable<any>{
+  createRoles(rolesPayload: any): Observable<any> {
     return this.http.post(Constants.CREATE_ROLES_URL, rolesPayload,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
+
 // update roles
-  updateRoles(rolesPayload: any, id: number): Observable<any>{
+  updateRoles(rolesPayload: any, id: number): Observable<any> {
     return this.http.put(Constants.UPDATE_ROLES_URL + id, rolesPayload,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
+
 // create super agent
 
   createAgent(agentData: any, formData): Observable<any> {
     let payload = '';
-    for (const key in agentData){
-      if (agentData.hasOwnProperty(key)){
+    for (const key in agentData) {
+      if (agentData.hasOwnProperty(key)) {
         payload += '' + key + '=' + agentData[key] + '&';
       }
     }
 
     payload = payload.replace(/&+$/g, ''); // remove the trailing &
-     // console.log("******* payload ********");
-     // console.log(payload);
+    // console.log("******* payload ********");
+    // console.log(payload);
     return this.http.post(Constants.CREATE_AGENT_URL + payload, formData,
       Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
       map(res => res));
@@ -130,8 +136,8 @@ export class AuthService {
     payload = payload.replace(/&+$/g, ''); // remove the trailing &
 
     // console.log(payload);
-     // console.log('******* payload ********');
-     // console.log(payload);
+    // console.log('******* payload ********');
+    // console.log(payload);
     return this.http.post(Constants.CREATE_AGENT_SELF_URL + payload,
       formData, Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
       map(res => res));
@@ -139,8 +145,8 @@ export class AuthService {
 
   // create customer
   createCustomer(customerData: any, formData): Observable<any> {
-     // console.log("******* payload ********");
-     // console.log(customerData);
+    // console.log("******* payload ********");
+    // console.log(customerData);
     return this.http.post(Constants.CREATE_CUSTOMER_URL, customerData,
       Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
       map(res => res));
@@ -155,7 +161,7 @@ export class AuthService {
   }
 
   // multiple user by uploading sheet
-  createMultipleUser(roleId: any, formData: FormData): Observable<any>{
+  createMultipleUser(roleId: any, formData: FormData): Observable<any> {
     return this.http.post(Constants.UPLOAD_USER_DATA_URL
       + '?roleId=' + roleId, formData, Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
       map(res => res));
@@ -163,7 +169,7 @@ export class AuthService {
 
 
 // refresh token or get new access token
-  refreshToken(): Observable<any>{
+  refreshToken(): Observable<any> {
     return this.http.get(Constants.REFRESH_TOKEN_URL,
       Constants.getRefreshTokenRequestOption(localStorage.getItem(Constants.REFRESH_TOKEN))).pipe(
       map(res => res));
@@ -173,25 +179,24 @@ export class AuthService {
 // save access and refresh token to local storage
   saveToken(accessToken: string, refreshToken: string, callback ?: () => {}): void {
     localStorage.setItem(Constants.REFRESH_TOKEN, refreshToken);
-    localStorage.setItem(Constants.ACCESS_TOKEN,  accessToken);
-    if (callback){
+    localStorage.setItem(Constants.ACCESS_TOKEN, accessToken);
+    if (callback) {
       callback();
     }
   }
+
 // save user profile to local stirage
   saveProfile(profileData: any): void {
     localStorage.setItem(Constants.PROFILE, profileData);
   }
 
-  public getToken(): string{
+  public getToken(): string {
     return localStorage.getItem(Constants.ACCESS_TOKEN);
   }
 
   // public getRefreshToken(): string{
   //   return localStorage.getItem(Constants.REFRESH_TOKEN);
   // }
-
-
 
 
 // logout service

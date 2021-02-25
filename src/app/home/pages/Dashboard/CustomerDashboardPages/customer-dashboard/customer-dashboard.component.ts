@@ -61,8 +61,7 @@ export class CustomerDashboardComponent implements OnInit {
     this.anonymousService.getUser(customerId).subscribe(
       data => {
         this.getUserDashboardStatistics(customerId);
-        const userData = data.data[0];
-        this.customerDetails = new Customer(userData);
+        this.customerDetails = new Customer(data);
         console.log('customerDetails', this.customerDetails);
         this.DashboardStatistics.walletBalance = this.customerDetails.walletBalance;
         this.DashboardStatistics.walletCommissionBalance = this.customerDetails.walletCommissionBalance;
