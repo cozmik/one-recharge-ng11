@@ -224,12 +224,6 @@ const routes: Routes = [
     children: landingPage,
   },
 
-
-  // {
-  //   path: '',
-  //   component: SignInComponent,
-  // },
-
   {
     path: 'sign-in',
     component: SignInComponent,
