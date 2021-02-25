@@ -26,7 +26,6 @@ import {QuickFundingComponent} from './home/pages/Dashboard/AdminDashboardPages/
 import {FundRequestsComponent} from './home/pages/Dashboard/AdminDashboardPages/funding/fund-requests/fund-requests.component';
 import {FundHistoryComponent} from './home/pages/Dashboard/AdminDashboardPages/funding/fund-history/fund-history.component';
 import {AirtimeComponent} from './home/pages/Dashboard/AdminDashboardPages/Transactions/airtime/airtime.component';
-import {WalletComponent} from './home/pages/Dashboard/AdminDashboardPages/transactions/wallet/wallet.component';
 import {Page500Component} from './home/pages/error-pages/page-500/page-500.component';
 import {Page404Component} from './home/pages/error-pages/page-404/page-404.component';
 import {AuthGuard} from './core/guards/auth-guard/auth.guard';
@@ -64,6 +63,7 @@ import {GuestDataComponent} from './home/pages/landing-page/home/guest-data/gues
 import {AgentChangePasswordComponent} from './home/pages/Dashboard/AgentDashboardPages/agent-change-password/agent-change-password.component';
 import {FrozenAccountsComponent} from './home/pages/Dashboard/AdminDashboardPages/frozen-accounts/frozen-accounts.component';
 import {AdminGuard} from './core/guards/admin-auth-guard/admin.guard';
+import {WalletComponent} from './home/pages/Dashboard/AdminDashboardPages/Transactions/wallet/wallet.component';
 
 const admin: Routes = [
   {
