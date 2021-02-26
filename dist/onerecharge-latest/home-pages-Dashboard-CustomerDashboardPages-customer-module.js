@@ -1294,10 +1294,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_services_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services/services.component */ "GBru");
 /* harmony import */ var _AdminDashboardPages_User_management_manage_customers_manage_customers_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../AdminDashboardPages/User management/manage-customers/manage-customers.component */ "MtER");
 /* harmony import */ var _user_shared_user_shared_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../user-shared/user-shared.module */ "M0Iz");
-/* harmony import */ var _app_module__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../../app.module */ "ZAI4");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../AdminDashboardPages/service-management/views/service-manager.service */ "V31o");
-
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../AdminDashboardPages/service-management/views/service-manager.service */ "V31o");
 
 
 
@@ -1317,15 +1315,14 @@ class CustomerModule {
         this.smService.getAllServicesByCategories();
     }
 }
-CustomerModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵdefineNgModule"]({ type: CustomerModule });
-CustomerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵdefineInjector"]({ factory: function CustomerModule_Factory(t) { return new (t || CustomerModule)(_angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵinject"](_AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_13__["ServiceManagerService"])); }, imports: [[
+CustomerModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵdefineNgModule"]({ type: CustomerModule });
+CustomerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵdefineInjector"]({ factory: function CustomerModule_Factory(t) { return new (t || CustomerModule)(_angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵinject"](_AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_12__["ServiceManagerService"])); }, imports: [[
             _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
             _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"],
             _user_shared_user_shared_module__WEBPACK_IMPORTED_MODULE_10__["UserSharedModule"],
             _customer_routing_module__WEBPACK_IMPORTED_MODULE_1__["CustomerRoutingModule"],
-            _app_module__WEBPACK_IMPORTED_MODULE_11__["AppModule"]
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵsetNgModuleScope"](CustomerModule, { declarations: [_customer_dashboard_customer_dashboard_component__WEBPACK_IMPORTED_MODULE_2__["CustomerDashboardComponent"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵsetNgModuleScope"](CustomerModule, { declarations: [_customer_dashboard_customer_dashboard_component__WEBPACK_IMPORTED_MODULE_2__["CustomerDashboardComponent"],
         _customer_dashboard_buy_airtime_buy_airtime_component__WEBPACK_IMPORTED_MODULE_3__["BuyAirtimeComponent"],
         _customer_dashboard_buy_data_buy_data_component__WEBPACK_IMPORTED_MODULE_4__["BuyDataComponent"],
         _customer_settings_customer_settings_component__WEBPACK_IMPORTED_MODULE_5__["CustomerSettingsComponent"],
@@ -1334,8 +1331,7 @@ CustomerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_12__["ɵɵdefineIn
         _AdminDashboardPages_User_management_manage_customers_manage_customers_component__WEBPACK_IMPORTED_MODULE_9__["ManageCustomersComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
         _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"],
         _user_shared_user_shared_module__WEBPACK_IMPORTED_MODULE_10__["UserSharedModule"],
-        _customer_routing_module__WEBPACK_IMPORTED_MODULE_1__["CustomerRoutingModule"],
-        _app_module__WEBPACK_IMPORTED_MODULE_11__["AppModule"]] }); })();
+        _customer_routing_module__WEBPACK_IMPORTED_MODULE_1__["CustomerRoutingModule"]] }); })();
 
 
 /***/ }),

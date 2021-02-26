@@ -65,7 +65,6 @@ import {
 } from './home/pages/Dashboard/AdminDashboardPages/Transactions/airtime/airtime.component';
 
 // pipes
-import {FilterPipe} from './shared/pipes/filter/filter.pipe';
 import {Page500Component} from './home/pages/error-pages/page-500/page-500.component';
 import {Page404Component} from './home/pages/error-pages/page-404/page-404.component';
 import {TransactionsPipe} from './shared/pipes/transactions-filter/airtime-transactions.pipe';
@@ -73,7 +72,6 @@ import {TransactionStatusFilterPipe} from './shared/pipes/transactions-status-fi
 import {FundRequestFilterPipe} from './shared/pipes/fund-request-filter/fund-request-filter.pipe';
 import {WalletTransactionsPipe} from './shared/pipes/transactions-filter/wallet-transactions.pipe';
 import {fundDialogComponent} from './home/pages/Dashboard/AdminDashboardPages/funding/fund-agents/fund-agents.component';
-import {UserStatusFilterPipe} from './shared/pipes/user-status-filter/user-status-filter.pipe';
 import {
   detailsDialogComponent,
   FrozenAccountsComponent
@@ -177,7 +175,6 @@ import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/
     MatchPasswordDirective,
     ManageAdminComponent,
     QuickFundingComponent,
-    FilterPipe,
     Page500Component,
     Page404Component,
     AirtimeComponent,
@@ -191,7 +188,6 @@ import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/
     FundHistoryComponent,
     FundRequestFilterPipe,
     WalletTransactionsPipe,
-    UserStatusFilterPipe,
     FrozenAccountsComponent,
     detailsDialogComponent,
     NetworkDialogComponent,
@@ -240,10 +236,6 @@ import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/
     InterceptorsProvider,
   ],
   bootstrap: [AppComponent],
-  exports: [
-    UserStatusFilterPipe,
-    FilterPipe
-  ]
 })
 
 export class AppModule {

@@ -1,8 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {CustomerDashboardComponent} from './customer-dashboard/customer-dashboard.component';
-import {SelectPackageComponent} from '../user-shared/select-package/select-package.component';
-import {BuyAirtimeComponent} from './customer-dashboard/buy-airtime/buy-airtime.component';
 import {BuyDataComponent} from './customer-dashboard/buy-data/buy-data.component';
 import {PaymentStatusComponent} from '../../../common-components/payment-status/payment-status.component';
 import {CustomerSettingsComponent} from './customer-settings/customer-settings.component';

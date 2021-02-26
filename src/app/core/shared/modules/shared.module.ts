@@ -34,6 +34,8 @@ import {UserAgentsComponent} from '../../../home/pages/Dashboard/AdminDashboardP
 import {A2CardComponent} from '../../../home/common-components/card/card.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {RouterModule} from '@angular/router';
+import {UserStatusFilterPipe} from '../../../shared/pipes/user-status-filter/user-status-filter.pipe';
+import {FilterPipe} from '../../../shared/pipes/filter/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import {RouterModule} from '@angular/router';
     ManageUsersComponent,
     UserAgentsComponent,
     A2CardComponent,
+    UserStatusFilterPipe,
+    FilterPipe
   ],
   imports: [
     CommonModule,
@@ -111,6 +115,8 @@ import {RouterModule} from '@angular/router';
     ManageUsersComponent,
     UserAgentsComponent,
     A2CardComponent,
+    UserStatusFilterPipe,
+    FilterPipe
   ]
 })
 export class SharedModule {
