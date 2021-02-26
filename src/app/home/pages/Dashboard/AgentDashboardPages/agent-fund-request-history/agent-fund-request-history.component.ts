@@ -18,6 +18,7 @@ export class AgentFundRequestHistoryComponent implements OnInit {
   public isTransactionsLoaded: boolean;
   public transactionsWithId: any;
   range: any;
+  p = 0;
   private useRange: boolean;
   private rangeFromValue: number;
   fromDate: Date;
@@ -46,7 +47,7 @@ export class AgentFundRequestHistoryComponent implements OnInit {
   }
 
   // Re-Sort data ////////////////////
-  getFundRequestsWithId() {
+  getFundRequestsWithId(): void {
     this.transactionsWithId = [];
 
 
@@ -80,7 +81,7 @@ export class AgentFundRequestHistoryComponent implements OnInit {
     const agentId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id;
     this.agent.getAgentFundRequestHistory(agentId, this.arg, this.useRange).subscribe(
       (response: any) => {
-        this.fundTransactions = response.data;
+        this.fundTransactions = response;
         console.log('this.fundTransactions', this.fundTransactions);
         this.getFundRequestsWithId();
         console.log('***** Fund Requests Transactions with id ****');
@@ -98,7 +99,7 @@ export class AgentFundRequestHistoryComponent implements OnInit {
   }
 
   // get transactions by range
-  getRangeTransaction() {
+  getRangeTransaction(): void {
     this.rangeFromValue = new Date(this.fromDate).getTime();
     this.rangeToValue = new Date(this.toDate).getTime();
     this.arg = '?startDate=' + this.rangeFromValue + '&' + 'endDate=' + this.rangeToValue;

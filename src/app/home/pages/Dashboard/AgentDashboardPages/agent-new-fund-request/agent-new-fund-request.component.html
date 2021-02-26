@@ -18,7 +18,7 @@
 
             <!--new block -->
             <div class="widget-content-block new" *ngIf="switchState === 'new'" [class.visible]="switchState === 'new'">
-              <form (ngSubmit)="onSubmit(formData)" [formGroup]="fundRequestForm" #formData='ngForm' method="post" enctype="multipart/form-data">
+              <form (ngSubmit)="onSubmit()" [formGroup]="fundRequestForm" #formData='ngForm' method="post" enctype="multipart/form-data">
                 <div class="mb-5">
                   <mat-select placeholder="Select mode of payment" #selectPaymentMode required formControlName="paymentMode" style="width:100%;">
                     <mat-option [value]="paymentMode" *ngFor="let paymentMode of paymentModes">
@@ -86,9 +86,9 @@
                 </div>
 
 
-                <a md-raised-button color="" (click)="resetForm()"> Reset </a>
+                <a mat-raised-button class="mr-2" color="warn" (click)="resetForm()"> Reset </a>
 
-                <button md-raised-button [disabled]="fundRequestForm.invalid || isloading" type="submit" color="accent">Proceed</button>
+                <button mat-raised-button [disabled]="fundRequestForm.invalid || isloading" type="submit" color="accent">Proceed</button>
 
               </form>
             </div>
@@ -102,13 +102,13 @@
                 <div class="block"><span class="title">Payment Mode</span> <span class="value">{{fundRequestObj.paymentMode}}</span></div>
                 <div class="block"><span class="title">Teller no / Ref</span> <span class="value">{{fundRequestObj.referenceId}}</span></div>
                 <div class="block"><span class="title">Depositors Name</span> <span class="value">{{fundRequestObj.depositorName}}</span></div>
-                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{fundRequestObj.amount | currency | moneyFormatter}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value">{{fundRequestObj.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
                 <div class="block"><span class="title">Payment Date</span> <span class="value">{{fundRequestObj.paymentDate}}</span></div>
               </div>
-              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRequesting"> Back </button>
+              <button mat-raised-button type="button" class="mr-2" color="warn" (click)="goToPage()" [disabled]="isRequesting"> Back </button>
 
-              <button md-raised-button type="button" [disabled]="isRequesting" (click)="confirmRequest()"  color="accent">{{!isRequesting?'Confirm':'Please wait'}}
-                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>
+              <button mat-raised-button type="button" [disabled]="isRequesting" (click)="confirmRequest()"  color="accent">{{!isRequesting?'Confirm':'Please wait'}}
+<!--                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>-->
               </button>
 
             </div>
@@ -124,7 +124,7 @@
                 <div class="inline-block"><span class="title">Payment Mode</span> <span class="value">{{successfulFundRequest.paymentMode}}</span></div>
                 <div class="inline-block"><span class="title">Teller no / Ref</span> <span class="value">{{successfulFundRequest.referenceId}}</span></div>
                 <div class="inline-block"><span class="title">Depositors Name</span> <span class="value">{{successfulFundRequest.depositorName}}</span></div>
-                <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{successfulFundRequest.amount | currency | moneyFormatter}}</span></div>
+                <div class="inline-block"><span class="title">Amount</span> <span class="value">{{successfulFundRequest.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
                 <div class="inline-block"><span class="title">Payment Date</span> <span class="value">{{successfulFundRequest.paymentDate}}</span></div>
               </div>
 

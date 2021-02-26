@@ -32,8 +32,8 @@ export class AgentNewFundRequestComponent implements OnInit {
   public isloading: boolean;
   public isLoadingNetworks: boolean;
   public errorResponse: any;
-  public isRequesting : boolean;
-  public fundRequestObj : any = {
+  public isRequesting: boolean;
+  public fundRequestObj: any = {
     paymentMode: '',
     referenceId: '',
     depositorName: '',
@@ -42,23 +42,23 @@ export class AgentNewFundRequestComponent implements OnInit {
     proofOfPayment : ''
   };
 
-  public proofOfPayment : any;
+  public proofOfPayment: any;
 
-  public successfulFundRequest : any;
+  public successfulFundRequest: any;
 
   public selectedNetwork: string;
   public amount: number;
   public mobile: number;
   public paymentMode: any;
 
-  public wallet : any = {
-    'walletBalance' : 0,
-    'walletCommissionBalance' : 0,
-    'actualWalletBalance' : 0
-  }
+  public wallet: any = {
+    walletBalance : 0,
+    walletCommissionBalance : 0,
+    actualWalletBalance : 0
+  };
 
   constructor(public sharedService: SharedService, public anonymousService: AnonymousService, public router: Router,
-              public error: ErrorService, public fb: FormBuilder, public agent : UserService, public toast: ToastService) {
+              public error: ErrorService, public fb: FormBuilder, public agent: UserService, public toast: ToastService) {
 
     this.pageTitle = 'New Fund Requests';
     this.sharedService.emitChange(this.pageTitle);
@@ -66,7 +66,6 @@ export class AgentNewFundRequestComponent implements OnInit {
     // this.sharedService.userWallet.subscribe(this.getWallet);
     this.isLoadingNetworks = false;
     this.switchState = 'new';
-
     this.paymentModes = [];
     this.isloading = false;
     this.isRequesting = false;
@@ -75,7 +74,7 @@ export class AgentNewFundRequestComponent implements OnInit {
   }
 
 
-  createForm(){
+  createForm(): void{
     this.fundRequestForm = this.fb.group({
       paymentMode: ['', Validators.required],
       referenceId: ['', Validators.required],
@@ -87,7 +86,7 @@ export class AgentNewFundRequestComponent implements OnInit {
   }
 
 
-  resetForm(){
+  resetForm(): void{
     this.fundRequestObj.paymentMode = '';
     this.fundRequestObj.referenceId = '';
     this.fundRequestObj.depositorName = '';
@@ -101,7 +100,7 @@ export class AgentNewFundRequestComponent implements OnInit {
     this.fundRequestForm.updateValueAndValidity();
   }
 
-  goToPage(page: string = 'new'){
+  goToPage(page: string = 'new'): void{
     this.switchState = page;
   }
 
@@ -109,19 +108,16 @@ export class AgentNewFundRequestComponent implements OnInit {
   getPaymentModes = () => {
     this.anonymousService.getFundPaymentModes().subscribe(
       response => {
-        console.log('************ Payment modes ****************');
-        console.log(response.data);
-        this.paymentModes = response.data;
+        this.paymentModes = response;
         this.filterPaymentMethods();
       },
       err => {
         console.log(err);
         this.errorResponse = this.error.errorHandlerWithText(this.getPaymentModes, err);
         this.isLoadingNetworks = false;
-
       }
-    )
-  };
+    );
+  }
 
 
   filterPaymentMethods = () => {
@@ -154,7 +150,7 @@ export class AgentNewFundRequestComponent implements OnInit {
     this.fundRequestForm.removeControl('proofOfPayment');
     this.isRequesting = true;
     const paymentDate = this.fundRequestForm.value.paymentDate;
-    this.fundRequestForm.value['paymentDate'] = new Date(paymentDate).getTime();
+    this.fundRequestForm.value.paymentDate = new Date(paymentDate).getTime();
     console.log('paymentDate', paymentDate);
     console.log('POP', this.proofOfPaymentRef);
 
@@ -169,12 +165,12 @@ export class AgentNewFundRequestComponent implements OnInit {
 
     this.agent.requestFunding(this.fundRequestForm.value, formData).subscribe(
       response => {
-        this.resetForm()
+        this.resetForm();
         console.log('response data');
         this.successfulFundRequest = new FundRequests(response.data[0]);
         console.log(this.successfulFundRequest);
 
-          this.goToPage('success');
+        this.goToPage('success');
       },
       err => {
         console.log('error is here');
@@ -182,14 +178,14 @@ export class AgentNewFundRequestComponent implements OnInit {
         const errorResponse = this.error.errorHandlerWithText(this.confirmRequest, err);
         this.isRequesting = false;
       }
-    )
+    );
   }
 
-  newRecharge(){
+  newRecharge(): void{
     this.router.navigate(['/new-fund-request']);
   }
 
-  fileEvent(e){
+  fileEvent(e): void{
     this.proofOfPayment = e.target.files[0];
     console.log(e);
   }

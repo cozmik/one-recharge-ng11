@@ -16,7 +16,7 @@ export class UserStatusFilterPipe implements PipeTransform {
         return true;
       }
       return false;
-    })
+    });
   }
 
 }

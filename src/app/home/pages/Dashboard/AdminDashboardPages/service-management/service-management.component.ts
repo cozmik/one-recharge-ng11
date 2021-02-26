@@ -16,12 +16,9 @@ export class ServiceManagementComponent implements OnInit {
   @ViewChild('rightPanel', {static: true}) private rightPanel: MatSidenav;
 
   constructor(
-    public panelService: PanelService, public dialog: MatDialog, private storeService: ServiceStoreService,
+    public panelService: PanelService, public dialog: MatDialog,
     private smService: ServiceManagerService) {
     this.smService.title.next('');
-    if (!this.storeService.allCategories){
-      this.smService.getAllServicesByCategories();
-    }
   }
 
 

@@ -55,7 +55,7 @@
               </thead>
                 <tbody *ngFor="let tranx of transactionsWithId; let i = index">
                 <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
-                  <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+<!--                  <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
                   <!--make table stable-->
                   <mat-progress-bar mode="indeterminate" style="visibility: hidden; margin:0; padding:0;"></mat-progress-bar>
                   <td scope="row"><span class="title">Ref : </span>{{tranx.data.transactionId}}</td>

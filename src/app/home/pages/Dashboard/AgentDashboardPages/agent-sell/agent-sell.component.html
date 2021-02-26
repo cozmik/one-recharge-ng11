@@ -5,12 +5,12 @@
     <section class="counter-card">
       <div class="block">
         <h4>Main Account</h4>
-        <h2 *ngIf="DashboardStatistics.walletBalance !== null">NGN {{DashboardStatistics.walletBalance | currency | moneyFormatter}} </h2>
+        <h2 *ngIf="DashboardStatistics.walletBalance !== null">{{DashboardStatistics.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}} </h2>
         <h2 *ngIf="DashboardStatistics.walletBalance === null"><i class="fa fa-spin fa-spinner"></i> </h2>
       </div>
       <div class="block" style="border-left:1px solid #ededed">
         <h4>Commission Account</h4>
-        <h2 *ngIf="DashboardStatistics.walletCommissionBalance !== null">NGN {{DashboardStatistics.walletCommissionBalance | currency | moneyFormatter}} </h2>
+        <h2 *ngIf="DashboardStatistics.walletCommissionBalance !== null">{{DashboardStatistics.walletCommissionBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}} </h2>
         <h2 *ngIf="DashboardStatistics.walletCommissionBalance === null"><i class="fa fa-spin fa-spinner"></i> </h2>
       </div>
     </section>

@@ -8,8 +8,8 @@ import {ToastService} from '../../../../../shared/services/toast-service/toast.s
 import {Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import {Agent} from '../../../../../core/mocks/agent/agent.model';
-import {Constants} from "../../../../../shared/Constants";
-import {User} from "../../../../../core/mocks/user/user.model";
+import {Constants} from '../../../../../shared/Constants';
+import {User} from '../../../../../core/mocks/user/user.model';
 
 @Component({
   selector: 'app-agent-sell',
@@ -18,16 +18,17 @@ import {User} from "../../../../../core/mocks/user/user.model";
 })
 export class AgentSellComponent implements OnInit {
 
-  private pageTitle: string;
-  public walletAccounts : any;
-  public DashboardStatistics : any = {
-    'walletBalance' : null,
-    'walletCommissionBalance' : null,
-    'actualWalletBalance' : null
+   pageTitle: string;
+  public walletAccounts: any;
+  public DashboardStatistics: any = {
+    walletBalance : null,
+    walletCommissionBalance : null,
+    actualWalletBalance : null
   };
   subscription: Subscription;
 
-  constructor(public sharedService: SharedService, public anonymousService: AnonymousService, public agent: UserService, public router: Router,
+  constructor(public sharedService: SharedService, public anonymousService: AnonymousService,
+              public agent: UserService, public router: Router,
               public error: ErrorService, public toast: ToastService, public storage: StorageService) {
 
     this.pageTitle = 'Sell';

@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
 import {Router} from '@angular/router';
 import {ErrorService} from '../../../../../core/services/error_service/error.service';
 import {ToastService} from '../../../../../shared/services/toast-service/toast.service';
 import {StorageService} from '../../../../../core/services/storage-service/storage.service';
-import {Agent} from '../../../../../core/mocks/agent/agent.model';
 import {UserTransactionStatistics} from '../../../../../core/mocks/userTransactionStatistics.model';
 import {Constants} from '../../../../../shared/Constants';
 import {User} from '../../../../../core/mocks/user/user.model';
@@ -20,28 +19,28 @@ import {UserService} from '../../../../../core/services/users-service/user-servi
 export class AgentDashboardComponent implements OnInit {
   public pageTitle: string;
   public roles: any;
-  public agentDetails : any;
+  public agentDetails: any;
 
-  public airtimeTransactions : any;
-  public isTransactionsLoaded : boolean;
-  public transactionsWithId : any;
+  public airtimeTransactions: any;
+  public isTransactionsLoaded: boolean;
+  public transactionsWithId: any;
 
-  public DashboardStatistics : any = {
-    'walletBalance' : 0,
-    'walletCommissionBalance' : 0,
-    'totalTransactions' : 0,
-    'totalAirtimeTransactions' : 0,
-    'successfulAirtimeTransactions' : 0,
-    'failedAirtimeTransactions' : 0,
-    'pendingAirtimeTransactions' : 0,
-    'failedTransactions' : 0,
-    'pendingTransactions' : 0,
-    'successfulTransactions' : 0
-  }
+  public DashboardStatistics: {
+    walletBalance: number,
+    walletCommissionBalance?: number,
+    totalTransactions: number,
+    totalAirtimeTransactions: number,
+    successfulAirtimeTransactions: number,
+    failedAirtimeTransactions: number,
+    pendingAirtimeTransactions: number,
+    failedTransactions: number,
+    pendingTransactions: number,
+    successfulTransactions: number,
+  };
   private errorResponse: any;
 
   constructor(public sharedService: SharedService, public anonymousService: AnonymousService, public router: Router,
-              public userService: UserService, public error: ErrorService, public toast: ToastService, public storage : StorageService) {
+              public userService: UserService, public error: ErrorService, public toast: ToastService, public storage: StorageService) {
 
     this.pageTitle = 'Dashboard';
     this.sharedService.emitChange(this.pageTitle);
@@ -50,13 +49,25 @@ export class AgentDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.DashboardStatistics = {
+      walletBalance: 0,
+      walletCommissionBalance: 0,
+      totalTransactions: 0,
+      totalAirtimeTransactions: 0,
+      successfulAirtimeTransactions: 0,
+      failedAirtimeTransactions: 0,
+      pendingAirtimeTransactions: 0,
+      failedTransactions: 0,
+      pendingTransactions: 0,
+      successfulTransactions: 0,
+    };
     this.getAgentDetails();
     this.getRecentTransactions();
   }
 
 
-  editRole(id) {
-    this.router.navigate(['admin/edit-role/', id ]);
+  editRole(id): void {
+    this.router.navigate(['admin/edit-role/', id]);
   }
 
   getAgentDetails = () => {
@@ -66,39 +77,41 @@ export class AgentDashboardComponent implements OnInit {
     //   return new Agent(JSON.parse(localStorage.getItem(Constants.PROFILE)).data[0]);
     // }
 
-   // console.log('agentObj', this.storage.getProfile());
+    // console.log('agentObj', this.storage.getProfile());
 
     this.anonymousService.getUser(agentId).subscribe(
       data => {
         this.getUserDashboardStatistics(agentId);
-        const userData = data.data[0];
-        this.agentDetails = new User(userData);
-        console.log('agentDetails', this.agentDetails);
+        this.agentDetails = new User(data);
+        // console.log('agentDetails', this.agentDetails);
         this.DashboardStatistics.walletBalance = this.agentDetails.walletBalance;
         this.DashboardStatistics.walletCommissionBalance = this.agentDetails.walletCommissionBalance;
-      },
-      err => {
-        console.log(err);
-        const msg = this.error.errorHandlerWithText(this.getAgentDetails, err);
-        // this.toast.showError(msg.message, 'Error');
-        console.log(msg);
-      }
-    )
-  }
+      });
+  };
 
-  getUserDashboardStatistics(id: number){
+  getUserDashboardStatistics(id: number): void {
     this.anonymousService.getUserTransactionsStatistics(id).subscribe(
       data => {
         const stats = data.data[0];
         const userStatistics = new UserTransactionStatistics(stats);
-        this.DashboardStatistics.totalTransactions = userStatistics.transactionCount;
-        this.DashboardStatistics.successfulTransactions = userStatistics.successfulTran;
-        this.DashboardStatistics.pendingTransactions = userStatistics.pendingTrans;
-        this.DashboardStatistics.failedTransactions = userStatistics.failedTrans;
-        this.DashboardStatistics.totalAirtimeTransactions = userStatistics.airtimeTrans;
-        this.DashboardStatistics.successfulAirtimeTransactions = userStatistics.successfulAirtimeTrans;
-        this.DashboardStatistics.failedAirtimeTransactions = userStatistics.failedAirtimeTrans;
-        this.DashboardStatistics.pendingTransactions = userStatistics.pendingAirtimeTrans;
+        console.log(userStatistics);
+        const {
+          transactionCount,
+          walletTrans, successfulTran,
+          pendingTrans, failedTrans, airtimeTrans,
+          successfulAirtimeTrans, failedAirtimeTrans, pendingAirtimeTrans
+        } = userStatistics;
+        this.DashboardStatistics = {
+          totalTransactions: transactionCount,
+          walletBalance: walletTrans,
+          successfulTransactions: successfulTran,
+          pendingTransactions: pendingTrans,
+          failedTransactions: failedTrans,
+          totalAirtimeTransactions: airtimeTrans,
+          successfulAirtimeTransactions: successfulAirtimeTrans,
+          failedAirtimeTransactions: failedAirtimeTrans,
+          pendingAirtimeTransactions: pendingAirtimeTrans,
+        };
 
         console.log('stats', this.DashboardStatistics);
       },
@@ -108,7 +121,7 @@ export class AgentDashboardComponent implements OnInit {
         this.toast.showError(msg.message, 'Error');
         console.log(msg);
       }
-    )
+    );
   }
 
 
@@ -121,9 +134,9 @@ export class AgentDashboardComponent implements OnInit {
 
     this.userService.getRecentTransactions(userId, 0, 30).subscribe(
       response => {
-        const transactionData =  response.data[0].content.reverse();
+        const transactionData = response.data[0].content.reverse();
         console.log('###', response);
-       // this.airtimeTransactions = this.airtimeTransactions.filter( tranx => tranx.transactionType === Constants.AIRTIME_TRANSACTION);
+        // this.airtimeTransactions = this.airtimeTransactions.filter( tranx => tranx.transactionType === Constants.AIRTIME_TRANSACTION);
 
         this.airtimeTransactions = transactionData.splice(0, 20);
         console.log('***** Filtered  Transactions ****');
@@ -140,18 +153,18 @@ export class AgentDashboardComponent implements OnInit {
         this.isTransactionsLoaded = false;
 
       }
-    )
-  }
+    );
+  };
 
   formatTranxType = (type) => {
     return type.split('_').join(' ');
-  }
+  };
 
 
   // Re-Sort data ////////////////////
-  getTransactionsWithId() {
+  getTransactionsWithId(): void {
     this.transactionsWithId = [];
-    for (let i = 0; i < this.airtimeTransactions.length; i++ ) {
+    for (let i = 0; i < this.airtimeTransactions.length; i++) {
       const sortedTranx: any = {id: 0, data: {}};
       sortedTranx.id = i + 1;
       sortedTranx.data = this.airtimeTransactions[i];
@@ -161,8 +174,6 @@ export class AgentDashboardComponent implements OnInit {
     console.log('************ trax with id ****************');
     console.log(this.transactionsWithId);
   }
-
-
 
 
 }

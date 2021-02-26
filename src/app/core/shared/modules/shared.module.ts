@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
@@ -23,9 +23,30 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {CheckNullPipe} from '../../../shared/pipes/check-null.pipe';
+import {MoneyFormatterPipe} from '../../../shared/pipes/money-formatter/money-formatter.pipe';
+import {DynamicFieldComponent} from '../../../home/common-components/dynamic-field/dynamic-field.component';
+import {DynamicFormComponent} from '../../../home/common-components/dynamic-form/dynamic-form.component';
+import {PaymentStatusComponent} from '../../../home/common-components/payment-status/payment-status.component';
+import {CreateUserComponent} from '../../../home/pages/Dashboard/AdminDashboardPages/User management/create-user/create-user.component';
+import {ManageUsersComponent} from '../../../home/pages/Dashboard/AdminDashboardPages/User management/manage-agents/manage-users.component';
+import {UserAgentsComponent} from '../../../home/pages/Dashboard/AdminDashboardPages/User management/user-page/user-agents/user-agents.component';
+import {A2CardComponent} from '../../../home/common-components/card/card.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    CheckNullPipe,
+    MoneyFormatterPipe,
+    DynamicFieldComponent,
+    DynamicFormComponent,
+    PaymentStatusComponent,
+    CreateUserComponent,
+    ManageUsersComponent,
+    UserAgentsComponent,
+    A2CardComponent,
+  ],
   imports: [
     CommonModule,
     MatSelectModule,
@@ -52,6 +73,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
+    RouterModule,
   ],
   exports: [
     MatSelectModule,
@@ -77,7 +100,18 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     MatBottomSheetModule,
     HttpClientModule,
     FormsModule,
+    NgxPaginationModule,
     ReactiveFormsModule,
+    CheckNullPipe,
+    MoneyFormatterPipe,
+    DynamicFieldComponent,
+    DynamicFormComponent,
+    PaymentStatusComponent,
+    CreateUserComponent,
+    ManageUsersComponent,
+    UserAgentsComponent,
+    A2CardComponent,
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

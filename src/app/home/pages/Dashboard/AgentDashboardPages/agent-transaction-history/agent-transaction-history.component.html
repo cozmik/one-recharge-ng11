@@ -6,7 +6,7 @@
         <span class="icon" style="background-color: #42ccb1;"><i class="fa fa-exchange"></i></span>
         <div class="content-block-single">
           <div class="title text-uppercase" style="color:#42ccb1">Total Airtime Transactions</div>
-          <div class="count">{{DashboardStatistics.totalAirtimeTransactions}}</div>
+          <div class="count">{{DashboardStatistics.transactionCount}}</div>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
         <span class="icon" style="background-color: #469408;"><i class="fa fa-check"></i></span>
         <div class="content-block-single">
           <div class="title text-uppercase"  style="color:#469408">Successful Transactions</div>
-          <div class="count">{{DashboardStatistics.successfulAirtimeTransactions}}</div>
+          <div class="count">{{DashboardStatistics.successfulTransactions}}</div>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
         <span class="icon" style="background-color: #f49c0e;"><i class="fa fa-clock-o"></i></span>
         <div class="content-block-single">
           <div class="title text-uppercase"  style="color:#f49c0e">Pending Transactions</div>
-          <div class="count">{{DashboardStatistics.pendingAirtimeTransactions}}</div>
+          <div class="count">{{DashboardStatistics.pendingTransactions}}</div>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
         <span class="icon" style="background-color: #ff6265;"><i class="fa fa-warning"></i></span>
         <div class="content-block-single">
           <div class="title text-uppercase"  style="color:#ff6265">Failed Transactions</div>
-          <div class="count">{{DashboardStatistics.failedAirtimeTransactions}}</div>
+          <div class="count">{{DashboardStatistics.failedTransactions}}</div>
         </div>
       </div>
     </div>
@@ -80,9 +80,9 @@
         </div>
 
         <div class="filter-block">
-          <ul class="list-group list-unstyled list-items" style="float:left; margin-left:5px; font-size:13px;">
-            Status :
-            <select class="form-control-sm custom-select" [(ngModel)]="transactionStatus" (change)="getPaginatedData(1)" >
+          <ul class="list-group d-flex flex-nowrap flex-row align-items-baseline list-unstyled list-items" style="float:left; margin-left:5px; font-size:13px;">
+            <span class="d-block mr-2">Status :</span>
+            <select class="form-control-sm custom-select" style="width: 85px" [(ngModel)]="transactionStatus" (change)="getPaginatedData(1)" >
               <option [value]="'2'">All</option>
               <option [value]="'1'">Successful</option>
               <option [value]="'0'">Failed</option>

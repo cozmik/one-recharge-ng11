@@ -146,7 +146,7 @@ export class ManageCustomersComponent implements OnInit {
       this.isLoadingCustomers = false;
     }
     // console.log('************ Customers with id ****************');
-    // console.log(this.customersWithId);
+    console.log(this.customersWithId);
   }
 
 

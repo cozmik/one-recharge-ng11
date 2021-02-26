@@ -14,7 +14,10 @@ export class MenuItemsComponent implements OnInit {
   constructor(public mainMenuService: MainMenuService) { }
 
   getMainMenuItems(): void {
-    this.mainMenuService.getMainMenuItems().then(mainMenuItems => this.mainMenuItems = mainMenuItems);
+    this.mainMenuService.getMainMenuItems().then(mainMenuItems => {
+      console.log(mainMenuItems);
+      this.mainMenuItems = mainMenuItems;
+    });
   }
 
   ngOnInit(): void {

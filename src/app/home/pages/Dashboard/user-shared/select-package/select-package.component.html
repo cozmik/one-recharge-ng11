@@ -1,0 +1,11 @@
+<!--package section-->
+<!--<h3 class="package-heading">Packages</h3>-->
+<!--<p style="margin:2px 0px 2px;">Kindly Select a Package</p>-->
+<div class="package-section">
+  <button class="package" [routerLink]="category.id" *ngFor="let category of categories">
+    <div class="logo">
+      <img [src]="sanitizer.bypassSecurityTrustResourceUrl(category.categoryLogo)">
+    </div>
+    <p>{{sharedService.prettifyString(category.categoryName)}}</p>
+  </button>
+</div>

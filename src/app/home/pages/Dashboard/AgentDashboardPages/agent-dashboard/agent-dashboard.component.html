@@ -7,7 +7,7 @@
            <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
            <div class="content-block-single">
              <div class="title text-uppercase" style="color:#469408">Main Account</div>
-             <div class="count">NGN {{DashboardStatistics.walletBalance | currency | moneyFormatter}}</div>
+             <div class="count"> {{DashboardStatistics?.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
            </div>
          </div>
        </div>
@@ -19,7 +19,7 @@
            <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
            <div class="content-block-single">
              <div class="title text-uppercase"  style="color:#469408">Commission Account</div>
-             <div class="count">NGN {{DashboardStatistics.walletCommissionBalance | currency | moneyFormatter}}</div>
+             <div class="count">{{DashboardStatistics?.walletCommissionBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
            </div>
          </div>
        </div>
@@ -30,20 +30,20 @@
          <div class="card-content card-content-multi">
            <span class="icon" style="background-color: #03aced;"><i class="fa fa-exchange"></i></span>
            <div class="content-block-multi" style="flex:2 ">
-             <div class="title text-uppercase"  style="color:#03aced">Total Airtime Transactions</div>
-             <div class="count">{{DashboardStatistics.totalAirtimeTransactions }}</div>
+             <div class="title text-uppercase"  style="color:#03aced">Total Transactions</div>
+             <div class="count">{{DashboardStatistics?.totalTransactions }}</div>
            </div>
            <div class="content-block-multi">
              <div class="title text-uppercase">Successful</div>
-             <div class="count">{{DashboardStatistics.successfulAirtimeTransactions }}</div>
+             <div class="count">{{DashboardStatistics?.successfulTransactions }}</div>
            </div>
            <div class="content-block-multi">
              <div class="title text-uppercase">Failed</div>
-             <div class="count">{{DashboardStatistics.failedAirtimeTransactions}}</div>
+             <div class="count">{{DashboardStatistics?.failedTransactions}}</div>
            </div>
            <div class="content-block-multi">
              <div class="title text-uppercase">Pending</div>
-             <div class="count">{{DashboardStatistics.pendingAirtimeTransactions }}</div>
+             <div class="count">{{DashboardStatistics?.pendingTransactions }}</div>
            </div>
          </div>
        </div>
@@ -57,7 +57,7 @@
        <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
          <header>
            Most Recent Transactions
-           <a class="download-btn" *ngIf="false" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
+<!--           <a class="download-btn" *ngIf="false" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>-->
          </header>
          <div>
            <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
@@ -78,9 +78,9 @@
                <th scope="col">Date / Time</th>
              </tr>
              </thead>
-             <tbody *ngFor="let tranx of transactionsWithId">
-             <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
-               <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+             <tbody *ngFor="let tranx of transactionsWithId; let i = index;">
+             <tr [style.backgroundColor] = "i %2 === 0 ? '#ecf0f5' : 'white'">
+<!--               <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
                <!--make table stable-->
                <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
 
@@ -110,7 +110,7 @@
              </tr>
              </tbody>
            </table>
-           <div *ngIf="transactionsWithId.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+           <div *ngIf="transactionsWithId.length < 1 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
              <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
            </div>
          </div>

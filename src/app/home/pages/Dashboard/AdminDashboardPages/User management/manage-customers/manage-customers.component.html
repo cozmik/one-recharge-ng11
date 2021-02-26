@@ -37,7 +37,7 @@
             <th scope="col"> </th>
           </tr>
           </thead>
-          <tbody *ngFor="let customer of customersWithId | userStatusFilter : isActiveTicked : isBlockedTicked | filter : searchText  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+          <tbody *ngFor="let customer of customersWithId | filter : searchText  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
           <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
             <mat-progress-bar *ngIf="isloading && customer.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
             <!--make table stable-->

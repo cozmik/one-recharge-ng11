@@ -49,9 +49,9 @@
             <th scope="col">Date/Time</th>
           </tr>
           </thead>
-          <tbody *ngFor="let tranx of transactionsWithId | airtimeTransactionsFilter : searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+          <tbody *ngFor="let tranx of transactionsWithId | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
           <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
-            <mat-progress-bar *ngIf="isloading && agent.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+<!--            <mat-progress-bar *ngIf="isloading && agent.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
             <!--make table stable-->
             <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
 

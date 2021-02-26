@@ -294,10 +294,6 @@ export class GuestServiceFormComponent implements OnInit {
     this.form = this.sharedService.toFormGroup(this.fields);
   }
 
-  cleanString(str): string {
-    return str.replace(/_/g, ' ');
-  }
-
   submitServiceData(e: Event, confirm = false): void {
     const {hasConfirmation, url, confirmationUrl} = this.service.meta;
     if (hasConfirmation) {

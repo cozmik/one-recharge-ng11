@@ -498,7 +498,7 @@ export class UserService {
     console.log('******* payload ********');
     console.log(payload);
     return this.http.post(Constants.REQUEST_FUNDING + payload, formData,
-      Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
+      Constants.getTokenImageHttpHeaders()).pipe(
       map(res => res));
   }
 

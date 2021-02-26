@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedService} from '../../../core/services/shared-service/shared.service';
+import {ServiceStoreService} from './AdminDashboardPages/service-management/store/service-store.service';
+import {ServiceManagerService} from './AdminDashboardPages/service-management/views/service-manager.service';
 
 
 @Component({
@@ -13,14 +15,19 @@ export class DashboardComponent implements OnInit {
   rtl = false;
   @Input() openedSidebar = false;
 
-  constructor(public router: Router, public sharedService: SharedService) {
+  constructor(public router: Router, public sharedService: SharedService, private smStore: ServiceStoreService,
+              private smService: ServiceManagerService) {
     sharedService.changeEmitted$.subscribe(
       title => {
         this.pageTitle = title;
       });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (!this.smStore.allCategories.length){
+      this.smService.getAllServicesByCategories();
+    }
+  }
 
   getClasses(): any {
     return {

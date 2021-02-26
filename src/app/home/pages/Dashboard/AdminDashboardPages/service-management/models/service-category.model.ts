@@ -1,4 +1,4 @@
-import {ServiceModel} from './service.model';
+import {ServiceInterface, ServiceModel} from './service.model';
 import {Constants} from '../../../../../../shared/Constants';
 
 export interface CategoryInterface {
@@ -8,7 +8,7 @@ export interface CategoryInterface {
   createdDate: Date;
   description: string;
   id: number;
-  serviceResponses: ServiceModel[];
+  serviceResponses: ServiceInterface[];
 }
 
 export class ServiceCategoryModel implements CategoryInterface {

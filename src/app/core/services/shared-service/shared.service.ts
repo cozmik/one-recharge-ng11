@@ -5,10 +5,10 @@ import { Subject , BehaviorSubject, Observable} from 'rxjs';
 import {Constants} from '../../../shared/Constants';
 import {AnonymousService} from '../anonymous-service';
 import {ErrorService} from '../error_service/error.service';
-import {Agent} from "../../mocks/user/agent.model";
-import {ServiceFormBase} from "../../../home/common-components/service-form-base";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {Agent} from '../../mocks/user/agent.model';
+import {ServiceFormBase} from '../../../home/common-components/service-form-base';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -45,18 +45,17 @@ export class SharedService {
 
   emitWalletAccounts = () => {
     const walletAccounts: any = {
-      'walletBalance' : 0,
-      'walletCommissionBalance' : 0,
-      'actualWalletBalance' : 0
-    }
+      walletBalance : 0,
+      walletCommissionBalance : 0,
+      actualWalletBalance : 0
+    };
 
     const userId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id; // get user ID
 
 
     this.anonymousService.getUser(userId).subscribe(
       (data: any) => {
-        const userData = data.data[0];
-        const userDetails = new Agent(userData);
+        const userDetails = new Agent(data);
 
         // console.log(this.agentDetails);
         walletAccounts.walletBalance = userDetails.walletBalance;
@@ -75,11 +74,6 @@ export class SharedService {
   constructor(public http: HttpClient,  public anonymousService: AnonymousService,  public error: ErrorService) {
   }
 
-  /**
-   * create user
-   * @param formData
-   * @param token
-   */
   createUser(formData: any, token: string): Observable<any> {
     return this.http.post(Constants.CREATE_ADMIN_URL, formData, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));

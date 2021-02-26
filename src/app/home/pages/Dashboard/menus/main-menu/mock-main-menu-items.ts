@@ -80,7 +80,7 @@ export class MainMenu {
       groupTitle: false,
       sub: [
         {
-          title: 'Airtime & Data',
+          title: 'Transactions',
           routing: '/agent/transaction-history',
           permissions: 0
         }
@@ -232,7 +232,7 @@ export class MainMenu {
       groupTitle: false,
       sub: [
         {
-          title: 'Airtime & Data',
+          title: 'History',
           routing: '/admin/transactions',
           permissions: [Constants.CAN_DO_ALL, Constants.CAN_VIEW_TRANSACTIONS, Constants.CAN_VIEW_SYSTEM_REPORT]
         },
@@ -327,7 +327,7 @@ export class MainMenu {
       budge: '',
       budgeColor: '#f44236',
       userType: Constants.ADMIN_USERTYPE,
-      permissions: [Constants.CAN_DO_ALL, Constants.CAN_VIEW_TRANSACTIONS, Constants.CAN_VIEW_SYSTEM_REPORT]
+      permissions: ''
     },
     {
       title: 'Reports',
@@ -391,7 +391,7 @@ export class MainMenu {
       budge: '',
       budgeColor: '#f44236',
       userType: Constants.ADMIN_USERTYPE,
-      permissions: [Constants.CAN_DO_ALL, Constants.CAN_VIEW_TRANSACTIONS, Constants.CAN_VIEW_SYSTEM_REPORT]
+      permissions: ''
     },
     {
       title: 'System Configuration',
@@ -430,6 +430,7 @@ export class MainMenu {
 
   private getPermissions(): any[] {
     const permissions: any[] = [];
+    const userPermissions: any[] = [];
     this.user = JSON.parse(localStorage.getItem(Constants.PROFILE));
     this.userType = JSON.parse(localStorage.getItem(Constants.PROFILE)).userType;
     // get permissions from local storageconsole.log('get user permissions')
@@ -455,7 +456,7 @@ export class MainMenu {
     for (const menu of this.MainMenuItems) {
       counter++;
       // labels with permissions that exists
-      if ((menu.permissions.length === 0 && menu.userType === this.userType)
+      if ((!menu.permissions && menu.userType === this.userType)
         || (menu.groupTitle && HelperFunctions.isElementsExistsInArray(menu.permissions, this.getPermissions()))
         && menu.userType === this.userType) {
         sidebarMenu.push(menu);
@@ -476,7 +477,7 @@ export class MainMenu {
         }
       }
       // menu without submenus && permissions exists
-      else if ((menu.permissions.length === 0 && menu.userType === this.userType)
+      else if ((!menu.permissions && menu.userType === this.userType)
         || ((menu.sub === '') && (HelperFunctions.isElementsExistsInArray(menu.permissions, this.getPermissions() ))
           && menu.userType === this.userType)) {
         sidebarMenu.push(menu);

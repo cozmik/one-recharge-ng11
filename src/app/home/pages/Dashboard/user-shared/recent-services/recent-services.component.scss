@@ -1,0 +1,23 @@
+.package-section {
+  .package {
+    display: flex;
+    height: 50px;
+    padding: 10px;
+    width: calc(15% - 50px);
+    align-items: center;
+    border-radius: 5px;
+
+    .logo{
+      padding: 0;
+      margin: 0 10px 0 0;
+    }
+
+    p{
+      font-weight: 500;
+      font-size: .9em;
+      margin: 0;
+      padding: 0;
+      text-align: left;
+    }
+  }
+}

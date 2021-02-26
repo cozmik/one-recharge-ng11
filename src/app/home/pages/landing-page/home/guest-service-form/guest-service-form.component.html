@@ -13,7 +13,7 @@
     <mat-select [disabled]="!services" placeholder="Select Service" required
                [(ngModel)]="service" style="width:100%;" (ngModelChange)="prepareServiceForm()">
       <mat-option *ngFor="let service of services" [value]="service">
-        {{cleanString(service.serviceName) | titlecase}}
+        {{sharedService.prettifyString(service.serviceName) | titlecase}}
       </mat-option>
     </mat-select>
   </mat-form-field>

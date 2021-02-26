@@ -18,7 +18,7 @@ import {ServiceConfigSheetComponent} from './components/modals/service-config-sh
 import {NotSavedWarningComponent} from './components/modals/not-saved-warning/not-saved-warning.component';
 import {ServiceManagementComponent} from './service-management.component';
 import {CommonModule} from '@angular/common';
-import {SharedModule} from '../../../../../core/shared/shared.module';
+import {SharedModule} from '../../../../../core/shared/modules/shared.module';
 import {ServiceManagerService} from './views/service-manager.service';
 
 @NgModule({
@@ -47,7 +47,4 @@ import {ServiceManagerService} from './views/service-manager.service';
   ]
 })
 export class ServiceManagerModule {
-  constructor(private smService: ServiceManagerService) {
-    this.smService.getAllServicesByCategories();
-  }
 }

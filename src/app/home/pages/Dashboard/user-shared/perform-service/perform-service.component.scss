@@ -64,12 +64,11 @@
       border-top:4px solid $accent-color;
       background-color: #fff;
       padding:30px 20px;
-      min-height:350px;
+      min-height:250px;
       box-shadow:
         0 4px 8px 0 rgba(0,0,0,0.12),
         0 2px 4px 0 rgba(0,0,0,0.08);
       .widget-content-block{
-        display:none;
         .inner-content-area{
           margin:20px 0;
           .block{
@@ -176,7 +175,6 @@
   }
 
 }
-
 
 .errorText{
   position: absolute;
