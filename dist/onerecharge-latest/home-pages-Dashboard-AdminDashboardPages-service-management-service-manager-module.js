@@ -1,104 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["home-pages-Dashboard-AdminDashboardPages-service-management-service-manager-module"],{
 
-/***/ "06+X":
-/*!************************************************************************************************************!*\
-  !*** ./src/app/home/pages/Dashboard/AdminDashboardPages/service-management/store/service-store.service.ts ***!
-  \************************************************************************************************************/
-/*! exports provided: ServiceStoreService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceStoreService", function() { return ServiceStoreService; });
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-
-
-class ServiceStoreService {
-    constructor() {
-        this._serviceCategories = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]([]);
-        this._selectedCategory = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
-        this._catServices = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]([]);
-        this._selectedService = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
-        this._allServices = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]([]);
-        this._selectedServicePackage = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
-        this._servicePackages = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]([]);
-    }
-    get categories() {
-        return this._serviceCategories;
-    }
-    setAllServices(categories) {
-        const services = [];
-        categories.forEach((cat) => {
-            services.push(...cat.serviceResponses);
-            this._allServices.next(services);
-        });
-    }
-    get allServices() {
-        return this._allServices;
-    }
-    setCategories(categories) {
-        this._serviceCategories.next(categories);
-        this.setAllServices(categories);
-    }
-    setCategory(cat) {
-        this._selectedCategory.next(cat);
-    }
-    getCategory(id) {
-        if (this.allCategories.length) {
-            this._selectedCategory.next(this.allCategories.find(c => c.id === id));
-            this._catServices.next(this._selectedCategory.getValue().serviceResponses);
-        }
-        return this._selectedCategory.getValue();
-    }
-    get services() {
-        return this._catServices.getValue();
-    }
-    get allCategories() {
-        return this._serviceCategories.getValue();
-    }
-    get servicePackages() {
-        return this._servicePackages.getValue();
-    }
-    getSelectedService(catId, serviceId) {
-        this._selectedService.next(this.getCategory(catId).serviceResponses.find(s => s.id === serviceId));
-        this._servicePackages.next(this._selectedService.getValue().servicePackages);
-        return this._selectedService.getValue();
-    }
-    getSelectedPackage(packageId) {
-        this._selectedServicePackage.next(this._selectedService.getValue().servicePackages.find(p => p.id === packageId));
-        return this._selectedServicePackage.getValue();
-    }
-    updateCategory(catId, data) {
-        const cat = this.getCategory(catId);
-        if (cat) {
-            const index = this.allCategories.indexOf(cat);
-            console.log(data);
-            this.allCategories[index] = Object.assign(Object.assign({}, cat), data);
-            console.log(this.allCategories);
-        }
-    }
-    updateServicePackage(packageId, data) {
-        const pack = this.getSelectedPackage(packageId);
-        if (pack) {
-            const index = this.servicePackages.indexOf(pack);
-            this.servicePackages[index] = Object.assign({}, data);
-        }
-    }
-    updateService(service) {
-        const serv = this.getSelectedService(service.serviceCategory.id, service.id);
-        if (serv) {
-            const index = this.services.indexOf(serv);
-            this.services[index] = Object.assign({}, service);
-        }
-    }
-}
-ServiceStoreService.ɵfac = function ServiceStoreService_Factory(t) { return new (t || ServiceStoreService)(); };
-ServiceStoreService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({ token: ServiceStoreService, factory: ServiceStoreService.ɵfac, providedIn: 'root' });
-
-
-/***/ }),
-
 /***/ "17fY":
 /*!*********************************************************************!*\
   !*** ./node_modules/@fortawesome/free-solid-svg-icons/faSpinner.js ***!
@@ -830,14 +731,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _panel_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./panel.service */ "YyXD");
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
-/* harmony import */ var _store_service_store_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/service-store.service */ "06+X");
-/* harmony import */ var _views_service_manager_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./views/service-manager.service */ "V31o");
-/* harmony import */ var _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/sidenav */ "XhcP");
-/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/portal */ "+rOU");
-/* harmony import */ var _components_title_title_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/title/title.component */ "uwK0");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common */ "ofXK");
-
+/* harmony import */ var _views_service_manager_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/service-manager.service */ "V31o");
+/* harmony import */ var _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/sidenav */ "XhcP");
+/* harmony import */ var _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/portal */ "+rOU");
+/* harmony import */ var _components_title_title_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/title/title.component */ "uwK0");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "ofXK");
 
 
 
@@ -850,21 +749,17 @@ __webpack_require__.r(__webpack_exports__);
 const _c0 = ["rightPanel"];
 function ServiceManagementComponent_ng_template_4_Template(rf, ctx) { }
 class ServiceManagementComponent {
-    constructor(panelService, dialog, storeService, smService) {
+    constructor(panelService, dialog, smService) {
         this.panelService = panelService;
         this.dialog = dialog;
-        this.storeService = storeService;
         this.smService = smService;
         this.smService.title.next('');
-        if (!this.storeService.allCategories) {
-            this.smService.getAllServicesByCategories();
-        }
     }
     ngOnInit() {
         this.panelService.panel = this.rightPanel;
     }
 }
-ServiceManagementComponent.ɵfac = function ServiceManagementComponent_Factory(t) { return new (t || ServiceManagementComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_panel_service__WEBPACK_IMPORTED_MODULE_1__["PanelService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_store_service_store_service__WEBPACK_IMPORTED_MODULE_3__["ServiceStoreService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_views_service_manager_service__WEBPACK_IMPORTED_MODULE_4__["ServiceManagerService"])); };
+ServiceManagementComponent.ɵfac = function ServiceManagementComponent_Factory(t) { return new (t || ServiceManagementComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_panel_service__WEBPACK_IMPORTED_MODULE_1__["PanelService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_material_dialog__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_views_service_manager_service__WEBPACK_IMPORTED_MODULE_3__["ServiceManagerService"])); };
 ServiceManagementComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: ServiceManagementComponent, selectors: [["app-service-management"]], viewQuery: function ServiceManagementComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵviewQuery"](_c0, 3);
     } if (rf & 2) {
@@ -890,7 +785,7 @@ ServiceManagementComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["�
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("cdkPortalOutlet", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpipeBind1"](5, 1, ctx.panelService.panelPortal));
-    } }, directives: [_angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContainer"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenav"], _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_6__["CdkPortalOutlet"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContent"], _components_title_title_component__WEBPACK_IMPORTED_MODULE_7__["TitleComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_8__["RouterOutlet"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_9__["AsyncPipe"]], styles: [".main-container[_ngcontent-%COMP%] {\n  background: white;\n  padding: 40px 60px;\n}\n\n.mat-drawer-content.mat-sidenav-content[_ngcontent-%COMP%] {\n  min-height: 78vh;\n  background: white;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXC4uXFxzZXJ2aWNlLW1hbmFnZW1lbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUE7RUFDRSxpQkFBQTtFQUNBLGtCQUFBO0FBREY7O0FBZUU7RUFDRSxnQkFBQTtFQUNBLGlCQUFBO0FBWkoiLCJmaWxlIjoic2VydmljZS1tYW5hZ2VtZW50LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCAnc3JjL2Fzc2V0cy9zYXNzL3ZhcmlhYmxlJztcclxuXHJcbi5tYWluLWNvbnRhaW5lciB7XHJcbiAgYmFja2dyb3VuZDogd2hpdGU7XHJcbiAgcGFkZGluZzogNDBweCA2MHB4O1xyXG59XHJcblxyXG4gIC8vc2VjdGlvbiB7XHJcbiAgLy8gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICAvLyAgb3ZlcmZsb3cteDogaGlkZGVuO1xyXG4gIC8vICBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTtcclxuICAvL1xyXG4gIC8vICAuY29udGFpbmVyIHtcclxuICAvLyAgICBwYWRkaW5nOiAzMHB4O1xyXG4gIC8vICAgIG1pbi1oZWlnaHQ6IDgwdmg7XHJcbiAgLy8gIH1cclxuICAvL31cclxuXHJcbiAgLm1hdC1kcmF3ZXItY29udGVudC5tYXQtc2lkZW5hdi1jb250ZW50IHtcclxuICAgIG1pbi1oZWlnaHQ6IDc4dmg7XHJcbiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTtcclxuICB9XHJcblxyXG4iXX0= */"] });
+    } }, directives: [_angular_material_sidenav__WEBPACK_IMPORTED_MODULE_4__["MatSidenavContainer"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_4__["MatSidenav"], _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_5__["CdkPortalOutlet"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_4__["MatSidenavContent"], _components_title_title_component__WEBPACK_IMPORTED_MODULE_6__["TitleComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterOutlet"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_8__["AsyncPipe"]], styles: [".main-container[_ngcontent-%COMP%] {\n  background: white;\n  padding: 40px 60px;\n}\n\n.mat-drawer-content.mat-sidenav-content[_ngcontent-%COMP%] {\n  min-height: 78vh;\n  background: white;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXC4uXFxzZXJ2aWNlLW1hbmFnZW1lbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUE7RUFDRSxpQkFBQTtFQUNBLGtCQUFBO0FBREY7O0FBZUU7RUFDRSxnQkFBQTtFQUNBLGlCQUFBO0FBWkoiLCJmaWxlIjoic2VydmljZS1tYW5hZ2VtZW50LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCAnc3JjL2Fzc2V0cy9zYXNzL3ZhcmlhYmxlJztcclxuXHJcbi5tYWluLWNvbnRhaW5lciB7XHJcbiAgYmFja2dyb3VuZDogd2hpdGU7XHJcbiAgcGFkZGluZzogNDBweCA2MHB4O1xyXG59XHJcblxyXG4gIC8vc2VjdGlvbiB7XHJcbiAgLy8gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICAvLyAgb3ZlcmZsb3cteDogaGlkZGVuO1xyXG4gIC8vICBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTtcclxuICAvL1xyXG4gIC8vICAuY29udGFpbmVyIHtcclxuICAvLyAgICBwYWRkaW5nOiAzMHB4O1xyXG4gIC8vICAgIG1pbi1oZWlnaHQ6IDgwdmg7XHJcbiAgLy8gIH1cclxuICAvL31cclxuXHJcbiAgLm1hdC1kcmF3ZXItY29udGVudC5tYXQtc2lkZW5hdi1jb250ZW50IHtcclxuICAgIG1pbi1oZWlnaHQ6IDc4dmg7XHJcbiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTtcclxuICB9XHJcblxyXG4iXX0= */"] });
 
 
 /***/ }),
@@ -1917,133 +1812,6 @@ ServiceComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineC
 
 /***/ }),
 
-/***/ "V31o":
-/*!**************************************************************************************************************!*\
-  !*** ./src/app/home/pages/Dashboard/AdminDashboardPages/service-management/views/service-manager.service.ts ***!
-  \**************************************************************************************************************/
-/*! exports provided: ServiceManagerService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceManagerService", function() { return ServiceManagerService; });
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ "qCKp");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
-/* harmony import */ var _shared_Constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../shared/Constants */ "z9QB");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var _store_service_store_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store/service-store.service */ "06+X");
-
-
-
-
-
-
-class ServiceManagerService {
-    constructor(http, serviceStore) {
-        this.http = http;
-        this.serviceStore = serviceStore;
-        this.serviceApi = _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].SERVICE_URL + '/services/';
-        this.selectedService = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
-        this.selectedCategory = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](null);
-        this.startLoading = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"](false);
-        this.title = new rxjs__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]('');
-    }
-    getAllServicesByCategories(callBack) {
-        if (this.serviceStore.allCategories) {
-            this.serviceStore.setCategories(this.serviceStore.allCategories);
-            if (callBack) {
-                callBack();
-            }
-        }
-        this.http.get(this.serviceApi + 'categories', _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()).subscribe((res) => {
-            this.serviceStore.setCategories(res);
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    toggleActivation(serviceId, status, callBack) {
-        let action = 'activate';
-        if (status) {
-            action = 'deactivate';
-        }
-        this.http.put(`${this.serviceApi}${action}/${serviceId}`, null, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()).subscribe((res) => {
-            this.serviceStore.updateService(res);
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    getCategoryDetails(id, callBack) {
-        this.http.get(this.serviceApi + 'categories/' + id, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()).subscribe(res => {
-            this.serviceStore.setCategory(res);
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    updateService(service, callBack) {
-        const data = Object.assign(Object.assign({}, service), { categoryId: service.serviceCategory.id });
-        this.http.put(this.serviceApi + 'update/' + service.id, data, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders())
-            .subscribe(res => {
-            this.serviceStore.updateService(res);
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    // getServiceDetails(id: number, callBack?: () => void): Observable<ServiceModel> {
-    //   if (this.selectedService.getValue() && this.selectedService.getValue().id === id) {
-    //     return this.selectedService;
-    //   } else {
-    //     return this.http.get(this.serviceApi + id, Constants.getNoTokenHeaders()).pipe(
-    //       map(res => {
-    //         if (callBack) {
-    //           callBack();
-    //         }
-    //         return new ServiceModel(res);
-    //       })
-    //     );
-    //   }
-    // }
-    updateServicePackage(servicePackageId, packageData, callBack) {
-        this.http.put(this.serviceApi + '/service-package/' + servicePackageId, packageData, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()).subscribe(res => {
-            this.serviceStore.updateServicePackage(servicePackageId, res);
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    pasteServiceConfig(fromServiceId, toServiceId, callBack) {
-        const payload = { fromServiceId, toServiceId };
-        this.http.post(this.serviceApi + 'copy-config', payload, Object.assign(Object.assign({}, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()), { responseType: 'text' }))
-            .subscribe(res => {
-            if (callBack) {
-                callBack();
-            }
-        });
-    }
-    updateCategory(categoryData, catId, callback) {
-        this.http.put(this.serviceApi + 'category/' + catId, categoryData, Object.assign(Object.assign({}, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()), { responseType: 'text' })).subscribe(res => {
-            this.serviceStore.updateCategory(catId, categoryData);
-            if (callback) {
-                callback();
-            }
-        });
-    }
-    updateCatLogo(catId, fileData, callback) {
-        this.http.put(this.serviceApi + 'category/upload-image/' + catId, fileData, _shared_Constants__WEBPACK_IMPORTED_MODULE_2__["Constants"].getTokenHttpHeaders()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(res => {
-            console.log(res);
-        })).subscribe();
-    }
-}
-ServiceManagerService.ɵfac = function ServiceManagerService_Factory(t) { return new (t || ServiceManagerService)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_store_service_store_service__WEBPACK_IMPORTED_MODULE_5__["ServiceStoreService"])); };
-ServiceManagerService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: ServiceManagerService, factory: ServiceManagerService.ɵfac, providedIn: 'root' });
-
-
-/***/ }),
-
 /***/ "VXtu":
 /*!*******************************************************************************************************************************!*\
   !*** ./src/app/home/pages/Dashboard/AdminDashboardPages/service-management/components/service-list/service-list.component.ts ***!
@@ -2845,10 +2613,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_modals_not_saved_warning_not_saved_warning_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/modals/not-saved-warning/not-saved-warning.component */ "NTir");
 /* harmony import */ var _service_management_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service-management.component */ "LznK");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _core_shared_shared_module__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../../../../core/shared/shared.module */ "RTfJ");
+/* harmony import */ var _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../../../../core/shared/modules/shared.module */ "0Vlo");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _views_service_manager_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./views/service-manager.service */ "V31o");
-
 
 
 
@@ -2870,18 +2636,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class ServiceManagerModule {
-    constructor(smService) {
-        this.smService = smService;
-        this.smService.getAllServicesByCategories();
-    }
 }
 ServiceManagerModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineNgModule"]({ type: ServiceManagerModule });
-ServiceManagerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineInjector"]({ factory: function ServiceManagerModule_Factory(t) { return new (t || ServiceManagerModule)(_angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵinject"](_views_service_manager_service__WEBPACK_IMPORTED_MODULE_20__["ServiceManagerService"])); }, imports: [[
+ServiceManagerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineInjector"]({ factory: function ServiceManagerModule_Factory(t) { return new (t || ServiceManagerModule)(); }, imports: [[
             _angular_common__WEBPACK_IMPORTED_MODULE_17__["CommonModule"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
             _service_routing_module__WEBPACK_IMPORTED_MODULE_2__["ServiceRoutingModule"],
             _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_13__["PortalModule"],
-            _core_shared_shared_module__WEBPACK_IMPORTED_MODULE_18__["SharedModule"],
+            _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_18__["SharedModule"],
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵsetNgModuleScope"](ServiceManagerModule, { declarations: [_components_title_title_component__WEBPACK_IMPORTED_MODULE_0__["TitleComponent"],
         _views_service_categories_service_categories_component__WEBPACK_IMPORTED_MODULE_1__["ServiceCategoriesComponent"],
@@ -2900,7 +2662,7 @@ ServiceManagerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵde
         _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"],
         _service_routing_module__WEBPACK_IMPORTED_MODULE_2__["ServiceRoutingModule"],
         _angular_cdk_portal__WEBPACK_IMPORTED_MODULE_13__["PortalModule"],
-        _core_shared_shared_module__WEBPACK_IMPORTED_MODULE_18__["SharedModule"]] }); })();
+        _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_18__["SharedModule"]] }); })();
 
 
 /***/ }),
