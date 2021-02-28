@@ -100,7 +100,7 @@ export class SignInComponent implements OnInit {
         }
       },
       err => {
-        this.errorMsg = this.errorHandler.loggedOutError(err);
+        this.errorMsg = err.error.message;
         this.signingIn = false;
         this.signInText = 'Sign in';
       },

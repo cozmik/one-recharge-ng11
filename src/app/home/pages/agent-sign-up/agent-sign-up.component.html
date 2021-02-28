@@ -119,7 +119,7 @@
             <p>By Clicking <strong>Sign Up</strong>, you agree to {{vendorTitle}} <a href="">terms and conditions</a> </p>
           </div>
 
-          <button md-raised-button type="submit" color="accent" [disabled]="agentSignUpForm.invalid">{{signUpText}} <mat-spinner *ngIf="creatingAccount" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
+          <button mat-raised-button type="submit" color="accent" [disabled]="agentSignUpForm.invalid || creatingAccount">{{signUpText}} <mat-spinner color="primary" *ngIf="creatingAccount" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
 
           <div class="additional-info">
            Already have an agent account? <a routerLink="/sign-in">Sign In</a>

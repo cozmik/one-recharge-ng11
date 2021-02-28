@@ -25,8 +25,8 @@ export class CreateUserComponent implements OnInit {
   public switchCreate: boolean;
   public isloading: boolean;
   public createText = 'Create User';
-  public uplodText: String;
-  public createAgentType: String;
+  public uplodText: string;
+  public createAgentType: string;
   public allSuccessfulMsg: string;
   public partiallySuccessfulMsg: string;
   public unsucceessfulMsg: string;
@@ -49,7 +49,7 @@ export class CreateUserComponent implements OnInit {
 
   public roleId: any;
   public successText: string;
-  public errorText: String;
+  public errorText: string;
   private allAgents: any;
   public numberExists: any;
   public emailExists: any;
@@ -116,14 +116,8 @@ export class CreateUserComponent implements OnInit {
           this.userForm.controls.roleId.clearValidators();
           this.userForm.controls.roleId.updateValueAndValidity();
         }
-        this.roles = data.data;
-      },
-      err => {
-        // console.log(err);
-        const msg = this.errorHandler.errorHandlerWithText(this.getRoles, err);
-        // console.log(msg.message);
-      }
-    );
+        this.roles = data;
+      });
   }
 
   createForm(): void {

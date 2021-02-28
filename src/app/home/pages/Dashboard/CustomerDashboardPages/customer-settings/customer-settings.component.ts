@@ -23,7 +23,7 @@ export class CustomerSettingsComponent implements OnInit {
   public message: any;
   public isNotEdit: boolean;
   public edit_text: string;
-  public isUpdating : boolean;
+  public isUpdating: boolean;
   public profile: any;
   public userFormData: any = {
     lastName: '',
@@ -37,9 +37,12 @@ export class CustomerSettingsComponent implements OnInit {
   confirmPassword: string;
   public changePasswordStatus: boolean;
   password: string;
+  passwordChangeError: string;
 
-  constructor( public sharedService: SharedService, public router: Router,  public fb: FormBuilder, public anonymousService: AnonymousService,
-               public userService: UserService, public authService: AuthService, public toast: ToastService, public error: ErrorService) {
+  constructor( public sharedService: SharedService, public router: Router,
+               public fb: FormBuilder, public anonymousService: AnonymousService,
+               public userService: UserService, public authService: AuthService,
+               public toast: ToastService, public error: ErrorService) {
 
     this.sharedService.emitChange(this.pageTitle);
     this.profile = JSON.parse(localStorage.getItem(Constants.PROFILE));
@@ -54,12 +57,12 @@ export class CustomerSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('*************** profile details **************');
+    // console.log('*************** profile details **************');
     console.log(this.profile);
   }
 
   onSubmit(): void {
-    console.log(this.userFormData);
+    // console.log(this.userFormData);
     this.updateUser();
   }
 
@@ -84,7 +87,7 @@ export class CustomerSettingsComponent implements OnInit {
         const msg = this.error.errorHandlerWithText(this.getProfile, err);
         console.log(err);
       }
-    )
+    );
   }
 
 // update users
@@ -100,19 +103,11 @@ export class CustomerSettingsComponent implements OnInit {
           this.toast.showSuccess(this.message, 'Success');
           this.getProfile();
         }
-      },
-      err => {
-        this.isUpdating = false;
-        console.log(err);
-        const msg = this.error.errorHandlerWithText(this.updateUser, err);
-        console.log(msg.errorMsg);
-        this.toast.showError(msg.message, 'Error');
-      }
-    )
+      });
   }
 
 
-  editToggle() {
+  editToggle(): void {
     if (this.isNotEdit) {
       this.edit_text = 'Cancel';
       this.isNotEdit = false;
@@ -134,48 +129,43 @@ export class CustomerSettingsComponent implements OnInit {
       });
   }
 
-
-
-  onSubmitPassword() {
+  onSubmitPassword(): void {
     this.changePassword();
     this.changePasswordStatus = true;
   }
 
 
 
-  changePassword() {
+  changePassword(): void {
     this.authService.changePassword(this.changePasswordForm.value).subscribe(
       data => {
         console.log(data);
         if (data.status === 200) {
           this.toast.showSuccess(data.message, '');
-          setTimeout(()=>{
+          setTimeout(() => {
             this.authService.logout();
-          }, 2000)
+          }, 2000);
 
         }
-      },
-      err => {
+      }, err => {
         console.log(err);
+        this.passwordChangeError = err;
         this.changePasswordStatus = false;
-        console.log(this.error.errorHandlerWithText(this.changePassword, err));
-        // const msg = this.error.errorHandlerWithText(this.changePassword, err);
-       // this.toast.showError(msg.message, 'Error');
       }
-    )
+    );
   }
 
 }
 
 export class PasswordValidation {
 
-  static MatchPassword(AC: AbstractControl) {
+  static MatchPassword(AC: AbstractControl): void {
     const password = AC.get('password').value; // to get value in input tag
     const confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
     if (password  !==  confirmPassword) {
-      AC.get('confirmPassword').setErrors({MatchPassword: true})
+      AC.get('confirmPassword').setErrors({MatchPassword: true});
     } else {
-      return null
+      return null;
     }
   }
 }

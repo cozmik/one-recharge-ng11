@@ -67,16 +67,9 @@ export class FrozenAccountsComponent implements OnInit {
       response => {
         console.log('************ Frozen accounts list ****************');
         console.log(response.data);
-        this.agents = response.data;
+        this.agents = response.data[0];
         this.isLoadingFrozenAccounts = false;
         this.getAgentWithSortedId();
-      },
-      err => {
-        console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAllAgents, err);
-        this.isLoadingFrozenAccounts = false;
-        console.log(this.errorResponse);
-
       }
     );
   }

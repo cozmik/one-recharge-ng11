@@ -4,7 +4,7 @@
     <!--<label class="sr-only" for="amount">Amount</label>-->
     <!--<input matInput type="number" required id="amount" [(ngModel)]="name" [ngModelOptions] ="{standalone: true}" name="amount" placeholder="Enter Amount" value="">-->
   <!--</mat-form-field>-->
-  <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#3aa507' : '#a12121'">₦{{(walletBalance==null?0:walletBalance) | currency | moneyFormatter}}</span></p>
+  <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#3aa507' : '#a12121'">₦{{(walletBalance==null?0:walletBalance) | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></p>
 
   <mat-form-field>
     <input [(ngModel)]="freezeAmount" matInput  type="number" required id="amount" placeholder="Enter amount to freeze" value=""/>
@@ -29,5 +29,5 @@
 
 <div md-dialog-actions style="display:flex; justify-content: center;">
   <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
-  <button style="margin-left:20px;" md-button md-raised-button [disabled]="(freezeAmount === null) || (freezeAmount < 50) || isFreezing"  (click)="freezeAccount()" color="accent">{{isFreezing?'Freezing':'Freeze'}} ₦{{(freezeAmount==null?0:freezeAmount) | currency | moneyFormatter}}</button>
+  <button style="margin-left:20px;" md-button md-raised-button [disabled]="(freezeAmount === null) || (freezeAmount < 50) || isFreezing"  (click)="freezeAccount()" color="accent">{{isFreezing?'Freezing':'Freeze'}} ₦{{(freezeAmount==null?0:freezeAmount) | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</button>
 </div>

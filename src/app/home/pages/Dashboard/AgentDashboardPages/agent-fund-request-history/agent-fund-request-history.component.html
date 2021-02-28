@@ -58,7 +58,7 @@
             <td scope="row">{{tranx.id}}</td>
             <td scope="row">{{tranx.data.depositorName}}</td>
             <td scope="row">{{tranx.data.mobileNo}}</td>
-            <td scope="row">{{tranx.data.amount | currency | moneyFormatter}}</td>
+            <td scope="row">{{tranx.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td scope="row">{{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
 
               <span *ngIf="tranx.data.status === 0" class="status" [style.background-color]="'#df9808'" class="status desktopOnly"></span> <!--failed-->

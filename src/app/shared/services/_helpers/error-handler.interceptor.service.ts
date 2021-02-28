@@ -22,16 +22,12 @@ export class ErrorHandler implements HttpInterceptor {
     return next.handle(request).pipe(
       retryWhen(incrementalRetry({
         scalingDuration: 2000,
-        excludedStatusCodes: [500, 503, 401],
+        excludedStatusCodes: [500, 503, 401, 422],
         headerAllow: request.headers.get('retry')
       })),
       catchError((err: HttpErrorResponse) => {
         console.log('Error is here');
-
         if (err.error instanceof ErrorEvent) {
-          errorMessage = `Error: ${err.error.message}`;
-        } else {
-          if (err.error instanceof ErrorEvent) {
             errorMessage = `Error: ${err.error.message}`;
           } else {
             if (err.status === 404) {
@@ -75,7 +71,6 @@ export class ErrorHandler implements HttpInterceptor {
             }
             // console.log(this.requestQueue);
           }
-        }
 
         const error = err.error.message ? err.error.message : err.statusText;
         if (request.headers.get('popup-error') === 'true') {
@@ -95,7 +90,7 @@ export class ErrorHandler implements HttpInterceptor {
 
   private logout(): void {
     localStorage.clear();
-    location.reload();
+    // location.reload();
   }
 }
 

@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceStoreService} from '../../AdminDashboardPages/service-management/store/service-store.service';
-import {CategoryInterface, ServiceCategoryModel} from '../../AdminDashboardPages/service-management/models/service-category.model';
-import {ServiceInterface, ServiceModel} from '../../AdminDashboardPages/service-management/models/service.model';
+import {CategoryInterface} from '../../AdminDashboardPages/service-management/models/service-category.model';
 import {ServiceFormBase} from '../../../../common-components/service-form-base';
 import {FormGroup} from '@angular/forms';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
-import {filter, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-perform-service',

@@ -28,10 +28,10 @@
                 <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.amount">
-                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+                <span class="title">Amount</span> <span class="value"> {{transactionResponse?.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.commission">
-                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+                <span class="title">Commission</span> <span class="value"> {{transactionResponse?.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
             </div>
 
@@ -57,10 +57,10 @@
                 <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.amount">
-                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+                <span class="title">Amount</span> <span class="value"> {{transactionResponse?.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.commission">
-                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+                <span class="title">Commission</span> <span class="value"> {{transactionResponse?.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
             </div>
 
@@ -87,10 +87,10 @@
                 <span class="title">Date / Time</span> <span class="value">{{transactionResponse?.createdDate | date}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.amount">
-                <span class="title">Amount</span> <span class="value">NGN {{transactionResponse?.amount | currency | moneyFormatter}}</span>
+                <span class="title">Amount</span> <span class="value"> {{transactionResponse?.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
               <div class="block" *ngIf="transactionResponse?.commission">
-                <span class="title">Commission</span> <span class="value">NGN {{transactionResponse?.commission | currency | moneyFormatter}}</span>
+                <span class="title">Commission</span> <span class="value"> {{transactionResponse?.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span>
               </div>
             </div>
 

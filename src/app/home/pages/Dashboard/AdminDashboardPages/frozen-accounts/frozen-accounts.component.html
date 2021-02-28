@@ -24,7 +24,7 @@
       </div>
       <div>
         <mat-progress-bar *ngIf="isLoadingFrozenAccounts" mode="indeterminate"></mat-progress-bar>
-        <table class="table table-dark"  *ngIf="frozenAccountsWithId.length > 0">
+        <table class="table table-primary"  *ngIf="frozenAccountsWithId.length > 0">
           <thead>
           <tr>
             <!--make table stable-->
@@ -48,7 +48,7 @@
             <td scope="row">{{user.id}}</td>
             <td class="link">{{user.data.agentFirstName}} {{user.data.agentLastName}} </td>
             <td class="link">{{user.data.agentEmail}}</td>
-            <td class="link">{{user.data.amount | currency | moneyFormatter}}</td>
+            <td class="link">{{user.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td class="link">{{user.data.adminFirstName}} {{user.data.adminLastName}}</td>
             <td class="link">{{user.data.createdDate | date}}  {{user.data.createdDate | date : 'shortTime'}}</td>
             <td class="link"> <button class="quick-action-btn" (click)="viewDialog(user.data)">View details</button></td>

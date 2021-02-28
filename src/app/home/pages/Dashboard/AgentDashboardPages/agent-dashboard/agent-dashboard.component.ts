@@ -27,7 +27,7 @@ export class AgentDashboardComponent implements OnInit {
 
   public DashboardStatistics: {
     walletBalance: number,
-    walletCommissionBalance?: number,
+    walletCommissionBalance: number,
     totalTransactions: number,
     totalAirtimeTransactions: number,
     successfulAirtimeTransactions: number,
@@ -86,6 +86,7 @@ export class AgentDashboardComponent implements OnInit {
         // console.log('agentDetails', this.agentDetails);
         this.DashboardStatistics.walletBalance = this.agentDetails.walletBalance;
         this.DashboardStatistics.walletCommissionBalance = this.agentDetails.walletCommissionBalance;
+        console.log(this.agentDetails);
       });
   };
 
@@ -97,13 +98,14 @@ export class AgentDashboardComponent implements OnInit {
         console.log(userStatistics);
         const {
           transactionCount,
-          walletTrans, successfulTran,
+          walletTrans,
+          successfulTran,
           pendingTrans, failedTrans, airtimeTrans,
           successfulAirtimeTrans, failedAirtimeTrans, pendingAirtimeTrans
         } = userStatistics;
         this.DashboardStatistics = {
+          ...this.DashboardStatistics,
           totalTransactions: transactionCount,
-          walletBalance: walletTrans,
           successfulTransactions: successfulTran,
           pendingTransactions: pendingTrans,
           failedTransactions: failedTrans,

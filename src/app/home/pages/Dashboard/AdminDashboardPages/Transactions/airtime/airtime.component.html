@@ -127,7 +127,7 @@
       </div>
       <div>
         <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
-        <table class="table table-dark"  *ngIf="transactions.length > 0">
+        <table class="table table-primary"  *ngIf="transactions.length > 0">
           <thead>
           <tr>
             <!--make table stable-->
@@ -169,7 +169,7 @@
             <td (click)="viewTransaction(tranx)" class="link">{{tranx.channel}}</td>
             <td (click)="viewTransaction(tranx)" class="link">{{tranx.networkName}}</td>
             <td (click)="viewTransaction(tranx)" class="link">{{tranx.toMsisdn}}</td>
-            <td (click)="viewTransaction(tranx)" class="link">{{tranx.amount | currency | moneyFormatter}}</td>
+            <td (click)="viewTransaction(tranx)" class="link">{{tranx.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td (click)="viewTransaction(tranx)" class="link">{{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}</td>
 
             <td class="more" style="padding-right: 20px;">

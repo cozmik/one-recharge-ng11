@@ -19,7 +19,7 @@
             <!--new block -->
             <div class="widget-content-block new" *ngIf="switchState === 'new'" [class.visible]="switchState === 'new'">
               <form (ngSubmit)="onSubmit()" [formGroup]="fundRequestForm" #formData='ngForm' method="post" enctype="multipart/form-data">
-                <div class="mb-5">
+                <mat-form-field class="mb-5 d-block">
                   <mat-select placeholder="Select mode of payment" #selectPaymentMode required formControlName="paymentMode" style="width:100%;">
                     <mat-option [value]="paymentMode" *ngFor="let paymentMode of paymentModes">
                        {{paymentMode}}
@@ -30,10 +30,10 @@
                       Payment method is required
                     </div>
                   </div>
-                </div>
+                </mat-form-field>
 
                 <div class="form-inline">
-                  <mat-form-field class="md-inline mb-5 col-md-6">
+                  <mat-form-field class="d-inline mb-5 col-md-6">
                     <label class="sr-only" for="referenceId">Teller number / Transaction Ref</label>
                     <input matInput type="text" required  id="referenceId" formControlName="referenceId" placeholder="Teller number / Transaction Ref" value="">
                     <div *ngIf="fundRequestForm.get('referenceId').invalid && (fundRequestForm.get('referenceId').dirty || fundRequestForm.get('referenceId').touched)">
@@ -141,7 +141,7 @@
               <div class="inner-content-area">
                 <div class="block"><span class="title">Phone number</span> <span class="value">11111</span></div>
                 <div class="block"><span class="title">Network</span> <span class="value">343434343</span></div>
-                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{30000 | currency | moneyFormatter}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value"> {{30000 | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
               </div>
 
               <button md-raised-button type="button" (click)="newRecharge()"  color="accent"> New Request<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>

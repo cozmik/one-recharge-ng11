@@ -28,7 +28,7 @@
         <div *ngIf="payoutsWithId.length < 1 && !isLoadingPayouts" style="padding:20px 10px;text-align:center">
           <span>No Payout Requests</span>
         </div>
-        <table class="table table-dark"  *ngIf="payouts.length > 0">
+        <table class="table table-primary"  *ngIf="payouts.length > 0">
           <thead>
           <tr>
             <!--make table stable-->
@@ -51,7 +51,7 @@
 
             <td scope="row"> {{payout.id}}</td>
             <td class="link">{{payout.data.email}}</td>
-            <td class="link">{{payout.data.amount | currency | moneyFormatter}}</td>
+            <td class="link">{{payout.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td class="link">{{payout.data.createdDate | date | checkNull}}</td>
             <td class="link">{{payout.data.updatedDate | date | checkNull}}</td>
             <td class="link">{{payout.data.statusDetail}}</td>

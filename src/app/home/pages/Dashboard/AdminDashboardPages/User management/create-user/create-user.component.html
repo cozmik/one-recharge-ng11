@@ -30,12 +30,12 @@
             <div class="form-inline">
               <label class="sr-only" for="excel">Upload Excel File</label>
 
-              <input type="file" id="excel" required (ngModel)="excel" [disabled]="isloading" [ngModelOptions]="{standalone: true}" #excel value="">
+              <input type="file" id="excel" required [disabled]="isloading" #excel value="">
 
             </div>
 
           </div>
-          <button md-raised-button type="submit" color="accent">{{uplodText}}
+          <button mat-raised-button type="submit" color="pimary">{{uplodText}}
             <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'">
             </mat-spinner>
           </button>
@@ -43,14 +43,14 @@
       </div>
 
       <div *ngIf="cUser">
-        <form (ngSubmit)="onSubmit(formData)" [formGroup]="userForm" #formData='ngForm' class="card" method="post" enctype="multipart/form-data">
+        <form (ngSubmit)="onSubmit()" [formGroup]="userForm" #formData='ngForm' class="card" method="post" enctype="multipart/form-data">
           <div class="md-container">
             <div class="mat-card-header">Personal Information</div>
             <div class="divider"></div>
 
 
             <div class="form-inline pb-15">
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="fname">First Name</label>
                 <input matInput type="text" name="fname" required formControlName="firstName"  id="fname" placeholder="First Name" value="">
                 <div *ngIf="userForm.get('firstName').invalid && (userForm.get('firstName').dirty || userForm.get('firstName').touched)">
@@ -60,7 +60,7 @@
                 </div>
               </mat-form-field>
 
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="lname">Last Name</label>
                 <input matInput type="text" id="lname" required formControlName="lastName" name="lname" placeholder="Last Name" value="">
                 <div *ngIf="userForm.get('lastName').invalid && (userForm.get('lastName').dirty || userForm.get('lastName').touched)">
@@ -92,7 +92,7 @@
             </div>
 
             <div class="form-inline pb-15">
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" required for="phone1">Mobile phone</label>
                 <input matInput type="tel" (blur)="checkNum()" id="phone1" formControlName="mobileNo" name="phone1" placeholder="Mobile Phone" value="">
                 <div *ngIf="userForm.get('mobileNo').invalid && (userForm.get('mobileNo').dirty || userForm.get('mobileNo').touched)">
@@ -107,7 +107,7 @@
               </mat-form-field>
 
 
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="phone2">Alternate phone</label>
                 <input matInput type="tel" id="phone2" formControlName="altMobileNo" name="phone2" placeholder="Alternate Phone" value="">
               </mat-form-field>
@@ -169,7 +169,7 @@
           </div>
 
           <div class="md-container">
-            <button md-raised-button [disabled]="userForm.invalid || isloading" type="submit" color="accent">Create {{getAgentType(this.createAgentType)}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'"> </mat-spinner></button>
+            <button mat-raised-button [disabled]="userForm.invalid || isloading" type="submit" color="primary">Create {{getAgentType(this.createAgentType)}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 5px;" [color]="'accent'"> </mat-spinner></button>
           </div>
 
         </form>

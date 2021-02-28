@@ -3,12 +3,19 @@
 .container-area{
   min-height:calc(100vh - 130px);
   position:relative;
-  padding:20px 0px;
+  padding:20px 0;
   .container{
     @media #{$max767} {
       width:100%;
       margin:0;
     }
+  }
+}
+
+mat-spinner{
+  ::ng-deep svg{
+    height: unset !important;
+    width: unset !important;
   }
 }
 

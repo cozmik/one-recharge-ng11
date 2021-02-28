@@ -16,7 +16,6 @@ import {AlertComponent} from './home/common-components/alert/alert.component';
 import {BadgeComponent} from './home/common-components/badge/badge.component';
 import {BreadcrumbComponent} from './home/common-components/breadcrumb/breadcrumb.component';
 import {FileComponent} from './home/common-components/file/file.component';
-import {NgxPaginationModule} from 'ngx-pagination';
 
 // Extra pages
 import {FooterComponent} from './home/pages/Dashboard/footer/footer.component';
@@ -43,8 +42,6 @@ import {NewPasswordComponent} from './home/pages/new-password/new-password.compo
 import {EditRoleComponent} from './home/pages/Dashboard/AdminDashboardPages/Role management/edit-role/edit-role.component';
 import {AdminProfileComponent} from './home/pages/Dashboard/AdminDashboardPages/User management/admin-profile/admin-profile.component';
 import {AdminChangePasswordComponent} from './home/pages/Dashboard/AdminDashboardPages/User management/admin-change-password/admin-change-password.component';
-
-import {CustomAlertComponent} from './shared/components/custom-alert/custom-alert.component';
 // import {EmailValidator} from 'ng2-validation/dist/email';
 import {AgentDialogComponent} from './home/pages/Dashboard/AdminDashboardPages/User management/user-page/agent-account/agent-account.component';
 import {MatchPasswordDirective} from './shared/directives/match-password-directive/match-password.directive';
@@ -101,14 +98,12 @@ import {
   AgentDataHistoryComponent,
   Report2DialogComponent
 } from './home/pages/Dashboard/AgentDashboardPages/agent-data-history/agent-data-history.component';
-import {AgentChangePasswordComponent} from './home/pages/Dashboard/AgentDashboardPages/agent-change-password/agent-change-password.component';
 import {GuestServiceFormComponent} from './home/pages/landing-page/home/guest-service-form/guest-service-form.component';
 // import {AgmCoreModule} from '@agm/core';
 import {CalendarModule} from 'angular-calendar';
 import {CommonModule} from '@angular/common';
 import {Logo2Component} from './home/common-components/logo-2/logo-2.component';
 import {AgentWalletReportDialogComponent} from './home/pages/Dashboard/AgentDashboardPages/agent-wallet-transaction-history/agent-wallet-transaction-history.component';
-import {A2CardComponent} from './home/common-components/card/card.component';
 import {PortalModule} from '@angular/cdk/portal';
 import {InterceptorsProvider} from './shared/services/_helpers';
 import {SharedModule} from './core/shared/modules/shared.module';
@@ -117,7 +112,6 @@ import {
   WalletReportDialogComponent
 } from './home/pages/Dashboard/AdminDashboardPages/Transactions/wallet/wallet.component';
 import {CustomerHomeComponent} from './home/pages/Dashboard/CustomerDashboardPages/customer-home/customer-home.component';
-import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/service-management/views/service-manager.service';
 
 @NgModule({
   imports: [
@@ -171,7 +165,6 @@ import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/
     NewPasswordComponent,
     EditRoleComponent,
     AdminProfileComponent,
-    CustomAlertComponent,
     MatchPasswordDirective,
     ManageAdminComponent,
     QuickFundingComponent,
@@ -179,8 +172,6 @@ import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/
     Page404Component,
     AirtimeComponent,
     FundRequestsComponent,
-    TransactionsPipe,
-    TransactionStatusFilterPipe,
     WalletComponent,
     ApproveFunding,
     DeclineFunding,

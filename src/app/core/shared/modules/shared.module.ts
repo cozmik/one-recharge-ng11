@@ -36,6 +36,9 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {RouterModule} from '@angular/router';
 import {UserStatusFilterPipe} from '../../../shared/pipes/user-status-filter/user-status-filter.pipe';
 import {FilterPipe} from '../../../shared/pipes/filter/filter.pipe';
+import {CustomAlertComponent} from '../../../shared/components/custom-alert/custom-alert.component';
+import {TransactionsPipe} from '../../../shared/pipes/transactions-filter/airtime-transactions.pipe';
+import {TransactionStatusFilterPipe} from '../../../shared/pipes/transactions-status-filter/transaction-status-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import {FilterPipe} from '../../../shared/pipes/filter/filter.pipe';
     UserAgentsComponent,
     A2CardComponent,
     UserStatusFilterPipe,
-    FilterPipe
+    FilterPipe,
+    CustomAlertComponent,
+    TransactionsPipe,
+    TransactionStatusFilterPipe,
   ],
   imports: [
     CommonModule,
@@ -116,7 +122,10 @@ import {FilterPipe} from '../../../shared/pipes/filter/filter.pipe';
     UserAgentsComponent,
     A2CardComponent,
     UserStatusFilterPipe,
-    FilterPipe
+    FilterPipe,
+    CustomAlertComponent,
+    TransactionsPipe,
+    TransactionStatusFilterPipe,
   ]
 })
 export class SharedModule {

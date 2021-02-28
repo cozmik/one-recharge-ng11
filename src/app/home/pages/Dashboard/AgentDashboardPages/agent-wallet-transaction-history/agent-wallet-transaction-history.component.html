@@ -54,7 +54,7 @@
             <td scope="row">{{tranx.transactionType}}</td>
             <td scope="row">{{tranx.getFromFullname}}</td>
             <td scope="row">{{tranx.email}}</td>
-            <td scope="row">{{tranx.amount | currency | moneyFormatter}}</td>
+            <td scope="row">{{tranx.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td scope="more" style="padding-right: 20px;">
               {{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}
               <span *ngIf="tranx.status === 0" [style.background-color]="'#d9534f'" class="status desktopOnly"></span>
@@ -84,14 +84,13 @@
              style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
           <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
         </div>
-        <div class="row" style="padding: 0 10px">
-          <div class="text-left col-md-3">
-            items per page :
-            <select class="form-control-sm custom-select" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)">
+        <div class="row" style="padding: 0 10px" *ngIf="totalElements > 5">
+          <div class="text-left col-md-3 d-flex flex-row align-items-center">
+            <label for="per-view" class="mr-2"> items per page : </label>
+            <select id="per-view" class="form-control-sm" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
               <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
-
             </select>
-            total : {{totalElements ? totalElements : '-'}}
+            <div class="ml-2"> total : {{ totalElements? totalElements : '0'}}</div>
           </div>
           <div class="text-right col-md-9">
             <pagination-controls style="text-align: right"

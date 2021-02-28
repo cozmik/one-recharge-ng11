@@ -103,6 +103,7 @@ export class AgentSignUpComponent implements OnInit {
     // console.log(this.agentSignUpForm.value);
 
     this.creatingAccount = true;
+    this.agentSignUpForm.disable();
     this.auth.createAgentSelf(this.agentSignUpForm.value, formData).subscribe(
         data => {
           this.creatingAccount = false;
@@ -110,6 +111,7 @@ export class AgentSignUpComponent implements OnInit {
           console.log(data);
           this.registrationEmail = data.data[0].email;
           this.isRegistrationSuccessful = true;
+          this.agentSignUpForm.enable();
           this.resetForm();
           this.agentSignUpForm.enable();
           this.signUpText = 'Sign up';
@@ -117,12 +119,10 @@ export class AgentSignUpComponent implements OnInit {
 
         },
         err => {
-          const errorText = this.errorHandler.errorHandlerWithText(this.createAccount, err);
+          const errorText = err;
+          console.log(err);
           this.creatingAccount = false;
           this.signUpText = 'Sign up';
-          console.log('err', err);
-          console.log('errorText', errorText);
-          this.toast.showError(errorText.message, 'Error');
           this.agentSignUpForm.enable();
         },
       );

@@ -8,7 +8,7 @@
           <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
           <div class="content-block-single">
             <div class="title text-uppercase" style="color:#469408">{{account.data.name}}</div>
-            <div class="count">NGN {{ account.data.balance | currency | moneyFormatter}}</div>
+            <div class="count"> {{ account.data.balance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</div>
           </div>
         </div>
       </div>

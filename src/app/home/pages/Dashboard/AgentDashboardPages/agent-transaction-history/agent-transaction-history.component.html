@@ -56,7 +56,7 @@
 
     <div class="custom-card" [class.custom-shadow]="self"  style="margin:0; padding-bottom:20px;min-height: 400px;">
       <header>
-        Airtime & Data Transactions
+        Transactions
         <a class="download-btn" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>
       </header>
 
@@ -116,7 +116,7 @@
           </thead>
           <tbody>
           <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'"  *ngFor="let tranx of airtimeTransactions | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index;">
-            <mat-progress-bar *ngIf="isLoadingData && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+<!--            <mat-progress-bar *ngIf="isLoadingData && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
             <!--make table stable-->
             <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
 
@@ -127,7 +127,7 @@
             <td scope="row">{{tranx.channel}}</td>
             <td scope="row">{{tranx.networkName}}</td>
             <td scope="row">{{tranx.toMsisdn}}</td>
-            <td scope="row">{{tranx.amount | currency | moneyFormatter}}</td>
+            <td scope="row">{{tranx.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
             <td class="more" style="padding-right: 20px;">
               {{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}
               <span *ngIf="tranx.status === 0"  [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
@@ -149,14 +149,13 @@
         <div *ngIf="airtimeTransactions.length === 0 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
           <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
         </div>
-        <div class="row">
-          <div  class="text-left col-md-3">
-            items per page :
-            <select class="form-control-sm custom-select" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
+        <div class="row" style="padding: 0 10px" *ngIf="totalElements > 5">
+          <div  class="text-left col-md-3 d-flex flex-row align-items-center">
+            <label for="per-view" class="mr-2"> items per page : </label>
+            <select id="per-view" class="form-control-sm" [(ngModel)]="itemsPerView" (change)="getPaginatedData(1)" >
               <option *ngFor="let number of [5, 10, 20, 30, 50]" [value]="number">{{number}}</option>
-
             </select>
-            total : {{totalElements? totalElements : '-'}}
+            <div class="ml-2"> total : {{ totalElements? totalElements : '0'}}</div>
           </div>
           <div  class="text-right col-md-9">
             <pagination-controls  style="text-align: right" (pageChange)="getPaginatedData($event)"></pagination-controls>

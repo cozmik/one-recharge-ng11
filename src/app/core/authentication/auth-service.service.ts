@@ -139,7 +139,7 @@ export class AuthService {
     // console.log('******* payload ********');
     // console.log(payload);
     return this.http.post(Constants.CREATE_AGENT_SELF_URL + payload,
-      formData, Constants.getMultipartRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN))).pipe(
+      formData, Constants.getTokenImageHttpHeaders('true', 'false', 'True')).pipe(
       map(res => res));
   }
 
@@ -156,7 +156,7 @@ export class AuthService {
   changePassword(passwordPayload: any): Observable<any> {
     // console.log(passwordPayload);
     return this.http.put(Constants.CHANGE_PASSWORD_URL,
-      passwordPayload, Constants.getTokenHttpHeaders('true')).pipe(
+      passwordPayload, Constants.getTokenHttpHeaders('true', 'false')).pipe(
       map(res => res));
   }
 

@@ -3,7 +3,7 @@
   <table class="user-details" style="width:100%;">
     <tr><td class="title">Agent's Full name: </td><td class="detail">{{agentFirstName}} {{agentLastName}}</td></tr>
     <tr><td class="title">Agent's Email</td><td class="detail">{{agentEmail}}</td></tr>
-    <tr><td class="title">Freezed Amount</td><td class="detail">{{amount | currency | moneyFormatter}}</td></tr>
+    <tr><td class="title">Freezed Amount</td><td class="detail">{{amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td></tr>
     <tr><td class="title">Freezed Date / Time</td><td class="detail">{{createdDate | date}} / {{createdDate | date : 'shortTime'}}</td></tr>
     <tr><td class="title">Admin Full name</td><td class="detail">{{adminFirstName}} {{adminLastName}}</td></tr>
     <tr><td class="title">Admin Email</td><td class="detail">{{adminEmail}}</td></tr>

@@ -185,7 +185,7 @@ export class ManageAdminComponent implements OnInit {
         this.admins = [];
 
         const adminId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id;
-        const admins = response.filter( admin => admin.deleted === 0 && admin.id  !==  adminId);
+        const admins = response.data[0].filter( admin => admin.deleted === 0 && admin.id  !==  adminId);
         admins.forEach((admin) => {
           const dAdmin = new Admin(admin);
           this.admins.push(dAdmin);

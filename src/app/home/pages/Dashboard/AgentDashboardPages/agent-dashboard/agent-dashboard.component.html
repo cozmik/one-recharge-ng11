@@ -91,7 +91,7 @@
                <td scope="row">{{tranx.data.channel}}</td>
                <td scope="row">{{tranx.data.networkName}}</td>
                <td scope="row">{{tranx.data.toMsisdn}}</td>
-               <td scope="row">{{tranx.data.amount | currency | moneyFormatter}}</td>
+               <td scope="row">{{tranx.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
                <td class="more" style="position: relative;">
                  {{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
                  <span *ngIf="tranx.data.status === 0"  [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
@@ -126,7 +126,7 @@
          <header style="font-weight:700;">Recent Airtime Transactions</header>
          <div>
            <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
-           <table class="table table-dark"  *ngIf="true">
+           <table class="table table-primary"  *ngIf="true">
              <thead>
              <tr>
                <th scope="col">Transaction Ref</th>

@@ -96,15 +96,7 @@ export class AdminProfileComponent implements OnInit {
           this.isUpdating = false;
           this.getProfile();
         }
-      },
-      err => {
-        console.log(err);
-        this.isUpdating = false;
-        const msg = this.error.errorHandlerWithText(this.updateUser, err);
-        console.log(msg.errorMsg);
-        this.toast.showError(msg.message, 'Error');
-      }
-    )
+      });
   }
 
   // get roles
@@ -123,7 +115,7 @@ export class AdminProfileComponent implements OnInit {
     )
   }
 
-  editToggle() {
+  editToggle(): void {
     if (this.isNotEdit) {
       this.edit_text = 'Cancel';
       this.isNotEdit = false;

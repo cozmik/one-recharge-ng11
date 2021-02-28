@@ -25,7 +25,7 @@ export class UserService {
   public loggedInUser: User;
 
   // Service message commands
-  emitChange(change: string) {
+  emitChange(change: string): void {
     this.emitChangeSource.next(change);
   }
 

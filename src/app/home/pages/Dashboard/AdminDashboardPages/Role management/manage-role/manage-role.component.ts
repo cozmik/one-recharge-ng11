@@ -50,7 +50,7 @@ export class ManageRoleComponent implements OnInit {
   }
 
   deleteRole = (id) => {
-    this.anonymousService.deletRole(id).subscribe(
+    this.anonymousService.deleteRole(id).subscribe(
       data => {
         console.log(data);
         this.getRoles();

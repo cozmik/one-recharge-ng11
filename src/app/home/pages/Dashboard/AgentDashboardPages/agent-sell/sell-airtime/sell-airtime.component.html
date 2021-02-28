@@ -79,11 +79,11 @@
                   <div class="inner-content-area">
                     <div class="block"><span class="title">Phone number</span> <span class="value">{{rechargeObj.receiverMsisdn | checkNull}}</span></div>
                     <div class="block"><span class="title">Network</span> <span class="value">{{rechargeObj.networkName | checkNull}}</span></div>
-                    <div class="block"><span class="title">Amount</span> <span class="value">NGN {{rechargeObj.amount | currency | moneyFormatter | checkNull}}</span></div>
+                    <div class="block"><span class="title">Amount</span> <span class="value"> {{rechargeObj.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter | checkNull}}</span></div>
                   </div>
 
                   <div class="inner-content-area-bottom">
-                    <small>You have <strong [ngClass]="{'text-success': wallet.walletCommissionBalance >= amount, 'text-danger': wallet.walletCommissionBalance < amount}">NGN {{wallet.walletCommissionBalance | currency | moneyFormatter}}</strong> in your commission wallet</small>
+                    <small>You have <strong [ngClass]="{'text-success': wallet.walletCommissionBalance >= amount, 'text-danger': wallet.walletCommissionBalance < amount}"> {{wallet.walletCommissionBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</strong> in your commission wallet</small>
                     <div class="toggle-btn">
                       <mat-slide-toggle [labelPosition]="'before'" [checked]="isCommissionWallet" (change)="toggleWallet()" [disabled]="wallet.walletCommissionBalance < amount" style="font-weight:700;">Use commission wallet</mat-slide-toggle>
                     </div>
@@ -108,8 +108,8 @@
                     <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(rechargeResponse.network)}}</span></div>
                     <div class="block"><span class="title">Transaction ID</span> <span class="value">{{rechargeResponse?.transactionId}}</span></div>
                     <div class="inline-block"><span class="title">Date / Time</span> <span class="value">{{rechargeResponse?.createdDate | date}}</span></div>
-                    <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{rechargeResponse?.amount | currency | moneyFormatter}}</span></div>
-                    <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{rechargeResponse?.commission | currency | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Amount</span> <span class="value"> {{rechargeResponse?.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Commission</span> <span class="value"> {{rechargeResponse?.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
                   </div>
 
                   <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New recharge<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
@@ -126,8 +126,8 @@
                     <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(rechargeResponse.network)}}</span></div>
                     <div class="inline-block"><span class="title">Transaction ID</span> <span class="value">{{rechargeResponse?.transactionId}}</span></div>
                     <div class="inline-block"><span class="title">Date / Time</span><span class="value">{{rechargeResponse?.createdDate| date}}, {{rechargeResponse.createdDate | date : 'shortTime'}}</span></div>
-                    <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{rechargeResponse?.amount | currency | moneyFormatter}}</span></div>
-                    <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{rechargeResponse?.commission | currency | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Amount</span> <span class="value"> {{rechargeResponse?.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Commission</span> <span class="value"> {{rechargeResponse?.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
                   </div>
 
                   <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New recharge<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>
@@ -145,8 +145,8 @@
                     <div class="block"><span class="title">Network</span> <span class="value">{{getNetworkName(rechargeResponse.network)}}</span></div>
                     <div class="inline-block"><span class="title">Transaction ID</span> <span class="value">{{rechargeResponse.transactionId}}</span></div>
                     <div class="inline-block"><span class="title">Date / Time</span><span class="value">{{rechargeResponse.createdDate| date}}, {{rechargeResponse.createdDate | date : 'shortTime'}}</span></div>
-                    <div class="inline-block"><span class="title">Amount</span> <span class="value">NGN {{rechargeResponse.amount | currency | moneyFormatter}}</span></div>
-                    <div class="inline-block"><span class="title">Commission</span> <span class="value">NGN {{rechargeResponse.commission | currency | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Amount</span> <span class="value"> {{rechargeResponse.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
+                    <div class="inline-block"><span class="title">Commission</span> <span class="value"> {{rechargeResponse.commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></div>
                   </div>
 
                   <button md-raised-button type="button" (click)="goToPage()"  color="accent"> New recharge<mat-spinner *ngIf="false" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;"></mat-spinner></button>

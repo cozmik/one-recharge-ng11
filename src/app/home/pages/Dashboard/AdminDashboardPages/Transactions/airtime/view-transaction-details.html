@@ -7,8 +7,8 @@
     <tr><td class="title">Channel</td><td class="detail">{{channel}}</td></tr>
     <tr><td class="title">Network</td><td class="detail">{{network}}</td></tr>
     <tr><td class="title">To MSISDN</td><td class="detail">{{toMsisdn}}</td></tr>
-    <tr><td class="title">Amount</td><td class="detail">{{amount | currency | moneyFormatter}}</td></tr>
-    <tr><td class="title">Commission</td><td class="detail">{{commission | currency | moneyFormatter}}</td></tr>
+    <tr><td class="title">Amount</td><td class="detail">{{amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td></tr>
+    <tr><td class="title">Commission</td><td class="detail">{{commission | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td></tr>
     <tr><td class="title">Description</td><td class="detail">{{description}}</td></tr>
     <tr><td class="title">No of Retries</td><td class="detail">{{retries}}</td></tr>
     <tr><td class="title">Performed By</td><td class="detail">{{fromType}}</td></tr>

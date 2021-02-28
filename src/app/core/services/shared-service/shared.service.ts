@@ -86,7 +86,7 @@ export class SharedService {
 
 
   checkUser(user): Observable<any> {
-    return this.http.get(Constants.SEARCH_USER_URL + user, Constants.getTokenHttpHeaders()).pipe(
+    return this.http.get(Constants.SEARCH_USER_URL + user, Constants.getTokenHttpHeaders('false', 'false')).pipe(
       map(res => res));
   }
 

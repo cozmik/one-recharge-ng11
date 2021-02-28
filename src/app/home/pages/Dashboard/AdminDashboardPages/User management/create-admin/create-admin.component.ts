@@ -81,14 +81,7 @@ export class CreateAdminComponent implements OnInit {
         if (this.emailExists) {
           this.adminForm.controls.email.setErrors({emailExists: true});
         }
-        console.log(data);
-      }, err => {
-          const error = this.errorService.errorHandlerWithText(this.checkEmail, err);
-          if (error.error === 'Not found') {
-          this.emailExists = null;
-          return;
-        }
-    });
+      });
   }
 
   ngOnInit(): void { }
@@ -130,12 +123,7 @@ export class CreateAdminComponent implements OnInit {
   getRoles(): void {
     this.anonymousService.getRoles().subscribe(
       response => {
-        this.roles = response.data;
-      },
-      err => {
-        const msg = this.errorService.errorHandlerWithText(this.getRoles, err);
-        console.log(msg.message);
-      }
-    );
+        this.roles = response;
+      });
   }
 }

@@ -31,7 +31,7 @@
             <span class="user_info">{{userData.phone }}</span>
             <span class="user_info">{{userData.email }}</span>
             <div>
-              <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#a12121' : '#3aa507'">₦{{userData.walletBalance | currency | moneyFormatter}}</span></p>
+              <p class="wallet">Wallet balance : <span [style.color]="walletBalance > 1000 ? '#a12121' : '#3aa507'">₦{{userData.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</span></p>
 
               <mat-form-field>
                 <label class="sr-only" for="amount">Amount</label>
@@ -67,7 +67,7 @@
         <div *ngIf="agentsWithLowWallet.length === 0 && !isLoadingAgents" style="padding:20px 10px;text-align:center">
           <span>No data at the moment</span>
         </div>
-        <table class="table table-dark"  *ngIf="agentsWithLowWallet.length > 0">
+        <table class="table table-primary"  *ngIf="agentsWithLowWallet.length > 0">
           <thead>
           <tr style="border-top:none;">
             <th scope="col">#</th>
@@ -82,7 +82,7 @@
             <td class="link"> {{i+1}} </td>
             <td class="link"> {{agent.firstName}} {{agent.lastName}}</td>
             <td class="link"> {{agent.mobile}}</td>
-            <td class="link"> {{agent.walletBalance | currency | moneyFormatter}} </td>
+            <td class="link"> {{agent.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}} </td>
             <td class="link"> <button style="background-color: #5dade0;color:#fff;border:none;border-radius:2px;" (click)="searchUser(agent.email,true)">Fund</button></td>
           </tr>
           </tbody>

@@ -108,7 +108,7 @@
       </div>
       <div>
         <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
-        <table class="table table-dark"  *ngIf="transactionsWithId.length > 0">
+        <table class="table table-primary"  *ngIf="transactionsWithId.length > 0">
           <thead>
           <tr>
             <!--make table stable-->
@@ -131,11 +131,12 @@
             <td scope="row">{{(itemsPerView * (page - 1)) + (i + 1)}}</td>
             <td class="link"> {{tranx.firstName}} {{tranx.lastName}}</td>
             <td class="link"> {{tranx.email}}</td>
-            <td class="link"> {{tranx.amount | currency | moneyFormatter }} </td>
+            <td class="link"> {{tranx.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }} </td>
             <td scope="row">{{tranx.getFromFullname}}</td>
             <td class="link"> {{tranx.createdDate| date}} , {{tranx.createdDate | date : 'shortTime'}}
               <span *ngIf="tranx.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> <!--failed-->
               <span *ngIf="tranx.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> <!--successful-->
+              <span *ngIf="tranx.status === -1" class="status" [style.background-color]="'#f29339'" class="status"></span> <!--successful-->
             </td>
 
           </tr>

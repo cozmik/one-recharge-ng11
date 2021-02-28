@@ -161,8 +161,6 @@ export class AgentTransactionHistoryComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAirtimeTransactions, err);
-        console.log(this.errorResponse);
         this.isTransactionsLoaded = false;
       });
   }

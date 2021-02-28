@@ -98,7 +98,7 @@
           </div>
           <div>
             <mat-progress-bar *ngIf="isLoadingTransaction" mode="indeterminate"></mat-progress-bar>
-            <table class="table table-primary mobile-table"  *ngIf="transactionsWithId  && !isLoadingTransaction">
+            <table class="table table-primary mobile-table"  *ngIf="transactionsWithId.length  && !isLoadingTransaction">
               <thead>
               <tr>
                 <!--make table stable-->
@@ -128,7 +128,7 @@
                 <td scope="row">{{getTransactionType(tranx.data.transactionType).toLowerCase()}}</td>
                 <td scope="row">{{tranx.data.networkName}}</td>
                 <td scope="row">{{tranx.data.toMsisdn}}</td>
-                <td scope="row">{{tranx.data.amount | currency | moneyFormatter}}</td>
+                <td scope="row">{{tranx.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
                 <td scope="more" style="padding-right: 20px;"><div *ngIf="tranx.data.status === -1" class="btn btn-link" style="float: right;" (click)="getTranxData(tranx.data.transactionId)" [mat-menu-trigger-for]="action"><span class="fa fa-ellipsis-v"></span></div>
                   {{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
                   <span *ngIf="tranx.data.status === 0" [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->

@@ -445,7 +445,7 @@
       <header style="font-weight:700;">Top Selling Agents of the month</header>
       <div>
         <mat-progress-bar *ngIf="isLoadingCharts" mode="indeterminate"></mat-progress-bar>
-        <table class="table table-dark"  *ngIf="topSellingAgentsOfTheMonth.length > 0">
+        <table class="table table-primary"  *ngIf="topSellingAgentsOfTheMonth.length > 0">
           <thead>
           <tr>
             <th scope="col">Full Name</th>
@@ -460,7 +460,7 @@
             <td class="link"> {{agent.firstName}} {{agent.lastName}}</td>
             <td class="link"> {{agent.email}}</td>
             <td class="link"> {{agent.mobile}}</td>
-            <td class="link"> {{agent.amount | currency | moneyFormatter}} </td>
+            <td class="link"> {{agent.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}} </td>
             <td class="link"> {{agent.count }}</td>
           </tr>
           </tbody>

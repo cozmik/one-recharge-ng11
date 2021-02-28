@@ -22,9 +22,9 @@ export class CustomerTransactionHistoryComponent implements OnInit {
   pageTitle = 'Airtime Transactions';
   public adminsTotal: number;
   public admins: any;
-  public airtimeTransactions: any;
+  public userTransactions: any;
   public isLoadingTransaction: boolean;
-  public transactionsWithId: any;
+  public transactionsWithId = [];
   range: any;
   private useRange: boolean;
   private rangeFromValue: number;
@@ -67,10 +67,10 @@ export class CustomerTransactionHistoryComponent implements OnInit {
   // Re-Sort data ////////////////////
   getTransactionsWithId(): void {
     this.transactionsWithId = [];
-    for (let i = 0; i < this.airtimeTransactions.length; i++ ) {
+    for (let i = 0; i < this.userTransactions.length; i++ ) {
       const sortedTranx: any = {id: 0, data: {}};
       sortedTranx.id = i + 1;
-      sortedTranx.data = this.airtimeTransactions[i];
+      sortedTranx.data = this.userTransactions[i];
       this.transactionsWithId.push(sortedTranx);
       this.isLoadingTransaction = false;
     }
@@ -104,29 +104,21 @@ export class CustomerTransactionHistoryComponent implements OnInit {
 
   // get all airtime transactions or by range
   getAirtimeTransactions = () => {
-    this.airtimeTransactions = [];
+    this.userTransactions = [];
     this.isLoadingTransaction = true;
 
     const userId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id;
 
     this.userService.getAgentTransactions(userId, this.arg, this.useRange).subscribe(
       response => {
-        this.airtimeTransactions = response.data;
+        this.userTransactions = response.data[0];
         console.log('***** Airtime Transactions ****');
-        console.log(this.airtimeTransactions);
+        console.log(this.userTransactions);
         this.getTransactionsWithId();
         console.log('***** Airtime Transactions with id ****');
         console.log(this.transactionsWithId);
         this.isLoadingTransaction = false;
-      },
-      err => {
-        console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAirtimeTransactions, err);
-        console.log(this.errorResponse);
-        this.isLoadingTransaction = false;
-
-      }
-    );
+      });
   }
 
   // get transactions by range

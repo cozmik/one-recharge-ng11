@@ -85,7 +85,7 @@
                 <div class="block"><span class="title">Product name</span> <span class="value">{{productName | checkNull : ''}}</span></div>
                 <div class="block"><span class="title">Phone number</span> <span class="value">{{dataObj.receiverMsisdn | checkNull : ''}}</span></div>
                 <div class="block"><span class="title">Network</span> <span class="value">{{dataObj.networkName | checkNull : ''}}</span></div>
-                <div class="block"><span class="title">Amount</span> <span class="value">NGN {{dataObj.amount | currency | moneyFormatter | checkNull : ''}}</span></div>
+                <div class="block"><span class="title">Amount</span> <span class="value"> {{dataObj.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter | checkNull : ''}}</span></div>
               </div>
 
               <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRecharging"> Back </button>

@@ -56,7 +56,6 @@ export class Constants {
   static GET_ROLES_URL: string = Constants.SERVICE_URL + '/roles/';
   static GET_NETWORKS_URL: string = Constants.SERVICE_URL + '/networks/';
   static GET_FUND_PAYMENT_MODES_URL: string = Constants.SERVICE_URL + '/wallet/fund-payment-modes/';
-  static GENERATE_TRANSACTION_ID_URL: string = Constants.SERVICE_URL + '/generate-transaction-id';
   static EMPTY = '';
   static SIGNIN_URL: any = '/sign-in';
   static COUNTRY_URL: string = Constants.SERVICE_URL + '/countries';
@@ -244,12 +243,13 @@ export class Constants {
     };
   }
 
-  static getTokenImageHttpHeaders(retry = 'true', popupError = 'true'): {headers: HttpHeaders} {
+  static getTokenImageHttpHeaders(retry = 'true', popupError = 'true', unauthenticate = "False"): {headers: HttpHeaders} {
     return {
       headers: new HttpHeaders({
-        'No-Auth': 'False',
+        'No-Auth': unauthenticate,
         'Access-Control-Allow-Origin': '*',
         retry,
+        TokenRefresh: 'False',
         'popup-error': popupError
       })
     };
@@ -275,7 +275,13 @@ export class Constants {
       Accept: 'application/json',
       'Access-Control-Allow-Origin': '*',
     });
+  }
 
+  static getMultipartRequestHeader(token: any): HttpHeaders{
+    return new HttpHeaders({
+      'Access-Control - Allow - Origin': '* ',
+      Authorization: token
+    });
   }
 
 // set refresh token header
@@ -293,13 +299,6 @@ export class Constants {
 
   static getRequestHeader(): {headers: HttpHeaders} {
     return {headers: Constants.getRequestDefaultHeader('')};
-  }
-
-  static getMultipartRequestHeader(token: any): HttpHeaders{
-    return new HttpHeaders({
-      'Access-Control - Allow - Origin': '* ',
-      Authorization: token
-    });
   }
 
   static getNoTokenRequestOption(extraHeaderOptions?: {}): { headers: HttpHeaders} {

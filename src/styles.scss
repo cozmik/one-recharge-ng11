@@ -125,6 +125,13 @@ input, textarea {
   }
 }
 
+mat-spinner{
+  svg{
+    height: auto !important;
+    width: auto !important;
+  }
+}
+
 html, body {
   height: 100%;
 }

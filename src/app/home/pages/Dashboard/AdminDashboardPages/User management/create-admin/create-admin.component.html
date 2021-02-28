@@ -12,7 +12,7 @@
             <div class=""><strong>Personal Information</strong></div>
             <div class="divider"></div>
             <div class="form-inline">
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="firstName">First Name</label>
                 <input matInput type="text" name="firstName" formControlName="firstName" id="firstName" placeholder="First Name" value="">
                 <div *ngIf="adminForm.get('firstName').invalid && (adminForm.get('firstName').dirty || adminForm.get('firstName').touched)">
@@ -23,7 +23,7 @@
               </mat-form-field>
 
 
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="lname">Last Name</label>
                 <input matInput type="text" id="lname" formControlName="lastName" placeholder="Last Name" value="">
                 <div *ngIf="adminForm.get('lastName').invalid && (adminForm.get('lastName').dirty || adminForm.get('lastName').touched)">
@@ -34,7 +34,7 @@
               </mat-form-field>
             </div>
             <div class="form-inline">
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="phone1">Mobile phone</label>
                 <input matInput type="tel" required (blur)='checkNum()' id="phone1" formControlName="mobile" placeholder="Mobile Phone" value="">
                 <div *ngIf="adminForm.get('mobile').invalid && (adminForm.get('mobile').dirty || adminForm.get('mobile').touched)">
@@ -52,7 +52,7 @@
                 </div>
               </mat-form-field>
               <!--<span *ngIf="numberExists">Number already exists</span>-->
-              <mat-form-field class="md-inline col-md-6">
+              <mat-form-field class="d-inline col-md-6">
                 <label class="sr-only" for="email">Email address</label>
                 <input matInput type="email" (blur)='checkEmail()' id="email" formControlName="email" placeholder="Email address" value="">
                 <div *ngIf="adminForm.get('email').invalid && (adminForm.get('email').dirty || adminForm.get('email').touched)">
@@ -88,7 +88,7 @@
               </div>
             </div>
           </div>
-          <button md-raised-button [disabled]="adminForm.invalid || isloading" type="submit">{{createText}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'warm'"></mat-spinner></button>
+          <button mat-button mat-raised-button color="primary" [disabled]="adminForm.invalid || isloading" type="submit">{{createText}} <mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'warm'"></mat-spinner></button>
         </form>
       </div>
     </div>

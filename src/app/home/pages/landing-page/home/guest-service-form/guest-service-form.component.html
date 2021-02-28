@@ -1,7 +1,7 @@
 <div class="widget-content">
+  <span *ngIf="isLoadingServices" class="d-block loading" style="color:#777;">
+    Loading Services </span>
   <mat-form-field class="col-12 m-md-1">
-    <span *ngIf="isLoadingServices" style="color:#777;">
-      <i class="fa fa-spinner fa-spin"></i> Loading Services . . .</span>
     <mat-select [disabled]="isLoadingServices" placeholder="Select Category" required
                [(ngModel)]="category" style="width:100%;" (ngModelChange)="setServices(category)">
       <mat-option *ngFor="let category of serviceCategories" [value]="category">
