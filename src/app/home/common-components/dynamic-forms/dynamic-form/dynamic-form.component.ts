@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {ServiceFormBase} from '../service-form-base';
-import {SharedService} from '../../../core/services/shared-service/shared.service';
+import {ServiceFormBase} from '../../service-form-base';
+import {SharedService} from '../../../../core/services/shared-service/shared.service';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -14,7 +14,7 @@ export class DynamicFormComponent implements OnInit{
   @Output() submitData = new EventEmitter();
   payLoad = '';
 
-  constructor(private qcs: SharedService) {  }
+  constructor() {  }
 
   ngOnInit(): void {
   }

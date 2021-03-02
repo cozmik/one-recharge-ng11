@@ -1,5 +1,5 @@
-<h2 md-dialog-title class="user-details"><span>Fund </span><span style="font-weight:600;">{{firstName}} {{lastName}}</span></h2>
-<div md-dialog-content>
+<h2 mat-dialog-title class="user-details"><span>Fund </span><span style="font-weight:600;">{{firstName}} {{lastName}}</span></h2>
+<div mat-dialog-content style="text-align: center">
   <!--<mat-form-field class="md-inline col-md-6">-->
     <!--<label class="sr-only" for="amount">Amount</label>-->
     <!--<input matInput type="number" required id="amount" [(ngModel)]="name" [ngModelOptions] ="{standalone: true}" name="amount" placeholder="Enter Amount" value="">-->
@@ -13,7 +13,7 @@
 
 </div>
 
-<div md-dialog-actions style="display:flex; justify-content: center;">
-  <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
-  <button style="margin-left:20px;" md-button md-raised-button [disabled]="(amount === null) || (amount < 50) || isFunding"  (click)="fundAgent()" color="accent">{{!isFunding?'Fund Agent' : 'Funding'}}</button>
+<div mat-dialog-actions style="display:flex; justify-content: center;">
+  <button mat-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
+  <button style="margin-left:20px;" mat-button mat-raised-button [disabled]="(amount === null) || (amount < 50) || isFunding"  (click)="fundAgent()" color="accent">{{!isFunding?'Fund Agent' : 'Funding'}}</button>
 </div>

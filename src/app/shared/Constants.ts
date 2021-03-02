@@ -112,7 +112,7 @@ export class Constants {
   static CHART_REPORT_STATISTICS_URL: string = Constants.SERVICE_URL + '/reports/dashboard/report-statistics';
   static ADMIN_WALLET_URL: string = Constants.SERVICE_URL + '/reports/wallet-transactions';
   static WALLET_URL: string = Constants.SERVICE_URL + '/wallet';
-  static AIRTIME_TRANSACTIONS: string = Constants.SERVICE_URL + '/reports/transactions';
+  static TRANSACTIONS_REPORTS: string = Constants.SERVICE_URL + '/reports/transactions';
   static TRANSACTIONS: string = Constants.SERVICE_URL + '/transactions';
   static FUND_REQUESTS: string = Constants.SERVICE_URL + '/wallet/fund-requests';
   static COMMISSION_ACCOUNTS: string = Constants.SERVICE_URL + '/accounts';
@@ -200,6 +200,7 @@ export class Constants {
 
   // agent permissions
   static CAN_AGENT_REQUEST_FUND = 'AGENT_REQUEST_FUND';
+  static USER_RECENT_SERVICES = 'USER_RECENT_SERVICES';
 
 
   static getNoTokenHeaders(retry = 'true', popupError = 'true'): {headers: HttpHeaders} {
@@ -243,7 +244,8 @@ export class Constants {
     };
   }
 
-  static getTokenImageHttpHeaders(retry = 'true', popupError = 'true', unauthenticate = "False"): {headers: HttpHeaders} {
+  static getTokenImageHttpHeaders(retry = 'true', popupError = 'true',
+                                  unauthenticate = "False"): {headers: HttpHeaders} {
     return {
       headers: new HttpHeaders({
         'No-Auth': unauthenticate,

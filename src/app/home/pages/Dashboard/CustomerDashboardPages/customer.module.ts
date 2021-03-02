@@ -32,7 +32,4 @@ import {UserSharedModule} from '../user-shared/user-shared.module';
   ]
 })
 export class CustomerModule {
-  constructor(private smService: ServiceManagerService) {
-    this.smService.getAllServicesByCategories();
-  }
 }

@@ -16,7 +16,6 @@ import {ToastService} from '../../../shared/services/toast-service/toast.service
 export class SignInComponent implements OnInit {
 
   public signInText: string;
-  public staySignedIn = false;
   public vendorTitle: string = Constants.VENDOR;
 
   // @ViewChild('seePassword') seePassword: ElementRef;
@@ -100,7 +99,7 @@ export class SignInComponent implements OnInit {
         }
       },
       err => {
-        this.errorMsg = err.error.message;
+        this.errorMsg = err;
         this.signingIn = false;
         this.signInText = 'Sign in';
       },

@@ -116,9 +116,6 @@ export class HomeComponent implements OnInit {
   }
 
   isNumber(): boolean {
-    let phone: number;
-    phone = this.airtimeForm.value.mobile;
-    console.log(typeof this.airtimeForm.value.mobile);
     if ((typeof this.airtimeForm.value.mobile === 'number')) {
       return false;
     }

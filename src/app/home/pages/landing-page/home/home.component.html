@@ -27,23 +27,8 @@
   <!--  </div>-->
 
 
-  <article class="freq-services">
-    <div class="service-card">
-      <div class="icon">
-        <mat-icon>stay_primary_portrait</mat-icon>
-      </div>
-      <div class="title">
-        Mobile Recharge
-      </div>
-    </div>
-    <div class="service-card">
-      <div class="icon">
-        <mat-icon>compare_arrows</mat-icon>
-      </div>
-      <div class="title">
-        Transfer
-      </div>
-    </div>
+  <article class="freq-services d-flex flex-nowrap flex-row" >
+    <app-recent-services [auth]="false"></app-recent-services>
   </article>
   <article class="service-form">
     <div class="widget-content">

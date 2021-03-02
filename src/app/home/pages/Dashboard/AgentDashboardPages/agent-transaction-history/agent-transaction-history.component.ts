@@ -19,8 +19,6 @@ import {TransactionsResponse} from '../../../../../core/mocks/transactionsRespon
 })
 export class AgentTransactionHistoryComponent implements OnInit {
 
-
-
   @Input() dUserId: number;
   @Input() self = true;
 
@@ -83,11 +81,10 @@ export class AgentTransactionHistoryComponent implements OnInit {
     }else {
       this.userId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id;
       this.getUserDashboardStatistics();
-
     }
 
-    this.getRange();
-    this.getAirtimeTransactions(this.userId);
+    // this.getRange();
+    this.getTransactions(this.userId);
 
     this.searchTerm.pipe(debounceTime(1000),
       distinctUntilChanged(), )
@@ -175,7 +172,7 @@ export class AgentTransactionHistoryComponent implements OnInit {
     this.totalPages = data.totalPages; // item per page
     this.totalElements = data.totalElements;
     this.page = data.number + 1;
-    for (const tranx of data.content) {
+    for (const tranx of data) {
       transactionData.push(new TransactionsResponse(tranx));
     }
     this.airtimeTransactions = transactionData;
@@ -184,11 +181,9 @@ export class AgentTransactionHistoryComponent implements OnInit {
   }
 
   // get all airtime transactions or by range
-  getAirtimeTransactions = (userId) => {
+  getTransactions = (userId) => {
     this.airtimeTransactions = [];
     this.isTransactionsLoaded = true;
-
-
 
     this.userService.getAdminTransactions(this.userId,
       this.arg, this.useRange,
@@ -206,7 +201,7 @@ export class AgentTransactionHistoryComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAirtimeTransactions, err);
+        this.errorResponse = this.error.errorHandlerWithText(this.getTransactions, err);
         // console.log(this.errorResponse);
         this.isTransactionsLoaded = false;
 
@@ -220,7 +215,7 @@ export class AgentTransactionHistoryComponent implements OnInit {
     this.rangeToValue = new Date(this.toDate).getTime();
     this.arg = '/range?startDateTimestamp=' + this.rangeFromValue + '&' + 'endDateTimestamp=' + this.rangeToValue;
     this.recentTransaction = [];
-    this.getAirtimeTransactions(this.userId);
+    this.getTransactions(this.userId);
   }
 
   getRange = () => {
@@ -228,7 +223,7 @@ export class AgentTransactionHistoryComponent implements OnInit {
       this.useRange = false;
       this.arg = this.range;
       this.recentTransaction = [];
-      this.getAirtimeTransactions(this.userId);
+      this.getTransactions(this.userId);
     } else {
       this.useRange = true;
     }

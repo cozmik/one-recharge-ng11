@@ -25,6 +25,7 @@ export class QuickFundingComponent implements OnInit {
   public agentsWithLowWallet: any;
   public isLoadingFromList: boolean;
   public fundStatus: boolean;
+  walletBalance: number;
   p = 0;
 
   public agentId: any;
@@ -66,7 +67,7 @@ export class QuickFundingComponent implements OnInit {
     this.amount = null;
 
     this.userData.id =  '-';
-    this.userData.fullName =  '-';
+    this.userData.fullName = '-';
     this.userData.email = '-';
     this.userData.phone = '-';
     this.userData.walletBalance = '-';
@@ -96,22 +97,20 @@ export class QuickFundingComponent implements OnInit {
     this.sharedService.checkUserExist(searchEmail ? searchEmail : this.searchData , this.searchData).subscribe(
       response => {
 
-          this.userDetails = response.data;
+          this.userDetails = response;
           this.userExists = true;
 
-          this.userData.id = this.userDetails[0].id;
-          this.userData.fullName =  this.userDetails[0].firstName + ' ' + this.userDetails[0].lastName;
-          this.userData.email = this.userDetails[0].email;
-          this.userData.phone = this.userDetails[0].mobile;
-          this.userData.walletBalance = this.userDetails[0].walletBalance;
+          const {id, firstName, lastName, email, mobile, walletBalance} = this.userDetails;
+          this.userData.id = id;
+          this.userData.fullName =  firstName + ' ' + lastName;
+          this.userData.email = email;
+          this.userData.phone = mobile;
+          this.userData.walletBalance = walletBalance;
           this.isloading = false;
           this.isLoadingFromList = false;
-          console.log(this.userData);
       }, err => {
         this.isloading = false;
-        const error = this.errorHandler.errorHandlerWithText(this.searchUser, err);
-        console.log(error.message);
-        this.toast.showError(error.message, 'Error');
+        this.toast.showError(err, 'Error');
         this.isLoadingFromList = false;
         this.userData.id =  '-';
         this.userData.fullName =  '-';
@@ -122,7 +121,7 @@ export class QuickFundingComponent implements OnInit {
   }
 
 
-  fundAgent = (agentId: any, agentFullname: string) => {
+  fundAgent = (agentId: any, agentFullName: string) => {
     this.fundStatus = true;
 
     this.agentService.fundWallet(agentId, this.amount).subscribe(
@@ -130,12 +129,10 @@ export class QuickFundingComponent implements OnInit {
         this.getAllAgents();
         this.fundStatus = false;
         this.fundingSuccessful = true;
-        this.fundMessage = agentFullname + ' wallet was credited with ₦' + this.amount + ' successfully';
+        this.fundMessage = agentFullName + ' wallet was credited with ₦' + this.amount + ' successfully';
       },
       err => {
-        const error = this.errorHandler.errorHandlerWithText(this.fundAgent, err);
-        console.log(error.message);
-        this.toast.showError(error.message, 'Error');
+        this.toast.showError(err, 'Error');
       }
     );
   }

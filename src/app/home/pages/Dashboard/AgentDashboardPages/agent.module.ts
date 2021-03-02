@@ -29,7 +29,6 @@ import {
 import {FundAgentsComponent} from '../AdminDashboardPages/funding/fund-agents/fund-agents.component';
 import {SharedModule} from '../../../../core/shared/modules/shared.module';
 import {UserProfileComponent} from '../AdminDashboardPages/User management/user-page/user-profile.component';
-import {ServiceManagerService} from '../AdminDashboardPages/service-management/views/service-manager.service';
 import {UserSharedModule} from '../user-shared/user-shared.module';
 
 

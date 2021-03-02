@@ -15,5 +15,4 @@ export class CustomerHomeComponent implements OnInit {
       this.smService.getAllServicesByCategories();
     }
   }
-
 }

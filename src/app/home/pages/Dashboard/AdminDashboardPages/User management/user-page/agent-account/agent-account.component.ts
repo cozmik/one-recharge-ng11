@@ -11,6 +11,8 @@ import '../../../../../../../shared/components/custom-alert/custom-alert.compone
 import {MobileNetworks} from '../../../../../../../shared/mobile-networks';
 import {AgentNetworkConfig, Config} from '../../../../../../../core/mocks/network/agent-network-config.model';
 import {User} from '../../../../../../../core/mocks/user/user.model';
+import {ServiceInterface, ServiceModel} from '../../../service-management/models/service.model';
+import {ServiceStoreService} from '../../../service-management/store/service-store.service';
 
 @Component({
   selector: 'app-agent-profile',
@@ -36,6 +38,7 @@ export class AgentAccountComponent implements OnInit {
   public userData: any;
   public blockingText: string;
   public userId: number;
+  services: ServiceInterface[];
   public isBlocked: any;
   public networksLogoPath: any = [];
   public networkObj: any;
@@ -86,11 +89,15 @@ export class AgentAccountComponent implements OnInit {
   constructor(public sharedService: SharedService, public router: Router,
               public anonymousService: AnonymousService, public error: ErrorService,
               public agentService: UserService, public toast: ToastService,
-              public activatedRoute: ActivatedRoute, public dialog: MatDialog) {
+              public activatedRoute: ActivatedRoute, public dialog: MatDialog,
+              private smStore: ServiceStoreService
+              ) {
     this.pageTitle = 'Account';
     this.sharedService.emitChange(this.pageTitle);
 
-    this.activatedRoute.parent.params.subscribe(params => {this.userId = +params.id; });
+    this.activatedRoute.parent.params.subscribe(params => {
+      this.userId = +params.id;
+    });
 
       // console.log(typeof this.userId);
 
@@ -129,14 +136,20 @@ export class AgentAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.smStore.allServices.subscribe(serve => {
+      const serveArr = [];
+      serve.forEach(s => {
+        serveArr.push(new ServiceModel(s));
+      });
+      this.services = serveArr;
+    });
     if (this.loggedInUserType.agentTypeName.toLowerCase() === 'admin'){
-      this.getAirtimeNetworkConfig(true);
-      this.getDataNetworkConfig(true);
+      // this.getAirtimeNetworkConfig(true);
+      // this.getDataNetworkConfig(true);
     }
     else{
-      this.getLoggedInUserAirtimeNetworkConfig();
-      this.getLoggedInUserDataNetworkConfig();
+      // this.getLoggedInUserAirtimeNetworkConfig();
+      // this.getLoggedInUserDataNetworkConfig();
     }
 
     this.getRecentTransactions();
@@ -195,7 +208,7 @@ export class AgentAccountComponent implements OnInit {
       },
       err => {
         // console.log(err);
-        const error = this.error.errorHandlerWithText(this.updateUser, err).message;
+        // const error = this.error.errorHandlerWithText(this.updateUser, err).message;
         // console.log('******* Error *******');
         // console.log(error);
         this.isloading = false;
@@ -225,7 +238,7 @@ export class AgentAccountComponent implements OnInit {
   public getRecentTransactions = () => {
     this.anonymousService.getUserTransactions(this.userId).subscribe(
       response => {
-        // console.log('get user tranx');
+        console.log('get user tranx');
         this.recentAgentTransactions = response.data[0].content;
         // console.log('******************* ******************************');
         // console.log(this.recentAgentTransactions);
@@ -236,7 +249,7 @@ export class AgentAccountComponent implements OnInit {
       err => {
         // console.log(err);
         this.isLoadingrecentTransactions = false;
-        this.error.errorHandlerWithText(this.getRecentTransactions, err);
+        // this.error.errorHandlerWithText(this.getRecentTransactions, err);
       }
     );
   }
@@ -487,17 +500,11 @@ export class AgentAccountComponent implements OnInit {
   public getUser = () => {
     this.anonymousService.getUser(this.userId).subscribe(
       response => {
-        console.log('get user function');
-        this.userData = new User(response.data[0]);
-        console.log(this.userData);
+        this.userData = new User(response);
 
         this.allLoading.profile = false;
 
         this.initializeForm();
-        console.log('******************* ******************************');
-        console.log(this.userData);
-        console.log(this.userFormData.blocked);
-
         if (this.userFormData.blocked) {
           this.isBlocked = false;
           this.blockingText = 'Blocked';
@@ -505,7 +512,6 @@ export class AgentAccountComponent implements OnInit {
           this.isBlocked = true;
           this.blockingText = 'Active';
         }
-        console.log(this.userFormData);
       },
       err => {
         this.error.errorHandlerWithText(this.getUser, err);

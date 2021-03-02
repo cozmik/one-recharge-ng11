@@ -25,8 +25,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {CheckNullPipe} from '../../../shared/pipes/check-null.pipe';
 import {MoneyFormatterPipe} from '../../../shared/pipes/money-formatter/money-formatter.pipe';
-import {DynamicFieldComponent} from '../../../home/common-components/dynamic-field/dynamic-field.component';
-import {DynamicFormComponent} from '../../../home/common-components/dynamic-form/dynamic-form.component';
+import {DynamicFieldComponent} from '../../../home/common-components/dynamic-forms/dynamic-field/dynamic-field.component';
+import {DynamicFormComponent} from '../../../home/common-components/dynamic-forms/dynamic-form/dynamic-form.component';
 import {PaymentStatusComponent} from '../../../home/common-components/payment-status/payment-status.component';
 import {CreateUserComponent} from '../../../home/pages/Dashboard/AdminDashboardPages/User management/create-user/create-user.component';
 import {ManageUsersComponent} from '../../../home/pages/Dashboard/AdminDashboardPages/User management/manage-agents/manage-users.component';
@@ -39,6 +39,7 @@ import {FilterPipe} from '../../../shared/pipes/filter/filter.pipe';
 import {CustomAlertComponent} from '../../../shared/components/custom-alert/custom-alert.component';
 import {TransactionsPipe} from '../../../shared/pipes/transactions-filter/airtime-transactions.pipe';
 import {TransactionStatusFilterPipe} from '../../../shared/pipes/transactions-status-filter/transaction-status-filter.pipe';
+import {RecentServicesComponent} from '../../../home/common-components/recent-services/recent-services.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import {TransactionStatusFilterPipe} from '../../../shared/pipes/transactions-st
     CustomAlertComponent,
     TransactionsPipe,
     TransactionStatusFilterPipe,
+    RecentServicesComponent,
   ],
   imports: [
     CommonModule,
@@ -126,6 +128,7 @@ import {TransactionStatusFilterPipe} from '../../../shared/pipes/transactions-st
     CustomAlertComponent,
     TransactionsPipe,
     TransactionStatusFilterPipe,
+    RecentServicesComponent,
   ]
 })
 export class SharedModule {

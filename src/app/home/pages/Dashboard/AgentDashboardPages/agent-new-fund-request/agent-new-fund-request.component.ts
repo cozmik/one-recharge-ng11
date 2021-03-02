@@ -101,6 +101,7 @@ export class AgentNewFundRequestComponent implements OnInit {
   }
 
   goToPage(page: string = 'new'): void{
+    this.createForm();
     this.switchState = page;
   }
 
@@ -167,15 +168,15 @@ export class AgentNewFundRequestComponent implements OnInit {
       response => {
         this.resetForm();
         console.log('response data');
-        this.successfulFundRequest = new FundRequests(response.data[0]);
-        console.log(this.successfulFundRequest);
+        this.successfulFundRequest = new FundRequests(response);
+        this.isRequesting = false;
 
         this.goToPage('success');
       },
       err => {
         console.log('error is here');
         console.log(err);
-        const errorResponse = this.error.errorHandlerWithText(this.confirmRequest, err);
+        // const errorResponse = this.error.errorHandlerWithText(this.confirmRequest, err);
         this.isRequesting = false;
       }
     );

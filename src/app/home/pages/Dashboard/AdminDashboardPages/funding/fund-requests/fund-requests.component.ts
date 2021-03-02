@@ -28,7 +28,6 @@ export class FundRequestsComponent implements OnInit {
   public fundRequestsWithId: any;
   public pageSize: any;
 
-  private currency: string;
   private userId: number;
   public fullName: any;
   public Phone: any;

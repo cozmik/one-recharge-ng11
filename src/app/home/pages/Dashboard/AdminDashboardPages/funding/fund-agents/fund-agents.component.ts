@@ -223,7 +223,6 @@ export class fundDialogComponent {
       },
       err => {
         console.log(err);
-        const msg = this.error.errorHandlerWithText(this.fundAgent, err);
       }
     );
   }

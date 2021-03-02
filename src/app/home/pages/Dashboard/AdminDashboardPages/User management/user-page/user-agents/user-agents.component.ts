@@ -38,9 +38,11 @@ export class UserAgentsComponent implements OnInit {
     this.agentService.getUserAgents(this.userId).subscribe(
       data => {
         // console.log(data.data);
-       const agentsList: any[] = data.data;
+       const agentsList: any[] = data.data[0];
        agentsList.forEach((agent) => {
-          this.userAgents.push(new Agent(agent));
+         if (agent.id !== this.userId) {
+           this.userAgents.push(new Agent(agent));
+         }
         });
        this.getAgentWithId();
        this.isLoadingUserAgents = false;

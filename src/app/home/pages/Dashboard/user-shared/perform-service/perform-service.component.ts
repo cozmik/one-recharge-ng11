@@ -55,7 +55,7 @@ export class PerformServiceComponent implements OnInit {
   submitServiceData(e: Event, confirm = false): void {
     const {hasConfirmation, url, confirmationUrl} = this.chosenService.meta;
     if (hasConfirmation) {
-      this.anonymousService.performService(confirmationUrl, e).subscribe(res => {
+      this.anonymousService.performService(confirmationUrl, url, e).subscribe(res => {
         console.log(res);
       });
     }

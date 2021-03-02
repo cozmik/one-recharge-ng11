@@ -36,7 +36,7 @@
           </thead>
           <tbody>
           <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'"  *ngFor="let agent of agents | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: totalElements }; let i = index;">
-            <mat-progress-bar *ngIf="isloading && agent.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
+            <mat-progress-bar *ngIf="isloading && agent.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
             <!--make table stable-->
             <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
 

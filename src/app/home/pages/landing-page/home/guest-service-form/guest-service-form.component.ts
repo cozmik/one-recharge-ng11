@@ -297,12 +297,9 @@ export class GuestServiceFormComponent implements OnInit {
   submitServiceData(e: Event, confirm = false): void {
     const {hasConfirmation, url, confirmationUrl} = this.service.meta;
     if (hasConfirmation) {
-      this.anonymousService.performService(confirmationUrl, e).subscribe(res => {
+      this.anonymousService.performService(confirmationUrl, url, e).subscribe(res => {
         console.log(res);
       });
     }
-    // this.anonymousService.performService(url, e).subscribe(res => {
-    //   console.log(res);
-    // })
   }
 }

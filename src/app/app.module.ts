@@ -112,6 +112,7 @@ import {
   WalletReportDialogComponent
 } from './home/pages/Dashboard/AdminDashboardPages/Transactions/wallet/wallet.component';
 import {CustomerHomeComponent} from './home/pages/Dashboard/CustomerDashboardPages/customer-home/customer-home.component';
+import { ViewServicesComponent } from './home/pages/Dashboard/AdminDashboardPages/User management/user-page/view-services/view-services.component';
 
 @NgModule({
   imports: [
@@ -203,6 +204,7 @@ import {CustomerHomeComponent} from './home/pages/Dashboard/CustomerDashboardPag
     AgentDataHistoryComponent,
     TransactionDialogComponent,
     GuestServiceFormComponent,
+    ViewServicesComponent,
   ],
   entryComponents: [
     DialogResultComponent,

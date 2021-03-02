@@ -1,7 +1,6 @@
-
-import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
-import {Component, OnInit, Inject} from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {UserService} from '../../../../../../core/services/users-service/user-service';
 import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
@@ -27,7 +26,6 @@ export class ManageUsersComponent implements OnInit {
 
   itemsPerPage: any;
   public totalPages: number;
-  public isLoadingData;
   public itemsPerView = 10;
   public page: number;
   public status: number;
@@ -62,9 +60,9 @@ export class ManageUsersComponent implements OnInit {
   dialogRef: MatDialogRef<DialogResultComponent>;
 
 
-  constructor( public dialog: MatDialog, private agentService: UserService, private router: Router,
-               private authService: AuthService, private error: ErrorService, private sharedService: SharedService,
-               private toast: ToastService) {
+  constructor(public dialog: MatDialog, private agentService: UserService, private router: Router,
+              private authService: AuthService, private error: ErrorService, private sharedService: SharedService,
+              private toast: ToastService) {
     this.sharedService.emitChange(this.pageTitle);
     this.isLoadingAgents = false;
     this.fundedMessage = '';
@@ -94,7 +92,6 @@ export class ManageUsersComponent implements OnInit {
   }
 
 
-
 // get agent id
   getUserDetails(userId, userStatus, walletBalance, firstName, lastName): void {
     this.setId = userId;
@@ -103,8 +100,9 @@ export class ManageUsersComponent implements OnInit {
     this.firstname = firstName;
     this.lastname = lastName;
   }
+
 // view profile
-  viewProfile(id ?: number): void {
+  viewProfile(id?: number): void {
     console.log('********', id);
     if (id){
       if (this.loggedInUser.userType === Constants.ADMIN_USERTYPE) {
@@ -139,8 +137,7 @@ export class ManageUsersComponent implements OnInit {
       },
       err => {
         console.log(err);
-        const msg = this.error.errorHandlerWithText(this.blockUser, err);
-        this.toast.showError(msg.message, 'Error');
+        this.toast.showError(err, 'Error');
       }
     );
   }
@@ -160,19 +157,16 @@ export class ManageUsersComponent implements OnInit {
       },
       err => {
         console.log(err);
-        // if error response is due to expired token
-        const msg = this.error.errorHandlerWithText(this.unBlockUser, err);
-        this.toast.showError(msg.message, 'Error');      }
+        this.toast.showError(err, 'Error');
+      }
     );
   }
 
 
   confirmDelete = () => {
-     const deleteAction = confirm('Are you sure you want to delete this Agent ?');
-     if (deleteAction === true){
+    const deleteAction = confirm('Are you sure you want to delete this Agent ?');
+    if (deleteAction) {
       this.deleteUser();
-    }else{
-      return false;
     }
   }
 
@@ -191,11 +185,10 @@ export class ManageUsersComponent implements OnInit {
       },
       err => {
         console.log(err);
-        const msg = this.error.errorHandlerWithText(this.deleteUser, err);
-        this.toast.showError(msg.message, 'Error');      }
+        this.toast.showError(err, 'Error');
+      }
     );
   }
-
 
 
   getPaginatedData = (page: number) => {
@@ -208,9 +201,6 @@ export class ManageUsersComponent implements OnInit {
         this.isLoadingAgents = false;
       },
       err => {
-        console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAllAgents, err);
-        console.log(this.errorResponse);
         this.isLoadingAgents = false;
       });
   }
@@ -235,21 +225,16 @@ export class ManageUsersComponent implements OnInit {
 
   ////////////////// get all agents info ////////////////////////////////////////////////////
   getAllAgents = (newLoad = false) => {
-    if (newLoad) {
-      this.isLoadingAgents = true;
-    } else {
-      this.isLoadingAgents = false;
-    }
+    this.isLoadingAgents = newLoad;
 
     this.agentService.getAgents(undefined, 0, this.itemsPerView, this.searchText).subscribe(
-        (response: any ) => {
+      (response: any) => {
         console.log('**', response);
         this.processPagedData(response.data[0]);
         this.isLoadingAgents = false;
       },
       err => {
         console.log(err);
-        this.errorResponse = this.error.errorHandlerWithText(this.getAllAgents, err);
         this.isLoadingAgents = false;
         console.log(this.errorResponse);
 
@@ -279,7 +264,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'close'){
+      if (result === 'close') {
         return false;
       }
       const message = result.firstname + '\'s wallet was credited with ₦' + result.amount + ' successfully';
@@ -288,7 +273,7 @@ export class ManageUsersComponent implements OnInit {
       this.getAllAgents(false);
     });
 
-    if (this.fundedMessage !== ''){
+    if (this.fundedMessage !== '') {
       console.log('not empty');
     }
   }
@@ -308,7 +293,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'close'){
+      if (result === 'close') {
         return false;
       }
       const message = '₦' + result.freezeAmount + ' is frozen from ' + result.firstname + ' account successfully';
@@ -317,17 +302,16 @@ export class ManageUsersComponent implements OnInit {
       this.getAllAgents(false);
     });
 
-    if (this.fundedMessage !== ''){
+    if (this.fundedMessage !== '') {
       console.log('not empty');
     }
   }
 }
 
 
-
 @Component({
   selector: 'dialog-result',
-  styles: [ '.user-details { margin-bottom: 5px; white-space: nowrap; overflow: hidden;' +
+  styles: ['.user-details { margin-bottom: 5px; white-space: nowrap; overflow: hidden;' +
   ' text-overflow: ellipsis; text-align: center;}' +
   '.user-details span{ color:#444; text-transform:uppercase; text-overflow:ellipsis}' +
   '.wallet { font-weight: normal; padding:2px 5px; border-radius:5px;text-align: center;}' +
@@ -356,11 +340,9 @@ export class DialogResultComponent {
   }
 
 
-
-
   fundAgent = () => {
 
-    const fundMessage = {funded: false, amount: 0, firstname : ''};
+    const fundMessage = {funded: false, amount: 0, firstname: ''};
 
     this.isFunding = true;
     this.agentService.fundWallet(this.userId, this.amount).subscribe(
@@ -387,7 +369,7 @@ export class DialogResultComponent {
 
 @Component({
   selector: 'freeze-account',
-  styles: [ '.user-details { margin-bottom: 5px; white-space: nowrap; overflow: hidden;' +
+  styles: ['.user-details { margin-bottom: 5px; white-space: nowrap; overflow: hidden;' +
   ' text-overflow: ellipsis; text-align: center;}' +
   '.user-details span{ color:#444; text-transform:uppercase; text-overflow:ellipsis}' +
   '.wallet { font-weight: normal; padding:2px 5px; border-radius:5px;text-align: center;} background-color:#ededed; display: inline-block;} '],
@@ -425,8 +407,6 @@ export class FreezeAccountComponent {
   }
 
 
-
-
   freezeAccount = () => {
 
     this.freezeObj.userId = this.userId;
@@ -437,7 +417,7 @@ export class FreezeAccountComponent {
     console.log('freeze obj', this.freezeObj);
 
 
-    const freezeMessage = {freezed: false, freezeAmount: 0, firstname : ''};
+    const freezeMessage = {freezed: false, freezeAmount: 0, firstname: ''};
 
     this.agentService.freezeAccount(this.freezeObj).subscribe(
       data => {
@@ -449,7 +429,7 @@ export class FreezeAccountComponent {
         console.log(data);
         this.dialogRef.close(freezeMessage);
       },
-       err => {
+      err => {
         console.log(err);
         const msg = this.error.errorHandlerWithText(this.freezeAccount, err);
       }

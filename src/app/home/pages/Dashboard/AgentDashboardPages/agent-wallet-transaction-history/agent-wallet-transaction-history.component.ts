@@ -10,7 +10,7 @@ import {Constants} from '../../../../../shared/Constants';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
 import {TransactionsResponse} from '../../../../../core/mocks/transactionsResponse.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {debounce, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-agent-wallet-transaction-history',

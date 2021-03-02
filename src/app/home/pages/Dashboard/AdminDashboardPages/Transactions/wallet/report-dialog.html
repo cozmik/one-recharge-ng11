@@ -1,5 +1,5 @@
-<h2 md-dialog-title class="user-details"><span>Wallet Transactions Report</span></h2>
-<div md-dialog-content>
+<h2 mat-dialog-title class="user-details"><span>Wallet Transactions Report</span></h2>
+<div mat-dialog-content>
   <div>
       <span style="display: block; color:#777; font-size: 0.8em; margin:5px 0 5px;">Transaction Period</span>
       <mat-select [(ngModel)]="range"  (change)="getRange()" style="width:100%;">
@@ -29,8 +29,8 @@
   </div>
 </div>
 
-<div md-dialog-actions style="display:flex; justify-content: center;">
-  <button md-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
-  <button style="margin-left:20px;" md-button md-raised-button [disabled]="isDownloading"  (click)="downloadReport()" color="accent">{{isDownloading?'Downloading . . .' : 'Download'}}</button>
+<div mat-dialog-actions style="display:flex; justify-content: center;">
+  <button mat-button style="border:1px solid #ff0000;" (click)="dialogRef.close('close')" color="warn">Cancel</button>
+  <button style="margin-left:20px;" mat-button mat-raised-button [disabled]="isDownloading"  (click)="downloadReport()" color="accent">{{isDownloading?'Downloading . . .' : 'Download'}}</button>
 </div>
 

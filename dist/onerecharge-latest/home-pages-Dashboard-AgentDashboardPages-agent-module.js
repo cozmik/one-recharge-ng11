@@ -1305,15 +1305,12 @@ class AgentDashboardComponent {
         this.getAgentDetails();
         this.getRecentTransactions();
     }
-    editRole(id) {
-        this.router.navigate(['admin/edit-role/', id]);
-    }
     getUserDashboardStatistics(id) {
         this.anonymousService.getUserTransactionsStatistics(id).subscribe(data => {
             const stats = data.data[0];
             const userStatistics = new _core_mocks_userTransactionStatistics_model__WEBPACK_IMPORTED_MODULE_0__["UserTransactionStatistics"](stats);
             console.log(userStatistics);
-            const { transactionCount, walletTrans, successfulTran, pendingTrans, failedTrans, airtimeTrans, successfulAirtimeTrans, failedAirtimeTrans, pendingAirtimeTrans } = userStatistics;
+            const { transactionCount, successfulTran, pendingTrans, failedTrans, airtimeTrans, successfulAirtimeTrans, failedAirtimeTrans, pendingAirtimeTrans } = userStatistics;
             this.DashboardStatistics = Object.assign(Object.assign({}, this.DashboardStatistics), { totalTransactions: transactionCount, successfulTransactions: successfulTran, pendingTransactions: pendingTrans, failedTransactions: failedTrans, totalAirtimeTransactions: airtimeTrans, successfulAirtimeTransactions: successfulAirtimeTrans, failedAirtimeTransactions: failedAirtimeTrans, pendingAirtimeTransactions: pendingAirtimeTrans });
             console.log('stats', this.DashboardStatistics);
         }, err => {
@@ -1967,20 +1964,18 @@ class AgentProfileComponent {
             }, err => {
                 console.log(err);
                 this.isUpdating = false;
-                const msg = this.error.errorHandlerWithText(this.updateUser, err);
-                console.log(msg.errorMsg);
-                this.toast.showError(msg.message, 'Error');
+                this.toast.showError(err, 'Error');
             });
         };
         // get roles
         this.getRoles = () => {
             this.anonymousService.getRoles().subscribe((response) => {
-                console.log("get roles function");
+                console.log('get roles function');
                 console.log(response);
                 this.roles = response.data;
             }, err => {
                 console.log(err);
-                const msg = this.error.errorHandlerWithText(this.getRoles, err);
+                // const msg = this.error.errorHandlerWithText(this.getRoles, err);
                 // console.log(msg.message);
             });
         };
@@ -2623,7 +2618,7 @@ function AgentNewFundRequestComponent_div_15_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "button", 22);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "button", 65);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AgentNewFundRequestComponent_div_15_Template_button_click_35_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r33); const ctx_r32 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r32.goToPage(); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](36, " New Request");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -2645,10 +2640,10 @@ function AgentNewFundRequestComponent_div_15_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](ctx_r5.successfulFundRequest.paymentDate);
 } }
 function AgentNewFundRequestComponent_mat_spinner_41_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "mat-spinner", 65);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "mat-spinner", 66);
 } }
 function AgentNewFundRequestComponent_mat_spinner_49_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "mat-spinner", 65);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](0, "mat-spinner", 66);
 } }
 class AgentNewFundRequestComponent {
     constructor(sharedService, anonymousService, router, error, fb, agent, toast) {
@@ -2709,13 +2704,13 @@ class AgentNewFundRequestComponent {
             this.agent.requestFunding(this.fundRequestForm.value, formData).subscribe(response => {
                 this.resetForm();
                 console.log('response data');
-                this.successfulFundRequest = new _core_mocks_fundRequests_model__WEBPACK_IMPORTED_MODULE_1__["FundRequests"](response.data[0]);
-                console.log(this.successfulFundRequest);
+                this.successfulFundRequest = new _core_mocks_fundRequests_model__WEBPACK_IMPORTED_MODULE_1__["FundRequests"](response);
+                this.isRequesting = false;
                 this.goToPage('success');
             }, err => {
                 console.log('error is here');
                 console.log(err);
-                const errorResponse = this.error.errorHandlerWithText(this.confirmRequest, err);
+                // const errorResponse = this.error.errorHandlerWithText(this.confirmRequest, err);
                 this.isRequesting = false;
             });
         };
@@ -2752,6 +2747,7 @@ class AgentNewFundRequestComponent {
         this.fundRequestForm.updateValueAndValidity();
     }
     goToPage(page = 'new') {
+        this.createForm();
         this.switchState = page;
     }
     // Submit recharge form
@@ -2786,7 +2782,7 @@ AgentNewFundRequestComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__[
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.proofOfPaymentRef = _t.first);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx._fundRequestForm = _t.first);
-    } }, decls: 50, vars: 19, consts: [[1, "main-card"], ["class", "loader", 4, "ngIf"], [2, "font-weight", "700"], ["class", "back-btn", 3, "click", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], [1, "content-area"], [1, "container"], [1, "row", "mt-5", "mb-5"], [1, "col-xl-2"], [1, "col-xl-8"], [1, "widget-content"], ["class", "widget-content-block new", 3, "visible", 4, "ngIf"], ["class", "widget-content-block verify", 3, "visible", 4, "ngIf"], ["class", "widget-content-block success", 3, "visible", 4, "ngIf"], [1, "widget-content-block", "failed"], [1, "icon"], [1, "fa", "fa-times-circle", "fa-2x"], [2, "margin", "0"], [1, "inner-content-area"], [1, "block"], [1, "title"], [1, "value"], ["md-raised-button", "", "type", "button", "color", "accent", 3, "click"], ["style", "width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;", 4, "ngIf"], [1, "widget-content-block"], [1, "loader"], [1, "fa", "fa-spinner", "icon-loader"], [1, "back-btn", 3, "click"], [1, "fa", "fa-arrow-left"], ["mode", "indeterminate"], [1, "widget-content-block", "new"], ["method", "post", "enctype", "multipart/form-data", 3, "formGroup", "ngSubmit"], ["formData", "ngForm"], [1, "mb-5", "d-block"], ["placeholder", "Select mode of payment", "required", "", "formControlName", "paymentMode", 2, "width", "100%"], ["selectPaymentMode", ""], [3, "value", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "form-inline"], [1, "d-inline", "mb-5", "col-md-6"], ["for", "referenceId", 1, "sr-only"], ["matInput", "", "type", "text", "required", "", "id", "referenceId", "formControlName", "referenceId", "placeholder", "Teller number / Transaction Ref", "value", ""], [1, "md-inline", "mb-5", "col-md-6"], ["for", "depositorName", 1, "sr-only"], ["matInput", "", "type", "text", "required", "", "id", "depositorName", "formControlName", "depositorName", "placeholder", "Depositor Name", "value", ""], ["for", "amount", 1, "sr-only"], ["matInput", "", "type", "number", "required", "", "id", "amount", "formControlName", "amount", "placeholder", "Enter Amount", "value", ""], ["for", "paymentDate", 1, "sr-only"], ["matInput", "", "type", "date", "required", "", "id", "paymentDate", "formControlName", "paymentDate", "placeholder", "Date of payment", "value", ""], [1, "form-group", "mb-5"], ["type", "file", "formControlName", "proofOfPayment", 1, "form-control", 3, "change"], ["proofOfPaymentRef", ""], ["mat-raised-button", "", "color", "warn", 1, "mr-2", 3, "click"], ["mat-raised-button", "", "type", "submit", "color", "accent", 3, "disabled"], [3, "value"], [1, "errorText"], ["class", "errorText", 4, "ngIf"], [1, "widget-content-block", "verify"], ["mat-raised-button", "", "type", "button", "color", "warn", 1, "mr-2", 3, "disabled", "click"], ["mat-raised-button", "", "type", "button", "color", "accent", 3, "disabled", "click"], [1, "widget-content-block", "success"], [1, "fa", "fa-check-circle", "fa-2x"], [1, "block", 2, "height", "200px", "width", "auto"], ["alt", "proof of payment", 2, "height", "150px", "max-width", "100%", 3, "src"], [1, "inline-block"], [2, "width", "35px", "height", "35px", "position", "absolute", "right", "20px", "top", "7px"]], template: function AgentNewFundRequestComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 50, vars: 19, consts: [[1, "main-card"], ["class", "loader", 4, "ngIf"], [2, "font-weight", "700"], ["class", "back-btn", 3, "click", 4, "ngIf"], ["mode", "indeterminate", 4, "ngIf"], [1, "content-area"], [1, "container"], [1, "row", "mt-5", "mb-5"], [1, "col-xl-2"], [1, "col-xl-8"], [1, "widget-content"], ["class", "widget-content-block new", 3, "visible", 4, "ngIf"], ["class", "widget-content-block verify", 3, "visible", 4, "ngIf"], ["class", "widget-content-block success", 3, "visible", 4, "ngIf"], [1, "widget-content-block", "failed"], [1, "icon"], [1, "fa", "fa-times-circle", "fa-2x"], [2, "margin", "0"], [1, "inner-content-area"], [1, "block"], [1, "title"], [1, "value"], ["md-raised-button", "", "type", "button", "color", "accent", 3, "click"], ["style", "width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;", 4, "ngIf"], [1, "widget-content-block"], [1, "loader"], [1, "fa", "fa-spinner", "icon-loader"], [1, "back-btn", 3, "click"], [1, "fa", "fa-arrow-left"], ["mode", "indeterminate"], [1, "widget-content-block", "new"], ["method", "post", "enctype", "multipart/form-data", 3, "formGroup", "ngSubmit"], ["formData", "ngForm"], [1, "mb-5", "d-block"], ["placeholder", "Select mode of payment", "required", "", "formControlName", "paymentMode", 2, "width", "100%"], ["selectPaymentMode", ""], [3, "value", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "form-inline"], [1, "d-inline", "mb-5", "col-md-6"], ["for", "referenceId", 1, "sr-only"], ["matInput", "", "type", "text", "required", "", "id", "referenceId", "formControlName", "referenceId", "placeholder", "Teller number / Transaction Ref", "value", ""], [1, "md-inline", "mb-5", "col-md-6"], ["for", "depositorName", 1, "sr-only"], ["matInput", "", "type", "text", "required", "", "id", "depositorName", "formControlName", "depositorName", "placeholder", "Depositor Name", "value", ""], ["for", "amount", 1, "sr-only"], ["matInput", "", "type", "number", "required", "", "id", "amount", "formControlName", "amount", "placeholder", "Enter Amount", "value", ""], ["for", "paymentDate", 1, "sr-only"], ["matInput", "", "type", "date", "required", "", "id", "paymentDate", "formControlName", "paymentDate", "placeholder", "Date of payment", "value", ""], [1, "form-group", "mb-5"], ["type", "file", "formControlName", "proofOfPayment", 1, "form-control", 3, "change"], ["proofOfPaymentRef", ""], ["mat-raised-button", "", "color", "warn", 1, "mr-2", 3, "click"], ["mat-raised-button", "", "type", "submit", "color", "accent", 3, "disabled"], [3, "value"], [1, "errorText"], ["class", "errorText", 4, "ngIf"], [1, "widget-content-block", "verify"], ["mat-raised-button", "", "type", "button", "color", "warn", 1, "mr-2", 3, "disabled", "click"], ["mat-raised-button", "", "type", "button", "color", "accent", 3, "disabled", "click"], [1, "widget-content-block", "success"], [1, "fa", "fa-check-circle", "fa-2x"], [1, "block", 2, "height", "200px", "width", "auto"], ["alt", "proof of payment", 2, "height", "150px", "max-width", "100%", 3, "src"], [1, "inline-block"], ["mat-raised-button", "", "type", "button", "color", "accent", 3, "click"], [2, "width", "35px", "height", "35px", "position", "absolute", "right", "20px", "top", "7px"]], template: function AgentNewFundRequestComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](1, AgentNewFundRequestComponent_div_1_Template, 2, 0, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "header", 2);

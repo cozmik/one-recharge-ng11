@@ -43,8 +43,12 @@ export class CustomerTransactionHistoryComponent implements OnInit {
 
   public DashboardStatistics: any;
 
-  constructor(public sharedService: SharedService, public toast: ToastService, public dialog: MatDialog,
-              public userService: UserService, public anonymousService: AnonymousService, public error: ErrorService) {
+  constructor(public sharedService: SharedService,
+              public toast: ToastService,
+              public dialog: MatDialog,
+              public userService: UserService,
+              public anonymousService: AnonymousService,
+              public error: ErrorService) {
     this.sharedService.emitChange(this.pageTitle);
     this.adminsTotal = 0;
     this.range = 'today'; // default range is today

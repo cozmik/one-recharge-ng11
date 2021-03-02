@@ -1,6 +1,5 @@
-
 import {Injectable} from '@angular/core';
-import {Subject, Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Constants} from '../../../shared/Constants';
 import {User} from '../../mocks/user/user.model';
 import {TransactionsResponse} from '../../mocks/transactionsResponse.model';
@@ -30,7 +29,7 @@ export class UserService {
   }
 
   constructor(public http: HttpClient) {
-    if ((JSON.parse(localStorage.getItem(Constants.PROFILE)))){
+    if ((JSON.parse(localStorage.getItem(Constants.PROFILE)))) {
       this.loggedInUser = new User(JSON.parse(localStorage.getItem(Constants.PROFILE)));
     }
   }
@@ -40,7 +39,7 @@ export class UserService {
       map(res => res));
   }
 
-  getAgents(userId ?: number, offset = 0, pageSize = 20,  search = ''): Observable<any> {
+  getAgents(userId ?: number, offset = 0, pageSize = 20, search = ''): Observable<any> {
     return this.http.get(Constants.AGENT_URL + (pageSize ? '?pageSize=' + pageSize : '') + (userId ? '&superAgentId=' + userId : '')
       + (offset ? '&offset=' + offset : '') +
       (search ? '&search=' + search : ''), Constants.getTokenHttpHeaders()).pipe(
@@ -66,29 +65,27 @@ export class UserService {
 
   // deprecated
   getAgentTransactions(userId: number, period: string, useRange: boolean, all = false): Observable<any> {
-    if (all){
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId,
+    if (all) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange === false) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId  + '/' + period,
+    } else if (period && useRange === false) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId + '/' + period,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId + period + '&status=2',
+    } else if (period && useRange) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId + period + '&status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
     }
 
-    return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId,
+    return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
   getRecentTransactions(userId: number, offset = 0, pageSize = 20): Observable<any> {
-    return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId + '?offset=' + offset + '&pageSize=' + pageSize + '&downloadSuccessful=1&downloadFailed=1&downloadPending=1',
+    return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId + '?offset=' + offset + '&pageSize=' + pageSize + '&downloadSuccessful=1&downloadFailed=1&downloadPending=1',
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
@@ -97,26 +94,23 @@ export class UserService {
                          download = 0, success = 1,
                          failed = 1, pending = 1): Observable<any> {
     if (period && useRange === false && download === 0) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '')  + '/' + period,
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange && download === 0) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '') + '/'  + period + '&status=2',
+    } else if (period && useRange && download === 0) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + '&status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange === false && download === 1) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '')  + '/' + period + 'download=' + download
+    } else if (period && useRange === false && download === 1) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + 'download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getTokenHttpHeaders());
-    }
-    else if (period && useRange && download === 1) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '') + '/' + period + 'download=' + download
+    } else if (period && useRange && download === 1) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + 'download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
     }
-    return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? userId : ''),
+    return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? userId : ''),
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
@@ -125,36 +119,37 @@ export class UserService {
   // status=2&download=1&downloadSuccessful=1&downloadFailed=1&downloadPending=1
 
 
-
-
-
   getAdminWalletTransactions(userId: number, period: string,
                              useRange: boolean, offset = 1, pageSize = 20,
-                             status = 2,  download = 0,
-                             success = 1, failed = 1): Observable<any>{
+                             status = 2, download = 0,
+                             success = 1, failed = 1): Observable<any> {
     if (period && useRange === false && download === 0) {
-      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '')  + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
+      period = '';
+
+      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange && download === 0) {
-      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/'  + period + '&offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
+    } else if (period && useRange && download === 0) {
+      period = '';
+      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '&offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange === false && download === 1) {
-      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '')  + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
+    } else if (period && useRange === false && download === 1) {
+      period = '';
+      return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
-    }
-    else if (period && useRange && download === 1) {
+    } else if (period && useRange && download === 1) {
+      period = '';
       return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
     }
-    return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? userId : ''),
+    period = '';
+
+    return this.http.get(Constants.WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : ''),
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
@@ -165,8 +160,7 @@ export class UserService {
       return this.http.get(Constants.WALLET_TRANSACTIONS + '/' + period,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && download === 1) {
+    } else if (period && download === 1) {
       return this.http.get(Constants.WALLET_TRANSACTIONS + '/' + period + 'download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
@@ -182,22 +176,19 @@ export class UserService {
                              success = 1, failed = 1,
                              pending = 1): Observable<any> {
     if (period && useRange === false && download === 0) {
-      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL  + (userId ? '/' + userId : '') + '/' + period,
+      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange && download === 0) {
-      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL  + (userId ? '/' + userId : '') + '/' +  period + '&status=2',
+    } else if (period && useRange && download === 0) {
+      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '&status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange === false && download === 1) {
-      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL  + (userId ? '/' + userId : '') + '/' + period + '?download=' + download
-      + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
+    } else if (period && useRange === false && download === 1) {
+      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '?download=' + download
+        + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
-    }
-    else if (period && useRange && download === 1) {
-      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL  + (userId ? '/' + userId : '') + '/' +  period + '&download=' + download
+    } else if (period && useRange && download === 1) {
+      return this.http.get(Constants.USERS_WALLET_TRANSACTIONS_URL + (userId ? '/' + userId : '') + '/' + period + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
     }
@@ -208,65 +199,62 @@ export class UserService {
 
   getAdminTransactions(userId: number, period: string,
                        useRange: boolean, offset = 1, pageSize = 20, status = 2,
-                       download = 0, success = 1, failed = 1, pending = 1): Observable<any>{
+                       download = 0, success = 1, failed = 1, pending = 1): Observable<any> {
     if (period && useRange === false && download === 0) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '')  + '/' + period + '?offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + '?offset=' + offset
+        + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange && download === 0) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '') + '/'  + period + '&offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
+    } else if (period && useRange && download === 0) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + '&offset=' + offset + '&pageSize=' + pageSize + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange === false && download === 1) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? '/' + userId : '')  + '/' + period + '?status=' + status + '&download=' + download
+    } else if (period && useRange === false && download === 1) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : '') + '/' + period + '?status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
-    }
-    else if (period && useRange && download === 1) {
-      return this.http.get(Constants.AIRTIME_TRANSACTIONS +
+    } else if (period && useRange && download === 1) {
+      return this.http.get(Constants.TRANSACTIONS_REPORTS +
         (userId ? '/' + userId : '') + '/' + period + '&status=' + status + '&download=' + download
         + '&downloadSuccessful=' + success + '&downloadFailed=' + failed + '&downloadPending=' + pending,
         Constants.getFileRequestOption(localStorage.getItem(Constants.ACCESS_TOKEN)));
     }
-    return this.http.get(Constants.AIRTIME_TRANSACTIONS + (userId ? userId : ''),
+    return this.http.get(Constants.TRANSACTIONS_REPORTS + (userId ? '/' + userId : ''),
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
 
-  retryTransaction(tranxId: any): Observable<any>{
-    return this.http.put(Constants.TRANSACTIONS + '/retry/' + tranxId , {},
+  retryTransaction(tranxId: any): Observable<any> {
+    return this.http.put(Constants.TRANSACTIONS + '/retry/' + tranxId, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
   // https://test.mfisa.com/tig/api/transactions/refund/741478021a7b40ed89b6348d1b9fa4e1
-  refundTransaction(tranxId: any): Observable<any>{
-    return this.http.put(Constants.TRANSACTIONS + '/refund/' + tranxId , {},
+  refundTransaction(tranxId: any): Observable<any> {
+    return this.http.put(Constants.TRANSACTIONS + '/refund/' + tranxId, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
-  updateTransactionToSuccess(tranxId: any): Observable<any>{
-    return this.http.put(Constants.TRANSACTIONS + '/update-successful/' + tranxId , {},
+  updateTransactionToSuccess(tranxId: any): Observable<any> {
+    return this.http.put(Constants.TRANSACTIONS + '/update-successful/' + tranxId, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
 
- // fund-requests-range?startDate=1522540800000&endDate=1522972800000&status=2
+  // fund-requests-range?startDate=1522540800000&endDate=1522972800000&status=2
 
   getFundRequestHistory(period?: string, useRange?: boolean): Observable<any> {
     if (period && useRange === false) {
       return this.http.get(Constants.FUND_REQUESTS + '?status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange) {
+    } else if (period && useRange) {
       return this.http.get(Constants.FUND_REQUESTS_RANGE + period + '&status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
@@ -283,8 +271,7 @@ export class UserService {
       return this.http.get(Constants.AGENT_FUND_REQUESTS + '/' + userId + '?status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
-    }
-    else if (period && useRange) {
+    } else if (period && useRange) {
       return this.http.get(Constants.AGENT_FUND_REQUESTS_RANGE + '/' + userId + period + '&status=2',
         Constants.getTokenHttpHeaders()).pipe(
         map(res => res));
@@ -296,7 +283,6 @@ export class UserService {
     //   Constants.getTokenHttpHeaders())
     //   .map(res => res);
   }
-
 
 
   // get all customers
@@ -317,7 +303,7 @@ export class UserService {
 
 
   getTransactionsByUser(userId: number, pageSize = 10): Observable<any> {
-    return this.http.get(Constants.AIRTIME_TRANSACTIONS + '/' + userId + '?pageSize=' + pageSize, Constants.getTokenHttpHeaders()).pipe(
+    return this.http.get(Constants.TRANSACTIONS_REPORTS + '/' + userId + '?pageSize=' + pageSize, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
@@ -338,21 +324,21 @@ export class UserService {
 
   // approve payout
   approvePayout(id: number): Observable<any> {
-    return this.http.put(Constants.PAYOUTS_URL + '/approve-payout/'  + id, {},
+    return this.http.put(Constants.PAYOUTS_URL + '/approve-payout/' + id, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
   // confirm payout
   confirmPayout(id: number): Observable<any> {
-    return this.http.put(Constants.PAYOUTS_URL + '/confirm-payout/'  + id, {},
+    return this.http.put(Constants.PAYOUTS_URL + '/confirm-payout/' + id, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
   // decline payout
   declinePayout(id: number): Observable<any> {
-    return this.http.put(Constants.PAYOUTS_URL + '/decline-payout/'  + id, {},
+    return this.http.put(Constants.PAYOUTS_URL + '/decline-payout/' + id, {},
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
@@ -364,21 +350,21 @@ export class UserService {
       map(res => res));
   }
 
-  customerRecharge(rechargeObj: any): Observable<any>{
+  customerRecharge(rechargeObj: any): Observable<any> {
     console.log('customer Recharge payload ', rechargeObj);
     return this.http.post(Constants.CUSTOMER_RECHARGE, rechargeObj,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
-  customerBuyData(dataObj: any): Observable<any>{
+  customerBuyData(dataObj: any): Observable<any> {
     console.log('customer data payload ', dataObj);
     return this.http.post(Constants.CUSTOMER_BUY_DATA, dataObj,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
-  guestRecharge(rechargeObj: any): Observable<any>{
+  guestRecharge(rechargeObj: any): Observable<any> {
     console.log('guest Recharge payload ', rechargeObj);
     return this.http.post(Constants.GUEST_RECHARGE, rechargeObj,
       Constants.getNoTokenHeaders()).pipe(
@@ -386,7 +372,7 @@ export class UserService {
   }
 
 
-  guestBuyData(dataObj: any): Observable<any>{
+  guestBuyData(dataObj: any): Observable<any> {
     console.log('guest data payload ', dataObj);
     return this.http.post(Constants.GUEST_BUY_DATA, dataObj,
       Constants.getNoTokenHeaders()).pipe(
@@ -394,7 +380,7 @@ export class UserService {
   }
 
 
-  agentSelfFundWallet(fundObj: any): Observable<any>{
+  agentSelfFundWallet(fundObj: any): Observable<any> {
     console.log('agent fund wallet payload ', fundObj);
     return this.http.post(Constants.AGENT_URL + 'self-fund', fundObj,
       Constants.getTokenHttpHeaders()).pipe(
@@ -442,31 +428,30 @@ export class UserService {
       map(res => res));
   }
 
-  fundWallet(agentId: any, amount: number): Observable<any>{
+  fundWallet(agentId: any, amount: number): Observable<any> {
     console.log('where are here as : ', this.loggedInUser);
 
     if (this.loggedInUser.userType === Constants.AGENT_USERTYPE) {
       return this.http.post(Constants.AGENT_URL + 'fund-wallet/' + agentId + '/' + amount, {},
         Constants.getTokenHttpHeaders()).pipe(
-      map(res => res));
-    }
-    else if (this.loggedInUser.userType === Constants.ADMIN_USERTYPE) {
+        map(res => res));
+    } else if (this.loggedInUser.userType === Constants.ADMIN_USERTYPE) {
       return this.http.post(Constants.WALLET_URL + '/fund', {amount, userId: agentId},
         Constants.getTokenHttpHeaders()).pipe(
-      map(res => res));
+        map(res => res));
     }
   }
 
-  freezeAccount(freezeObj: any): Observable<any>{
+  freezeAccount(freezeObj: any): Observable<any> {
     return this.http.post(Constants.FREEZE_ACCOUNT, freezeObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
-  airtimeRecharge(rechargeObj: any): Observable<any>{
+  airtimeRecharge(rechargeObj: any): Observable<any> {
     return this.http.post(Constants.AGENTS_RECHARGE, rechargeObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
   // multiple user by uploading sheet
@@ -478,19 +463,18 @@ export class UserService {
   }
 
 
-
-  dataRecharge(dataObj: any): Observable<any>{
+  dataRecharge(dataObj: any): Observable<any> {
     return this.http.post(Constants.AGENTS_BUY_DATA, dataObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
 
   // request funding and upload sheet
   requestFunding(fundingData: any, formData): Observable<any> {
     let payload = '';
-    for (const key in fundingData){
-      if (fundingData.hasOwnProperty(key)){
+    for (const key in fundingData) {
+      if (fundingData.hasOwnProperty(key)) {
         payload += '' + key + '=' + fundingData[key] + '&';
       }
     }
@@ -503,10 +487,10 @@ export class UserService {
   }
 
 
-  updateNetworkConfig(id, networkObj: any): Observable<any>{
+  updateNetworkConfig(id, networkObj: any): Observable<any> {
     return this.http.put(Constants.NETWORK_URL + id + '/update', networkObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
 
@@ -544,10 +528,10 @@ export class UserService {
       map(res => res));
   }
 
-  updateAirtimeNetworkConfig(id, networkObj: any): Observable<any>{
+  updateAirtimeNetworkConfig(id, networkObj: any): Observable<any> {
     return this.http.put(Constants.NETWORK_URL + '/airtime-config/' + id, networkObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
   // block airtime network
@@ -596,22 +580,22 @@ export class UserService {
       map(res => res));
   }
 
-  createUserDataNetworkConfig(configObj: any): Observable<any>{
+  createUserDataNetworkConfig(configObj: any): Observable<any> {
     return this.http.post(Constants.NETWORK_URL + 'user-data-network-config/', configObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
-  createUserAirtimeNetworkConfig(configObj: any): Observable<any>{
+  createUserAirtimeNetworkConfig(configObj: any): Observable<any> {
     return this.http.post(Constants.NETWORK_URL + 'user-airtime-network-config/', configObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
-  updateDataNetworkConfig(id, networkObj: any): Observable<any>{
+  updateDataNetworkConfig(id, networkObj: any): Observable<any> {
     return this.http.put(Constants.NETWORK_URL + 'data-config/' + id, networkObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
   getFundRequestsHistory(): Observable<any> {
@@ -627,7 +611,6 @@ export class UserService {
   }
 
 
-
 // unblock user
   unblockNetwork(setId: any): Observable<any> {
     return this.http.put(Constants.NETWORKS_URL + setId + Constants.UNBLOCK, {},
@@ -636,7 +619,7 @@ export class UserService {
   }
 
   // update network
-  updateNetwork(networkFormData: any , id: any): Observable<any> {
+  updateNetwork(networkFormData: any, id: any): Observable<any> {
     return this.http.put(Constants.NETWORKS_URL + id + '/update/', networkFormData,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
@@ -669,8 +652,8 @@ export class UserService {
   }
 
   acceptFundAgent(requestId: number): Observable<any> {
-    return this.http.put(Constants.MANAGE_FUND_REQUEST_URL + '/' + requestId + '/accept', null,
-      Constants.getTokenHttpHeaders()).pipe(
+    return this.http.put(Constants.MANAGE_FUND_REQUEST_URL + '/' + requestId + '/update', null,
+      {...Constants.getTokenHttpHeaders(), responseType: 'text'}).pipe(
       map(res => res));
   }
 
@@ -679,14 +662,14 @@ export class UserService {
       map(res => res));
   }
 
-  agentSelfFund(fundObj: any): Observable<any>{
+  agentSelfFund(fundObj: any): Observable<any> {
     return this.http.post(Constants.AGENTS_SELF_FUND, fundObj,
       Constants.getTokenHttpHeaders()).pipe(
-    map(res => res));
+      map(res => res));
   }
 
   updateAdmin(userFormData: any, id): Observable<any> {
-    return this.http.put(Constants.ADMIN_UPDATE_URL + id , userFormData,
+    return this.http.put(Constants.ADMIN_UPDATE_URL + id, userFormData,
       Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }

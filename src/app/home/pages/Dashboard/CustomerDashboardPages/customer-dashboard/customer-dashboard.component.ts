@@ -36,7 +36,9 @@ export class CustomerDashboardComponent implements OnInit {
     successfulTransactions : 0
   };
 
-  constructor(public anonymousService: AnonymousService, public router: Router, public userService: UserService,
+  constructor(public anonymousService: AnonymousService,
+              public router: Router,
+              public userService: UserService,
               public error: ErrorService, public toast: ToastService, public storage: StorageService) {
     this.transactionsWithId = [];
     this.getAirtimeTransactions();

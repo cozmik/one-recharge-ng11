@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Component, OnInit} from '@angular/core';
 import {Constants} from '../../../../../shared/Constants';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
@@ -81,7 +81,7 @@ export class AgentProfileComponent implements OnInit {
         console.log('Agent profile failed response');
         console.log(err);
       }
-    )
+    );
   }
 
 // update users
@@ -100,27 +100,25 @@ export class AgentProfileComponent implements OnInit {
       err => {
         console.log(err);
         this.isUpdating = false;
-        const msg = this.error.errorHandlerWithText(this.updateUser, err);
-        console.log(msg.errorMsg);
-        this.toast.showError(msg.message, 'Error');
+        this.toast.showError(err, 'Error');
       }
-    )
+    );
   }
 
   // get roles
   getRoles = () => {
     this.anonymousService.getRoles().subscribe(
       (response: any) => {
-        console.log("get roles function")
+        console.log('get roles function');
         console.log(response);
         this.roles = response.data;
       },
       err => {
         console.log(err);
-        const msg = this.error.errorHandlerWithText(this.getRoles, err);
+        // const msg = this.error.errorHandlerWithText(this.getRoles, err);
        // console.log(msg.message);
       }
-    )
+    );
   }
 
   editToggle() {

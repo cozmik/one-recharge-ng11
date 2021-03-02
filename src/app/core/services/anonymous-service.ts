@@ -35,7 +35,8 @@ export class AnonymousService {
   }
 
   generateTransactionId(): Observable<any> {
-    return this.http.get(Constants.SERVICE_URL + '/transactions/generate-transaction-id', Constants.getNoTokenHeaders() ).pipe(map(res => res));
+    return this.http.get(Constants.SERVICE_URL + '/transactions/generate-transaction-id',
+      Constants.getTokenHttpHeaders() ).pipe(map(res => res));
   }
 
   getPermissions(): Observable<any> {
@@ -45,6 +46,7 @@ export class AnonymousService {
 
   getRole(id): Observable<any> {
     return this.http.get(Constants.GET_ROLES_URL + id, Constants.getTokenHttpHeaders()).pipe(
+
       map(res => res));
   }
 
@@ -78,8 +80,8 @@ export class AnonymousService {
       map(res => res));
   }
 
-  performService(url: any, data: any): Observable<any> {
-    return this.http.post(Constants.SERVICE_URL + '/' + url, data, Constants.getNoTokenHeaders()).pipe(
+  performService(confirmUrl: string, payUrl: string, data: any): Observable<any> {
+    return this.http.post(Constants.SERVICE_URL + confirmUrl, data, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 }

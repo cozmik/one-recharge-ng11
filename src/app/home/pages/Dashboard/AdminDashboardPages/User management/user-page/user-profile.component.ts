@@ -58,8 +58,8 @@ export class UserProfileComponent implements OnInit {
       },
       err => {
         console.log(err);
-        const errMsg = this.error.errorHandlerWithText(this.blockUser, err);
-        console.log(errMsg.message);
+        // const errMsg = this.error.errorHandlerWithText(this.blockUser, err);
+        // console.log(errMsg.message);
       }
     );
   }
@@ -76,8 +76,8 @@ export class UserProfileComponent implements OnInit {
         this.isBlocked = true;
       },
       err => {
-        const errMsg = this.error.errorHandlerWithText(this.unBlockUser, err);
-        console.log(errMsg.message);
+        // const errMsg = this.error.errorHandlerWithText(this.unBlockUser, err);
+        console.log(err);
       }
     );
   }
@@ -95,7 +95,7 @@ export class UserProfileComponent implements OnInit {
         }
       },
       err => {
-        this.error.errorHandlerWithText(this.getUser, err);
+        // this.error.errorHandlerWithText(this.getUser, err);
       }
     );
   }

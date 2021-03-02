@@ -17,6 +17,7 @@ export class SharedService {
   // Observable string sources
   public emitChangeSource = new Subject();
   public emitWalletAccountsSource = new Subject<any>();
+  public recentServices = new BehaviorSubject<{}>(null)
 
   totalTicketCount: BehaviorSubject<number> = new BehaviorSubject<number>(10);
 
@@ -39,7 +40,7 @@ export class SharedService {
 
 
   // Service message commands
-  emitChange(change: string) {
+  emitChange(change: string): any {
     this.emitChangeSource.next(change);
   }
 
@@ -71,7 +72,9 @@ export class SharedService {
     );
   }
 
-  constructor(public http: HttpClient,  public anonymousService: AnonymousService,  public error: ErrorService) {
+  constructor(public http: HttpClient,
+              public anonymousService: AnonymousService,
+              public error: ErrorService) {
   }
 
   createUser(formData: any, token: string): Observable<any> {

@@ -1,6 +1,6 @@
 <section class="package-section" *ngIf="recentServices">
-  <h4 class="w-100">Frequently Performed Services</h4>
-    <button class="package" *ngFor="let service of recentServices"  [state]="{ serviceId: service.id }" [routerLink]="'services/' + service.serviceCategory.id.toString()">
+  <h4 class="w-100" *ngIf="title">Frequently Performed Services</h4>
+    <button class="package" *ngFor="let service of recentServices" (click)="getService(service.id)">
       <div class="logo">
         <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)">
       </div>

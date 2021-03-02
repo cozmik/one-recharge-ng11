@@ -35,6 +35,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="selectorDiv">
+
         <div class="user_loader" *ngIf="allLoading.profile || allLoading.roles || allLoading.transaction">
             <!--<mat-spinner style="width: 35px; height: 35px; margin-top: 45%;" [color]="'accent'"> </mat-spinner>-->
             <p style="position: absolute;">loading profile...</p>
@@ -170,102 +171,105 @@
               </mat-tab>
               <mat-tab>
                 <ng-template mat-tab-label>
-                  <mat-icon>build</mat-icon> AIRTIME
+                  <mat-icon>build</mat-icon> SERVICES
                 </ng-template>
                 <mat-progress-bar *ngIf="isLoadingAirtimeNetworkConfig" mode="indeterminate"></mat-progress-bar>
-                <div *ngIf="airtimeNetworkConfig.length < 1 && !isLoadingAirtimeNetworkConfig" style="padding:20px 10px;text-align:center">
+                <div *ngIf="services.length < 1" style="padding:20px 10px;text-align:center">
                   <span>No Networks at the moment</span>
                 </div>
-
-                <table class="table table-primary"  *ngIf="airtimeNetworkConfig.length > 0">
-                  <thead>
-                  <tr>
-                    <!--make table stable-->
-                    <th></th>
-                    <!---->
-                    <th scope="col">#</th>
-                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
-                    <th scope="col">Network Name</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() !== 'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>
-                    <th scope="col">Agent Commission</th>
-                    <th scope="col">Date Configured</th>
-                    <th scope="col"> </th>
-                  </tr>
-                  </thead>
-                  <tbody *ngFor="let network of airtimeNetworkConfigWithId; let i = index">
-                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
-                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
-                    <!--make table stable-->
-                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
-
-                    <td class="link"> {{network.id}}</td>
-                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
-                    <td class="link"> {{network.data.network.networkName}}</td>
-                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>
-                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>
-                    <td class="link" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>
-                    <td class="link"> {{network.data.commission}} </td>
-                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>
-                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Airtime')" [mat-menu-trigger-for]="airtimeAction">
-                      <i class="fa fa-ellipsis-v"></i></div>
-                      <span class="status" [style.background-color]="network.data.network.isAirtimeActive ? '#5cb85c' : '#d9534f'" class="status"></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </mat-tab>
-
-              <mat-tab>
-                <ng-template mat-tab-label>
-                  <mat-icon>build</mat-icon> DATA
-                </ng-template>
-                <mat-progress-bar *ngIf="isLoadingDataNetworkConfig" mode="indeterminate"></mat-progress-bar>
-                <div *ngIf="dataNetworkConfig.length < 1 && !isLoadingDataNetworkConfig" style="padding:20px 10px;text-align:center">
-                  <span>No Networks at the moment</span>
+                <div *ngIf="services.length > 1" style="padding:20px 10px;text-align:center">
+                  <app-recent-services [provided]="true" [services]="services" [title]="false"></app-recent-services>
                 </div>
 
-                <table class="table table-primary"  *ngIf="dataNetworkConfig.length > 0">
-                  <thead>
-                  <tr>
-                    <!--make table stable-->
-                    <th></th>
-                    <!---->
-                    <th scope="col">#</th>
-                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>
-                    <th scope="col">Network Name</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>
-                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>
-                    <th scope="col">Agent Commission</th>
-                    <th scope="col">Date Configured</th>
-                    <th scope="col"> </th>
-                  </tr>
-                  </thead>
-                  <tbody *ngFor="let network of dataNetworkConfigWithId; let i = index">
-                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">
-                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>
-                    <!--make table stable-->
-                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+<!--                <table class="table table-primary"  *ngIf="airtimeNetworkConfig.length > 0">-->
+<!--                  <thead>-->
+<!--                  <tr>-->
+<!--                    &lt;!&ndash;make table stable&ndash;&gt;-->
+<!--                    <th></th>-->
+<!--                    &lt;!&ndash;&ndash;&gt;-->
+<!--                    <th scope="col">#</th>-->
+<!--                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>-->
+<!--                    <th scope="col">Network Name</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() !== 'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>-->
+<!--                    <th scope="col">Agent Commission</th>-->
+<!--                    <th scope="col">Date Configured</th>-->
+<!--                    <th scope="col"> </th>-->
+<!--                  </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody *ngFor="let network of airtimeNetworkConfigWithId; let i = index">-->
+<!--                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">-->
+<!--                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+<!--                    &lt;!&ndash;make table stable&ndash;&gt;-->
+<!--                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>-->
 
-                    <td class="link"> {{network.id}}</td>
-                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>
-                    <td class="link"> {{network.data.network.networkName}}</td>
-                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>
-                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>
-                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>
-                    <td class="link"> {{network.data.commission}} </td>
-                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>
-                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Data')" [mat-menu-trigger-for]="dataAction">
-                      <i class="fa fa-ellipsis-v"></i></div>
-                      <span class="status" [style.background-color]="network.data.network.isDataActive ? '#5cb85c' : '#d9534f'" class="status"></span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <!--<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>-->
+<!--                    <td class="link"> {{network.id}}</td>-->
+<!--                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>-->
+<!--                    <td class="link"> {{network.data.network.networkName}}</td>-->
+<!--                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>-->
+<!--                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>-->
+<!--                    <td class="link" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>-->
+<!--                    <td class="link"> {{network.data.commission}} </td>-->
+<!--                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>-->
+<!--                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Airtime')" [mat-menu-trigger-for]="airtimeAction">-->
+<!--                      <i class="fa fa-ellipsis-v"></i></div>-->
+<!--                      <span class="status" [style.background-color]="network.data.network.isAirtimeActive ? '#5cb85c' : '#d9534f'" class="status"></span>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                  </tbody>-->
+<!--                </table>-->
               </mat-tab>
+
+<!--              <mat-tab>-->
+<!--                <ng-template mat-tab-label>-->
+<!--                  <mat-icon>build</mat-icon> DATA-->
+<!--                </ng-template>-->
+<!--                <mat-progress-bar *ngIf="isLoadingDataNetworkConfig" mode="indeterminate"></mat-progress-bar>-->
+<!--                <div *ngIf="dataNetworkConfig.length < 1 && !isLoadingDataNetworkConfig" style="padding:20px 10px;text-align:center">-->
+<!--                  <span>No Networks at the moment</span>-->
+<!--                </div>-->
+
+<!--                <table class="table table-primary"  *ngIf="dataNetworkConfig.length > 0">-->
+<!--                  <thead>-->
+<!--                  <tr>-->
+<!--                    &lt;!&ndash;make table stable&ndash;&gt;-->
+<!--                    <th></th>-->
+<!--                    &lt;!&ndash;&ndash;&gt;-->
+<!--                    <th scope="col">#</th>-->
+<!--                    <th scope="col">Logo <i class="fa fa-picture-o"></i></th>-->
+<!--                    <th scope="col">Network Name</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'">System Commission</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'">Super Agent Commission</th>-->
+<!--                    <th scope="col" *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'">My Commission</th>-->
+<!--                    <th scope="col">Agent Commission</th>-->
+<!--                    <th scope="col">Date Configured</th>-->
+<!--                    <th scope="col"> </th>-->
+<!--                  </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody *ngFor="let network of dataNetworkConfigWithId; let i = index">-->
+<!--                  <tr [style.backgroundColor] = "i%2 === 0 ? '#ecf0f5' : 'white'">-->
+<!--                    <mat-progress-bar *ngIf="isloading && network.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+<!--                    &lt;!&ndash;make table stable&ndash;&gt;-->
+<!--                    <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>-->
+
+<!--                    <td class="link"> {{network.id}}</td>-->
+<!--                    <td class="link"> <img style="border-radius:100%;" width="30" height="30" src="{{network.logoPath}}"/></td>-->
+<!--                    <td class="link"> {{network.data.network.networkName}}</td>-->
+<!--                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin'"> {{network.data.sysCommission}} </td>-->
+<!--                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase() === 'admin' && userData?.agentTypeName.toLowerCase() !== 'super agent'"> {{network?.superAgentCommission?.commission | checkNull}} </td>-->
+<!--                    <td class="link"  *ngIf="loggedInUserType.getUserType().toLowerCase()  !==  'admin' || userData?.agentTypeName.toLowerCase() !== 'agent'"> {{network?.myCommission ? (network?.myCommission[0]?.commission) : '-'}} </td>-->
+<!--                    <td class="link"> {{network.data.commission}} </td>-->
+<!--                    <td class="link">{{network.data.network.createdDate | date | checkNull}}</td>-->
+<!--                    <td class="more"><div class="btn btn-link" (click)="getNetworkDetails(network.data,'Data')" [mat-menu-trigger-for]="dataAction">-->
+<!--                      <i class="fa fa-ellipsis-v"></i></div>-->
+<!--                      <span class="status" [style.background-color]="network.data.network.isDataActive ? '#5cb85c' : '#d9534f'" class="status"></span>-->
+<!--                    </td>-->
+<!--                  </tr>-->
+<!--                  </tbody>-->
+<!--                </table>-->
+<!--                &lt;!&ndash;<pagination-controls style="text-align: right" (pageChange)="p = $event"></pagination-controls>&ndash;&gt;-->
+<!--              </mat-tab>-->
 
             </mat-tab-group>
           </div>

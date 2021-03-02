@@ -1229,7 +1229,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_guards_auth_guard_auth_guard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../core/guards/auth-guard/auth.guard */ "AUzd");
 /* harmony import */ var _services_services_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./services/services.component */ "GBru");
 /* harmony import */ var _user_shared_perform_service_perform_service_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../user-shared/perform-service/perform-service.component */ "+TtP");
-/* harmony import */ var _user_shared_recent_services_recent_services_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../user-shared/recent-services/recent-services.component */ "ZeA7");
+/* harmony import */ var _common_components_recent_services_recent_services_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../common-components/recent-services/recent-services.component */ "fOEW");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ "fXoL");
 
 
@@ -1249,8 +1249,7 @@ const routes = [
             {
                 path: '', component: _customer_dashboard_customer_dashboard_component__WEBPACK_IMPORTED_MODULE_1__["CustomerDashboardComponent"],
                 children: [
-                    { path: '', component: _user_shared_recent_services_recent_services_component__WEBPACK_IMPORTED_MODULE_9__["RecentServicesComponent"] },
-                    // {path: 'airtime', component: BuyAirtimeComponent},
+                    { path: '', component: _common_components_recent_services_recent_services_component__WEBPACK_IMPORTED_MODULE_9__["RecentServicesComponent"] },
                     { path: 'data', component: _customer_dashboard_buy_data_buy_data_component__WEBPACK_IMPORTED_MODULE_2__["BuyDataComponent"] },
                     { path: 'payment-status', component: _common_components_payment_status_payment_status_component__WEBPACK_IMPORTED_MODULE_3__["PaymentStatusComponent"] },
                     { path: 'services', component: _services_services_component__WEBPACK_IMPORTED_MODULE_7__["ServicesComponent"] },
@@ -1295,8 +1294,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AdminDashboardPages_User_management_manage_customers_manage_customers_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../AdminDashboardPages/User management/manage-customers/manage-customers.component */ "MtER");
 /* harmony import */ var _user_shared_user_shared_module__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../user-shared/user-shared.module */ "M0Iz");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../AdminDashboardPages/service-management/views/service-manager.service */ "V31o");
-
 
 
 
@@ -1310,13 +1307,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class CustomerModule {
-    constructor(smService) {
-        this.smService = smService;
-        this.smService.getAllServicesByCategories();
-    }
 }
 CustomerModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵdefineNgModule"]({ type: CustomerModule });
-CustomerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵdefineInjector"]({ factory: function CustomerModule_Factory(t) { return new (t || CustomerModule)(_angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵinject"](_AdminDashboardPages_service_management_views_service_manager_service__WEBPACK_IMPORTED_MODULE_12__["ServiceManagerService"])); }, imports: [[
+CustomerModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_11__["ɵɵdefineInjector"]({ factory: function CustomerModule_Factory(t) { return new (t || CustomerModule)(); }, imports: [[
             _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
             _core_shared_modules_shared_module__WEBPACK_IMPORTED_MODULE_7__["SharedModule"],
             _user_shared_user_shared_module__WEBPACK_IMPORTED_MODULE_10__["UserSharedModule"],

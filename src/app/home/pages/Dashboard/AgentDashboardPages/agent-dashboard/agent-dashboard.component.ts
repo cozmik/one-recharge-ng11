@@ -39,8 +39,13 @@ export class AgentDashboardComponent implements OnInit {
   };
   private errorResponse: any;
 
-  constructor(public sharedService: SharedService, public anonymousService: AnonymousService, public router: Router,
-              public userService: UserService, public error: ErrorService, public toast: ToastService, public storage: StorageService) {
+  constructor(public sharedService: SharedService,
+              public anonymousService: AnonymousService,
+              public router: Router,
+              public userService: UserService,
+              public error: ErrorService,
+              public toast: ToastService,
+              public storage: StorageService) {
 
     this.pageTitle = 'Dashboard';
     this.sharedService.emitChange(this.pageTitle);
@@ -63,11 +68,6 @@ export class AgentDashboardComponent implements OnInit {
     };
     this.getAgentDetails();
     this.getRecentTransactions();
-  }
-
-
-  editRole(id): void {
-    this.router.navigate(['admin/edit-role/', id]);
   }
 
   getAgentDetails = () => {
@@ -98,7 +98,6 @@ export class AgentDashboardComponent implements OnInit {
         console.log(userStatistics);
         const {
           transactionCount,
-          walletTrans,
           successfulTran,
           pendingTrans, failedTrans, airtimeTrans,
           successfulAirtimeTrans, failedAirtimeTrans, pendingAirtimeTrans

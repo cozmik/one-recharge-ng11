@@ -93,7 +93,7 @@ export class AgentWalletComponent implements OnInit {
       response => {
         // console.log('************ generateTransactionId ****************');
         // console.log(response.data[0].transactionId);
-        this.transactionID = response.data[0].transactionId;
+        this.transactionID = response.transactionId;
         this.payWithRave();
       },
       err => {

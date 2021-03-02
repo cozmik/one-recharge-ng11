@@ -8,7 +8,7 @@ import {CustomerTransactionHistoryComponent} from './customer-transaction-histor
 import {AuthGuard} from '../../../../core/guards/auth-guard/auth.guard';
 import {ServicesComponent} from './services/services.component';
 import {PerformServiceComponent} from '../user-shared/perform-service/perform-service.component';
-import {RecentServicesComponent} from '../user-shared/recent-services/recent-services.component';
+import {RecentServicesComponent} from '../../../common-components/recent-services/recent-services.component';
 
 const routes: Routes = [
   { path: '',
@@ -17,7 +17,6 @@ const routes: Routes = [
         path: '', component: CustomerDashboardComponent,
         children: [
           {path: '', component: RecentServicesComponent},
-          // {path: 'airtime', component: BuyAirtimeComponent},
           {path: 'data', component: BuyDataComponent},
           {path: 'payment-status', component: PaymentStatusComponent},
           {path: 'services', component: ServicesComponent},
