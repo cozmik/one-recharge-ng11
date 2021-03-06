@@ -2485,7 +2485,17 @@ class AnonymousService {
         return this.http.get(_shared_Constants__WEBPACK_IMPORTED_MODULE_1__["Constants"].SERVICE_URL + '/services/categories', _shared_Constants__WEBPACK_IMPORTED_MODULE_1__["Constants"].getNoTokenHeaders()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(res => res));
     }
     performService(confirmUrl, payUrl, data) {
+        console.log(_shared_Constants__WEBPACK_IMPORTED_MODULE_1__["Constants"].SERVICE_URL + confirmUrl);
+        console.log(payUrl);
         return this.http.post(_shared_Constants__WEBPACK_IMPORTED_MODULE_1__["Constants"].SERVICE_URL + confirmUrl, data, _shared_Constants__WEBPACK_IMPORTED_MODULE_1__["Constants"].getTokenHttpHeaders()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(res => res));
+    }
+    cleanUrl(str, stringToRemove) {
+        if (str.includes(stringToRemove)) {
+            return str.replace(stringToRemove, '');
+        }
+        else {
+            return str;
+        }
     }
 }
 AnonymousService.ɵfac = function AnonymousService_Factory(t) { return new (t || AnonymousService)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"])); };
@@ -5780,7 +5790,7 @@ class GuestServiceFormComponent {
     //   });
     // }
     setServices(category) {
-        this.services = category.serviceResponses.filter(service => service.meta.fields !== null);
+        this.services = category.serviceResponses.filter(service => service.meta.guestUrl !== null);
         if (this.form) {
             this.form.reset();
             // Object.entries(this.form.controls).forEach(
@@ -5797,9 +5807,10 @@ class GuestServiceFormComponent {
         this.form = this.sharedService.toFormGroup(this.fields);
     }
     submitServiceData(e, confirm = false) {
-        const { hasConfirmation, url, confirmationUrl } = this.service.meta;
+        const { hasConfirmation, guestUrl, confirmationUrl } = this.service.meta;
+        console.log(this.service.meta);
         if (hasConfirmation) {
-            this.anonymousService.performService(confirmationUrl, url, e).subscribe(res => {
+            this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'), this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/'), e).subscribe(res => {
                 console.log(res);
             });
         }
@@ -21119,13 +21130,15 @@ class RecentServicesComponent {
         this.user = JSON.parse(localStorage.getItem(_shared_Constants__WEBPACK_IMPORTED_MODULE_0__["Constants"].PROFILE));
     }
     ngOnChanges(changes) {
-        if (changes && changes.provided.currentValue) {
-            this.recentServices = this.services;
-        }
-        else {
-            if (this.user) {
-                if (changes && changes.auth.currentValue) {
-                    this.recentServices = JSON.parse(localStorage.getItem(_shared_Constants__WEBPACK_IMPORTED_MODULE_0__["Constants"].USER_RECENT_SERVICES));
+        if (changes) {
+            if (changes.provided && changes.provided.currentValue) {
+                this.recentServices = this.services;
+            }
+            else {
+                if (this.user) {
+                    if (changes && changes.auth.currentValue) {
+                        this.recentServices = JSON.parse(localStorage.getItem(_shared_Constants__WEBPACK_IMPORTED_MODULE_0__["Constants"].USER_RECENT_SERVICES));
+                    }
                 }
             }
         }

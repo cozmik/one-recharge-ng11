@@ -92,7 +92,7 @@ class PerformServiceComponent {
     submitServiceData(e, confirm = false) {
         const { hasConfirmation, url, confirmationUrl } = this.chosenService.meta;
         if (hasConfirmation) {
-            this.anonymousService.performService(confirmationUrl, url, e).subscribe(res => {
+            this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'), this.anonymousService.cleanUrl(url, 'kojeh-v2/api/'), e).subscribe(res => {
                 console.log(res);
             });
         }

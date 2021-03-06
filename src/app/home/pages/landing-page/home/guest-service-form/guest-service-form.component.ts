@@ -276,7 +276,7 @@ export class GuestServiceFormComponent implements OnInit {
   // }
 
   setServices(category: any): void {
-    this.services = category.serviceResponses.filter(service => service.meta.fields !== null);
+    this.services = category.serviceResponses.filter(service => service.meta.guestUrl !== null);
     if (this.form) {
       this.form.reset();
       // Object.entries(this.form.controls).forEach(
@@ -295,9 +295,11 @@ export class GuestServiceFormComponent implements OnInit {
   }
 
   submitServiceData(e: Event, confirm = false): void {
-    const {hasConfirmation, url, confirmationUrl} = this.service.meta;
+    const {hasConfirmation, guestUrl, confirmationUrl} = this.service.meta;
+    console.log(this.service.meta);
     if (hasConfirmation) {
-      this.anonymousService.performService(confirmationUrl, url, e).subscribe(res => {
+      this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'),
+        this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/'), e).subscribe(res => {
         console.log(res);
       });
     }

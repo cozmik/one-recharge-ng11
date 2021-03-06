@@ -81,7 +81,17 @@ export class AnonymousService {
   }
 
   performService(confirmUrl: string, payUrl: string, data: any): Observable<any> {
+    console.log(Constants.SERVICE_URL + confirmUrl);
+    console.log(payUrl);
     return this.http.post(Constants.SERVICE_URL + confirmUrl, data, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
+  }
+
+  cleanUrl(str: string, stringToRemove: string): string {
+    if (str.includes(stringToRemove)){
+      return str.replace(stringToRemove, '');
+    } else {
+      return str;
+    }
   }
 }

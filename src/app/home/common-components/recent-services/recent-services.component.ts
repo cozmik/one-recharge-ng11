@@ -31,12 +31,14 @@ export class RecentServicesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.provided.currentValue){
-      this.recentServices = this.services;
-    } else {
-      if (this.user) {
-        if (changes && changes.auth.currentValue) {
-          this.recentServices = JSON.parse(localStorage.getItem(Constants.USER_RECENT_SERVICES));
+    if (changes) {
+      if (changes.provided && changes.provided.currentValue) {
+        this.recentServices = this.services;
+      } else {
+        if (this.user) {
+          if (changes && changes.auth.currentValue) {
+            this.recentServices = JSON.parse(localStorage.getItem(Constants.USER_RECENT_SERVICES));
+          }
         }
       }
     }
