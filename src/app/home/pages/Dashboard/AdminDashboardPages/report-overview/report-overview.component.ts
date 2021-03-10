@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {UserService} from '../../../../../core/services/users-service/user-service';
 import {ErrorService} from '../../../../../core/services/error_service/error.service';
@@ -20,7 +20,7 @@ export class ReportOverviewComponent implements OnInit {
   public dashboardData: any = {
     activeAdmins: 0,
     activeAgents: 0,
-    activeCustomers : 0,
+    activeCustomers: 0,
     admins: 0,
     agents: 0,
     customers: 0,
@@ -33,7 +33,6 @@ export class ReportOverviewComponent implements OnInit {
     transactionCount: 0
   };
   public isLoadingCharts = true;
-
 
 
   // general chart configuration
@@ -92,8 +91,8 @@ export class ReportOverviewComponent implements OnInit {
   ];
 
   // networkPieChartColors mtn glo airtel 9mobile
-  networkPieChartColors: any[] = [{ backgroundColor: ['rgba(252,204,7,0.8)', 'rgba(14,163,5,0.6)',  'rgba(244, 72, 79,0.8)' , 'rgba(136,145,29,0.6)'] }];
-  channelPieChartColors: any[] = [{ backgroundColor: ['rgba(33, 192, 252,0.8)', 'rgba(46, 65, 154,0.8)', 'rgba(259,179,100,0.6)'] }];
+  networkPieChartColors: any[] = [{backgroundColor: ['rgba(252,204,7,0.8)', 'rgba(14,163,5,0.6)', 'rgba(244, 72, 79,0.8)', 'rgba(136,145,29,0.6)']}];
+  channelPieChartColors: any[] = [{backgroundColor: ['rgba(33, 192, 252,0.8)', 'rgba(46, 65, 154,0.8)', 'rgba(259,179,100,0.6)']}];
 
 
   public channelsChartColors: Array<any> = [
@@ -401,7 +400,7 @@ export class ReportOverviewComponent implements OnInit {
   // airtime tranx by networks value
   public pieChartAirtimeTransactionsPerNetworkValueLabels: string[] = [];
   public pieChartAirtimeTransactionsPerNetworkValueChartData =
-    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth : []};
+    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth: []};
   public pieChartAirtimeTransactionsPerNetworkValueChartDataView = [];
   public pieChartAirtimeTransactionsPerNetworkValueIsDataAvailable: boolean;
   public pieChartAirtimeTransactionsPerNetworkValuePeriod: string;
@@ -409,7 +408,7 @@ export class ReportOverviewComponent implements OnInit {
   // airtime tranx per network volume
   public pieChartAirtimeTransactionsPerNetworkVolumeLabels: string[] = [];
   public pieChartAirtimeTransactionsPerNetworkVolumeChartData =
-    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth : []};
+    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth: []};
   public pieChartAirtimeTransactionsPerNetworkVolumeChartDataView = [];
   public pieChartAirtimeTransactionsPerNetworkVolumeIsDataAvailable: boolean;
   public pieChartAirtimeTransactionsPerNetworkVolumePeriod: string;
@@ -418,7 +417,7 @@ export class ReportOverviewComponent implements OnInit {
   // airtime tranx per channel value
   public pieChartAirtimeTransactionsPerChannelValueLabels: string[] = [];
   public pieChartAirtimeTransactionsPerChannelValueChartData =
-    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth : []};
+    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth: []};
   public pieChartAirtimeTransactionsPerChannelValueChartDataView = [];
   public pieChartAirtimeTransactionsPerChannelValueIsDataAvailable: boolean;
   public pieChartAirtimeTransactionsPerChannelValuePeriod: string;
@@ -426,11 +425,10 @@ export class ReportOverviewComponent implements OnInit {
   // airtime tranx per channel volume
   public pieChartAirtimeTransactionsPerChannelVolumeLabels: string[] = [];
   public pieChartAirtimeTransactionsPerChannelVolumeChartData =
-    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth : []};
+    {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth: []};
   public pieChartAirtimeTransactionsPerChannelVolumeChartDataView = [];
   public pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable: boolean;
   public pieChartAirtimeTransactionsPerChannelVolumePeriod: string;
-
 
 
   // Last 12 months by User Type Top 3 Agents (FROM TYPE)
@@ -511,42 +509,38 @@ export class ReportOverviewComponent implements OnInit {
     this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth = response.thisMonthAirtimeTransactionsPerNetwork.data;
     this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth = response.lastMonthAirtimeTransactionsPerNetwork.data;
 
-    for (const element of pieChartAirtimeTransactionsPerNetworkValueLabels){
+    for (const element of pieChartAirtimeTransactionsPerNetworkValueLabels) {
       this.pieChartAirtimeTransactionsPerNetworkValueLabels.push(element);
     }
 
     console.log('pieChartAirtimeTransactionsPerNetworkValueLabels', this.pieChartAirtimeTransactionsPerNetworkValueLabels);
     console.log('pieChartAirtimeTransactionsPerNetworkValueChartData', this.pieChartAirtimeTransactionsPerNetworkValueChartData);
   }
-  renderPieChartAirtimeTransactionsPerNetworkValueStatistics(): void{
+
+  renderPieChartAirtimeTransactionsPerNetworkValueStatistics(): void {
     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'today'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.today){
+    if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'today') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.today) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'yesterday'){
-       for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'yesterday') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this week') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last week') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this month') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last month') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth) {
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
       }
     }
@@ -554,7 +548,7 @@ export class ReportOverviewComponent implements OnInit {
     // console.log('this.pieChartAirtimeTransactionsPerNetworkValueChartDataView',
     // this.pieChartAirtimeTransactionsPerNetworkValueChartDataView);
 
-    const reducer = (accumulator= 0, currentValue) => accumulator + currentValue;
+    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
     if (this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.length > 0) {
       this.pieChartAirtimeTransactionsPerNetworkValueIsDataAvailable =
         this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.reduce(reducer) > 0;
@@ -571,42 +565,38 @@ export class ReportOverviewComponent implements OnInit {
     this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerNetwork.data;
     this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerNetwork.data;
 
-    for (const element of pieChartAirtimeTransactionsPerNetworkVolumeLabels){
+    for (const element of pieChartAirtimeTransactionsPerNetworkVolumeLabels) {
       this.pieChartAirtimeTransactionsPerNetworkVolumeLabels.push(element);
     }
 
     console.log('pieChartAirtimeTransactionsPerNetworkVolumeLabels', this.pieChartAirtimeTransactionsPerNetworkVolumeLabels);
     console.log('pieChartAirtimeTransactionsPerNetworkVolumeChartData', this.pieChartAirtimeTransactionsPerNetworkVolumeChartData);
   }
+
   renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics(): void {
     this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'today'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today){
+    if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'today') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'yesterday'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'yesterday') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this week') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last week') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this month') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth){
+    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last month') {
+      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth) {
         this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
       }
     }
@@ -632,42 +622,38 @@ export class ReportOverviewComponent implements OnInit {
     this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth = response.thisMonthAirtimeTransactionsPerChannel.data;
     this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth = response.lastMonthAirtimeTransactionsPerChannel.data;
 
-    for (const element of pieChartAirtimeTransactionsPerChannelsValueLabels){
+    for (const element of pieChartAirtimeTransactionsPerChannelsValueLabels) {
       this.pieChartAirtimeTransactionsPerChannelValueLabels.push(element);
     }
 
     console.log('pieChartAirtimeTransactionsPerChannelValueLabels', this.pieChartAirtimeTransactionsPerChannelValueLabels);
     console.log('pieChartAirtimeTransactionsPerChannelValueChartData', this.pieChartAirtimeTransactionsPerChannelValueChartData);
   }
+
   renderPieChartAirtimeTransactionsPerChannelValueStatistics(): void {
     this.pieChartAirtimeTransactionsPerChannelValueChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'today'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.today){
+    if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'today') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.today) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'yesterday'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.yesterday){
+    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'yesterday') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.yesterday) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.thisWeek){
+    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this week') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisWeek) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.lastWeek){
+    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last week') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastWeek) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth){
+    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this month') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth){
+    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last month') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth) {
         this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
       }
     }
@@ -694,42 +680,38 @@ export class ReportOverviewComponent implements OnInit {
     this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerChannel.data;
     this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerChannel.data;
 
-    for (const element of pieChartAirtimeTransactionsPerChannelVolumeLabels){
+    for (const element of pieChartAirtimeTransactionsPerChannelVolumeLabels) {
       this.pieChartAirtimeTransactionsPerChannelVolumeLabels.push(element);
     }
 
-    console.log('pieChartAirtimeTransactionsPerChannelVolumeLabels', this.pieChartAirtimeTransactionsPerChannelVolumeLabels);
-    console.log('pieChartAirtimeTransactionsPerChannelVolumeChartData', this.pieChartAirtimeTransactionsPerChannelVolumeChartData);
+    // console.log('pieChartAirtimeTransactionsPerChannelVolumeLabels', this.pieChartAirtimeTransactionsPerChannelVolumeLabels);
+    // console.log('pieChartAirtimeTransactionsPerChannelVolumeChartData', this.pieChartAirtimeTransactionsPerChannelVolumeChartData);
   }
-  renderPieChartAirtimeTransactionsPerChannelVolumeStatistics(): void{
+
+  renderPieChartAirtimeTransactionsPerChannelVolumeStatistics(): void {
     this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'today'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today){
+    if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'today') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'yesterday'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday){
+    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'yesterday') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek){
+    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this week') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last week'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek){
+    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last week') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth){
+    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this month') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
-    }
-    else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last month'){
-      for (const element of  this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth){
+    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last month') {
+      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth) {
         this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
       }
     }
@@ -753,11 +735,11 @@ export class ReportOverviewComponent implements OnInit {
     const last24HoursNetworksTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCount.categories;
     const last24HoursNetworksTransactionsVolumeLabelsSeries = response.last24HoursAirtimeTransactionsCount.series;
 
-    for (const element of last24HoursNetworksTransactionsVolumeLabels){
+    for (const element of last24HoursNetworksTransactionsVolumeLabels) {
       this.last24HoursNetworksTransactionsVolumeLabels.push(element);
     }
 
-    for (const element of last24HoursNetworksTransactionsVolumeLabelsSeries){
+    for (const element of last24HoursNetworksTransactionsVolumeLabelsSeries) {
       const reversedElementData = element.data;
       const ele = {
         data: reversedElementData,
@@ -775,11 +757,11 @@ export class ReportOverviewComponent implements OnInit {
     const last24HoursNetworksTransactionsValueLabels = response.last24HoursAirtimeTransactions.categories;
     const last24HoursNetworksTransactionsValueLabelsSeries = response.last24HoursAirtimeTransactions.series;
 
-    for (const element of last24HoursNetworksTransactionsValueLabels){
+    for (const element of last24HoursNetworksTransactionsValueLabels) {
       this.last24HoursNetworksTransactionsValueLabels.push(element);
     }
 
-    for (const element of last24HoursNetworksTransactionsValueLabelsSeries){
+    for (const element of last24HoursNetworksTransactionsValueLabelsSeries) {
       const reversedElementData = element.data;
       const ele = {
         data: reversedElementData,
@@ -797,11 +779,11 @@ export class ReportOverviewComponent implements OnInit {
     const last24HoursChannelsTransactionsValueLabels = response.last24HoursAirtimeTransactionsPerChannel.categories;
     const last24HoursChannelsTransactionsValueSeries = response.last24HoursAirtimeTransactionsPerChannel.series;
 
-    for (const element of last24HoursChannelsTransactionsValueLabels){
+    for (const element of last24HoursChannelsTransactionsValueLabels) {
       this.last24HoursChannelsTransactionsValueLabels.push(element);
     }
 
-    for (const element of last24HoursChannelsTransactionsValueSeries){
+    for (const element of last24HoursChannelsTransactionsValueSeries) {
       const reversedElementData = element.data;
       const ele = {
         data: reversedElementData,
@@ -819,11 +801,11 @@ export class ReportOverviewComponent implements OnInit {
     const last24HoursChannelsTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCountPerChannel.categories;
     const last24HoursChannelsTransactionsVolumeSeries = response.last24HoursAirtimeTransactionsCountPerChannel.series;
 
-    for (const element of last24HoursChannelsTransactionsVolumeLabels){
+    for (const element of last24HoursChannelsTransactionsVolumeLabels) {
       this.last24HoursChannelsTransactionsVolumeLabels.push(element);
     }
 
-    for (const element of last24HoursChannelsTransactionsVolumeSeries){
+    for (const element of last24HoursChannelsTransactionsVolumeSeries) {
       const reversedElementData = element.data;
       const ele = {
         data: reversedElementData,
@@ -841,11 +823,11 @@ export class ReportOverviewComponent implements OnInit {
     const last12MonthsTransactionsLabels = response.last12MonthsAirtimeTransactions.categories.reverse();
     const last12MonthsTransactionsseries = response.last12MonthsAirtimeTransactions.series;
 
-    for (const element of last12MonthsTransactionsLabels){
+    for (const element of last12MonthsTransactionsLabels) {
       this.last12MonthsAirtimeTransactionsLabels.push(element);
     }
 
-    for (const element of last12MonthsTransactionsseries){
+    for (const element of last12MonthsTransactionsseries) {
       const reversedElementData = element.data.reverse();
       const ele = {
         data: reversedElementData,
@@ -863,11 +845,11 @@ export class ReportOverviewComponent implements OnInit {
     const last7DaysTransactionsLabels = response.last7DaysAirtimeTransactions.categories.reverse();
     const last7DaysTransactionsSeries = response.last7DaysAirtimeTransactions.series;
 
-    for (const element of last7DaysTransactionsLabels){
+    for (const element of last7DaysTransactionsLabels) {
       this.last7DaysAirtimeTransactionsLabels.push(element);
     }
 
-    for (const element of last7DaysTransactionsSeries){
+    for (const element of last7DaysTransactionsSeries) {
       const reversedElementData = element.data.reverse();
       const ele = {
         data: reversedElementData,
@@ -886,11 +868,11 @@ export class ReportOverviewComponent implements OnInit {
     const last12MonthsAirtimeTransactionsByChannelLabels = response.last12MonthsAirtimeTransactionsByChannel.categories.reverse();
     const last12MonthsAirtimeTransactionsByChannelSeries = response.last12MonthsAirtimeTransactionsByChannel.series;
 
-    for (const element of last12MonthsAirtimeTransactionsByChannelLabels){
+    for (const element of last12MonthsAirtimeTransactionsByChannelLabels) {
       this.last12MonthsAirtimeTransactionsByChannelLabels.push(element);
     }
 
-    for (const element of last12MonthsAirtimeTransactionsByChannelSeries){
+    for (const element of last12MonthsAirtimeTransactionsByChannelSeries) {
       const reversedElementData = element.data.reverse();
       const ele = {
         data: reversedElementData,
@@ -908,11 +890,11 @@ export class ReportOverviewComponent implements OnInit {
     const last12MonthTransactionsByFromTypeLabels = response.last12MonthAirtimeTransactionsByFromType.categories.reverse();
     const last12MonthsAirtimeTransactionsByFromTypeSeries = response.last12MonthAirtimeTransactionsByFromType.series;
 
-    for (const element of last12MonthTransactionsByFromTypeLabels){
+    for (const element of last12MonthTransactionsByFromTypeLabels) {
       this.last12MonthAirtimeTransactionsByFromTypeLabels.push(element);
     }
 
-    for (const element of last12MonthsAirtimeTransactionsByFromTypeSeries){
+    for (const element of last12MonthsAirtimeTransactionsByFromTypeSeries) {
       const reversedElementData = element.data.reverse();
       const ele = {
         data: reversedElementData,
@@ -956,10 +938,10 @@ export class ReportOverviewComponent implements OnInit {
 
   getChartStatistics = () => {
     this.adminService.getChartStatistics().subscribe(
-      response => {
-
-        console.log('******* CHART response *******');
-        console.log(response);
+      res => {
+        const response = res.data[0];
+        // console.log('******* CHART response *******');
+        // console.log(response);
         this.getLast12MonthsAirtimeStatistics(response);
         this.getLast7DaysAirtimeStatistics(response);
         this.getLast12MonthsAirtimeTransactionsByChannelStatistics(response);
@@ -986,7 +968,6 @@ export class ReportOverviewComponent implements OnInit {
         // this.getLast12MonthAirtimeTransactionsByTop3AgentsStatistics(response);
 
 
-
         this.isLoadingCharts = false;
       },
       err => {
@@ -999,10 +980,11 @@ export class ReportOverviewComponent implements OnInit {
 
   getStatistics = () => {
     this.adminService.getStatistics().subscribe(
-    response => {
-      const statisticsData = response;
+      response => {
+        const statisticsData = response.data[0];
+        // console.log(statisticsData);
 
-      if(response.transactionCount) {
+        // if ( response.transactionCount) {
         this.dashboardData.admins = statisticsData.admins;
         this.dashboardData.activeAdmins = statisticsData.activeAdmins;
         this.dashboardData.inActiveAdmin = statisticsData.inActiveAdmin;
@@ -1019,18 +1001,18 @@ export class ReportOverviewComponent implements OnInit {
         this.dashboardData.successfulTran = statisticsData.successfulTran;
         this.dashboardData.pendingTrans = statisticsData.pendingTrans;
         this.dashboardData.failedTrans = statisticsData.failedTrans;
+        // }
+        // console.log(this.dashboardData);
+
+      },
+      err => {
+        console.log(err);
+        this.errorResponse = this.error.errorHandlerWithText(this.getStatistics, err);
+        console.log(this.errorResponse);
+
       }
-      // console.log(this.dashboardData);
-
-    },
-    err => {
-      console.log(err);
-      this.errorResponse = this.error.errorHandlerWithText(this.getStatistics, err);
-      console.log(this.errorResponse);
-
-    }
-  );
-}
+    );
+  }
 
   ngOnInit(): void {
     this.getStatistics();

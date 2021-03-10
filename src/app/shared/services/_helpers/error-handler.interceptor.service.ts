@@ -6,6 +6,7 @@ import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {AuthService} from '../../../core/authentication/auth-service.service';
 import {Constants} from '../../Constants';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ import {Constants} from '../../Constants';
 
 export class ErrorHandler implements HttpInterceptor {
   private queue: HttpRequest<any>[] = [];
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private toastService: ToastrService) {
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any> | unknown | any> {
 
@@ -74,8 +75,8 @@ export class ErrorHandler implements HttpInterceptor {
 
         const error = err.error.message ? err.error.message : err.statusText;
         if (request.headers.get('popup-error') === 'true') {
-          alert('Error here');
-          // this.notificationService.showError(error, 'Error');
+          // alert('Error here');
+          this.toastService.error(error, 'Error');
         }
         return throwError(error);
       }));

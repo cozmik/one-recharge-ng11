@@ -1,4 +1,4 @@
-<div class="selectorDiv card viewInfo">
+<div class="selectorDiv card viewInfo" style="background: white">
   <div class="user_loader" *ngIf="allLoading.profile || allLoading.roles || allLoading.transaction">
     <div style="margin-top: 20%;">
       <mat-spinner style="width: 35px; height: 35px; margin:30px auto;" [color]="'accent'"> </mat-spinner>
@@ -6,16 +6,16 @@
     </div>
 
   </div>
-  <div style="margin: 30px 0px;">
+  <div style="margin: 30px 0px;" >
     <div class="row">
       <div class="col-md-6 col-xl-6">
         <div class="info-card custom-card">
           <div class="card-wrap danger-card" style="background: #56a53c">
             <div class="card-content" style="padding: 1.57143rem;">
-              <div class="title text-uppercase">Main wallet</div>
+              <div class="title text-uppercase" style="margin-bottom: 10px">Main wallet</div>
               <div class="money_count">
-                <span>NGN</span>
-                {{userFormData.mainWallet | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}
+                <span>{{('0' | currency : 'NGN' : 'symbol-narrow' : '0.0-0').charAt(0)}}</span>
+                {{userFormData.mainWallet | number : '1.2-2'}}
                 <!--<span>.00</span>-->
               </div>
               <i class="material-icons">account_balance_wallet</i>
@@ -28,11 +28,10 @@
         <div class="info-card custom-card">
           <div class="card-wrap danger-card" style="background: #56a53c">
             <div class="card-content" style="padding: 1.57143rem;">
-              <div class="title text-uppercase">Commission wallet</div>
+              <div class="title text-uppercase" style="margin-bottom: 10px">Commission wallet</div>
               <div class="money_count">
-                <span>NGN</span>
-                {{userFormData.commissionWallet | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}
-                <!--<span>.00</span>-->
+                <span>{{('0' | currency : 'NGN' : 'symbol-narrow' : '0.0-0').charAt(0)}}</span>
+                {{userFormData.commissionWallet | number : '1.2-2'}}
               </div>
               <i class="material-icons">account_balance_wallet</i>
             </div>
@@ -128,7 +127,7 @@
                       <!--<textarea matInput md-maxlength="200" [disabled]="isNotEdit" [(ngModel)]="userFormData.address" rows="2"required id="address" name="address" placeholder="Address" value=""></textarea>-->
                     <!--</mat-form-field>-->
                   <!--</div>-->
-                  <button *ngIf="!isNotEdit || isloading" [disabled]="isloading" md-raised-button type="submit" color="accent">Update User<mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'accent'"> </mat-spinner></button>
+                  <button *ngIf="!isNotEdit || isloading" [disabled]="isloading" mat-raised-button type="submit" color="accent">Update User<mat-spinner *ngIf="isloading" style="width: 35px; height: 35px; position: absolute; right: 20px; top: 7px;" [color]="'accent'"> </mat-spinner></button>
 
                 </div>
 

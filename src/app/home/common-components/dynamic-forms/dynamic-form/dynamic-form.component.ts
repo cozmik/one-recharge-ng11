@@ -13,6 +13,7 @@ export class DynamicFormComponent implements OnInit{
   @Input() form: FormGroup;
   @Output() submitData = new EventEmitter();
   payLoad = '';
+  @Input() isLoading = false;
 
   constructor() {  }
 

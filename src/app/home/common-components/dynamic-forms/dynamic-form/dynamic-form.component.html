@@ -5,6 +5,6 @@
   </ng-template>
 
   <div class="col-12 mt-3 p-0">
-    <button class="col-12" mat-raised-button type="submit" [disabled]="form.invalid">Proceed</button>
+    <button class="col-12" mat-raised-button type="submit" [disabled]="form.invalid || isLoading">Proceed</button>
   </div>
 </form>

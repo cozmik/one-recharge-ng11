@@ -18,6 +18,8 @@ export class PerformServiceComponent implements OnInit {
   fields: any[];
   form: FormGroup;
   chosenService: any;
+  servicePackage: any;
+  isLoading: boolean;
 
   constructor(
     private ar: ActivatedRoute,
@@ -27,6 +29,7 @@ export class PerformServiceComponent implements OnInit {
     private anonymousService: AnonymousService
   ) {
     const id = +this.ar.snapshot.paramMap.get('id');
+    this.isLoading = false;
     this.smStore.categories.subscribe(res => {
       if (res){
         this.category = this.smStore.getCategory(id);
@@ -44,7 +47,7 @@ export class PerformServiceComponent implements OnInit {
 
   setService(): void {
     const holdFields = [];
-    this.chosenService = this.category.serviceResponses.find(s => s.id === this.chosenServiceId);
+    this.chosenService = this.category.serviceResponses.find(s => s.id === this.chosenService.id);
     this.chosenService.meta.fields.forEach(field => {
       holdFields.push(new ServiceFormBase(field));
     });
@@ -53,11 +56,22 @@ export class PerformServiceComponent implements OnInit {
   }
 
   submitServiceData(e: Event, confirm = false): void {
+    this.isLoading = true;
     const {hasConfirmation, url, confirmationUrl} = this.chosenService.meta;
+    const payload = {
+      lat: 0,
+      lga: '',
+      lng: 0,
+      packageId: this.servicePackage,
+      state: ''
+    };
     if (hasConfirmation) {
       this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'),
-        this.anonymousService.cleanUrl(url, 'kojeh-v2/api/'), e).subscribe(res => {
+        this.anonymousService.cleanUrl(url, 'kojeh-v2/api/'), {...payload, ...e}).subscribe(res => {
         console.log(res);
+        this.isLoading = false;
+      }, error => {
+        this.isLoading = false;
       });
     }
   }

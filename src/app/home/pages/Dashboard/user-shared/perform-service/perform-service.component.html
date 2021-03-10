@@ -5,7 +5,7 @@
     <span>{{category?.categoryName}}  {{sharedService.prettifyString(chosenService?.serviceName ? ' - ' + chosenService.serviceName : '')}}</span>
   </header>
   <div>
-<!--    <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>-->
+    <!--    <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>-->
   </div>
   <div class="content-area">
     <div class="container">
@@ -17,42 +17,52 @@
           <div class="widget-content">
 
             <!--recharge block -->
-            <div class="widget-content-block recharge">
-                <mat-form-field class="d-block">
-                  <mat-select placeholder="Pick a service" required
-                              [(ngModel)]="chosenServiceId" (ngModelChange)="setService()" style="width:100%;">
-                      <mat-option *ngFor="let service of category?.serviceResponses" [value]="service.id">
-                          {{sharedService.prettifyString(service.serviceName)}}
-                      </mat-option>
-                  </mat-select>
-                </mat-form-field>
+            <div class="widget-content-block">
+              <mat-form-field class="d-block">
+                <mat-select placeholder="Pick a service" required
+                            [(ngModel)]="chosenService" style="width:100%;">
+                  <mat-option *ngFor="let service of category?.serviceResponses" [value]="service">
+                    {{sharedService.prettifyString(service.serviceName)}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="d-block"
+                              *ngIf="chosenService && chosenService.servicePackages && chosenService.servicePackages.length">
+                <mat-select placeholder="Select Service Package" required
+                            [(ngModel)]="servicePackage" style="width:100%;" (ngModelChange)="setService()">
+                  <mat-option *ngFor="let p of chosenService.servicePackages" [value]="p.id">
+                    {{sharedService.prettifyString(p.name) | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-              <app-dynamic-form *ngIf="fields" [form]="form" [fields]="fields" (submitData)="submitServiceData($event)"></app-dynamic-form>
+              <app-dynamic-form [isLoading]="isLoading" *ngIf="fields" [form]="form" [fields]="fields"
+                                (submitData)="submitServiceData($event)"></app-dynamic-form>
             </div>
             <!--recharge block-->
 
             <!--recharge verify block-->
-<!--            <div class="widget-content-block verify-recharge" [class.visible]="switchState === 'recharge-verify'">-->
-<!--              <h4 style="margin:0;">Recharge Details</h4>-->
-<!--              <p>Please confirm recharge details to proceed</p>-->
-<!--              <div class="inner-content-area">-->
-<!--                <div class="block"><span class="title">Phone number</span> <span-->
-<!--                  class="value">{{rechargeObj.receiverMsisdn | checkNull : ''}}</span></div>-->
-<!--                <div class="block"><span class="title">Network</span> <span-->
-<!--                  class="value">{{rechargeObj.networkName | checkNull : ''}}</span></div>-->
-<!--                <div class="block"><span class="title">Amount</span> <span-->
-<!--                  class="value"> {{rechargeObj.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter | checkNull : ''}}</span></div>-->
-<!--              </div>-->
+            <!--            <div class="widget-content-block verify-recharge" [class.visible]="switchState === 'recharge-verify'">-->
+            <!--              <h4 style="margin:0;">Recharge Details</h4>-->
+            <!--              <p>Please confirm recharge details to proceed</p>-->
+            <!--              <div class="inner-content-area">-->
+            <!--                <div class="block"><span class="title">Phone number</span> <span-->
+            <!--                  class="value">{{rechargeObj.receiverMsisdn | checkNull : ''}}</span></div>-->
+            <!--                <div class="block"><span class="title">Network</span> <span-->
+            <!--                  class="value">{{rechargeObj.networkName | checkNull : ''}}</span></div>-->
+            <!--                <div class="block"><span class="title">Amount</span> <span-->
+            <!--                  class="value"> {{rechargeObj.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter | checkNull : ''}}</span></div>-->
+            <!--              </div>-->
 
-<!--              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRecharging"> Back-->
-<!--              </button>-->
+            <!--              <button md-raised-button type="button" color="" (click)="goToPage()" [disabled]="isRecharging"> Back-->
+            <!--              </button>-->
 
-<!--              <button md-raised-button type="button" (click)="generateTransaction()" [disabled]="isRecharging"-->
-<!--                      color="accent">{{!isRecharging ? 'Pay' : 'Please wait'}}-->
-<!--                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>-->
-<!--              </button>-->
+            <!--              <button md-raised-button type="button" (click)="generateTransaction()" [disabled]="isRecharging"-->
+            <!--                      color="accent">{{!isRecharging ? 'Pay' : 'Please wait'}}-->
+            <!--                <i *ngIf="isRecharging" class="fa fa-spinner fa-spin"></i>-->
+            <!--              </button>-->
 
-<!--            </div>-->
+            <!--            </div>-->
             <!--recharge verify block-->
 
           </div>

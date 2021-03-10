@@ -24,12 +24,14 @@ export class GuestServiceFormComponent implements OnInit {
   public setId = null;
   public isVerifyDetails: boolean;
   public networks: any;
-  public isloading: boolean;
+  public isLoading: boolean;
   public isLoadingServices: boolean;
   public errorResponse: any;
   public userType: string;
   public isRecharging: boolean;
   public switchState: string;
+  servicePackage: any;
+
   services: any;
   service: any;
   category: any;
@@ -42,6 +44,7 @@ export class GuestServiceFormComponent implements OnInit {
   serviceCategories: any[];
   form: FormGroup;
   fields = [];
+  private transactionID: string;
 
   constructor(public sharedService: SharedService,
               public anonymousService: AnonymousService,
@@ -52,7 +55,7 @@ export class GuestServiceFormComponent implements OnInit {
               public router: Router) {
     this.isLoadingServices = false;
     this.isVerifyDetails = false;
-    this.isloading = false;
+    this.isLoading = false;
 
   }
 
@@ -60,7 +63,7 @@ export class GuestServiceFormComponent implements OnInit {
     this.isLoadingServices = true;
     this.anonymousService.getServices().subscribe((res: any) => {
       this.serviceCategories = res.filter(cat => {
-        return cat.serviceResponses.some(ser => ser.meta.fields !== null);
+        return cat.serviceResponses.some(ser => ser.meta.guestUrl !== null);
       });
       this.isLoadingServices = false;
     });
@@ -131,22 +134,16 @@ export class GuestServiceFormComponent implements OnInit {
   //   )
   // };
 
-  // private generateTransaction = () => {
-  //   this.isRecharging = true;
-  //   this.anonymousService.generateTransactionId().subscribe(
-  //     response => {
-  //       console.log('************ generateTransactionId ****************');
-  //       console.log(response.data[0].transactionId);
-  //       this.transactionID = response.data[0].transactionId;
-  //       this.payWithRave();
-  //     },
-  //     err => {
-  //       console.log(err);
-  //       this.error.errorHandlerWithText(this.generateTransaction, err);
-  //
-  //     }
-  //   )
-  // };
+  private generateTransaction = () => {
+    this.isRecharging = true;
+    this.anonymousService.generateTransactionId().subscribe(
+      response => {
+        console.log('************ generateTransactionId ****************');
+        console.log(response.data[0].transactionId);
+        this.transactionID = response.data[0].transactionId;
+        // this.payWithRave();
+      });
+  }
 
   // checkNum() {
   //   if (this.airtimeForm.value.mobile.length && this.airtimeForm.value.mobile.length  !==  11) {
@@ -170,7 +167,7 @@ export class GuestServiceFormComponent implements OnInit {
 
   // Submit recharge form
   onSubmit(): void {
-    this.isloading = true;
+    this.isLoading = true;
     // this.rechargeObj.networkId = this.airtimeForm.value.networkId;
     // this.rechargeObj.receiverMsisdn = this.airtimeForm.value.mobile;
     // this.rechargeObj.amount = this.airtimeForm.value.amount;
@@ -294,13 +291,23 @@ export class GuestServiceFormComponent implements OnInit {
     this.form = this.sharedService.toFormGroup(this.fields);
   }
 
-  submitServiceData(e: Event, confirm = false): void {
+  submitServiceData(e: Event): void {
+    this.isLoading = true;
     const {hasConfirmation, guestUrl, confirmationUrl} = this.service.meta;
-    console.log(this.service.meta);
+    const payload = {
+      lat: 0,
+      lga: '',
+      lng: 0,
+      packageId: this.servicePackage,
+      state: ''
+    };
     if (hasConfirmation) {
       this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'),
-        this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/'), e).subscribe(res => {
+        this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/'), {...payload, ...e}, false).subscribe(res => {
         console.log(res);
+        this.isLoading = false;
+      }, err => {
+        this.isLoading = false;
       });
     }
   }

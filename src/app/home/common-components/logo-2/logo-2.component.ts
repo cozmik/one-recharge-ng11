@@ -13,7 +13,7 @@ export class Logo2Component implements OnInit {
   ngOnInit(): void {
   }
 
-  goToPage(page ?: string): void {
+  goToPage(page?: string): void {
 
     switch (page){
       case 'landingPage':

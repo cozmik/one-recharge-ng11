@@ -212,7 +212,7 @@ export class Constants {
         'No-Auth': 'True',
         TokenRefresh: 'False',
         retry,
-        popupError
+        'popup-error': popupError
       })
     };
   }
@@ -226,7 +226,7 @@ export class Constants {
         'No-Auth': 'True',
         TokenRefresh: 'True',
         retry,
-        popupError,
+        'popup-error': popupError
       })
     };
   }
@@ -245,7 +245,7 @@ export class Constants {
   }
 
   static getTokenImageHttpHeaders(retry = 'true', popupError = 'true',
-                                  unauthenticate = "False"): {headers: HttpHeaders} {
+                                  unauthenticate = 'False'): {headers: HttpHeaders} {
     return {
       headers: new HttpHeaders({
         'No-Auth': unauthenticate,

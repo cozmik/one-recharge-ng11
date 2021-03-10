@@ -4,9 +4,9 @@ import {map} from 'rxjs/operators';
  * Created by swifta on 1/22/18.
  */
 import { Injectable } from '@angular/core';
-import {Constants} from "../../shared/Constants";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Constants} from '../../shared/Constants';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -80,10 +80,11 @@ export class AnonymousService {
       map(res => res));
   }
 
-  performService(confirmUrl: string, payUrl: string, data: any): Observable<any> {
+  performService(confirmUrl: string, payUrl: string, data: any, authenticated = true): Observable<any> {
     console.log(Constants.SERVICE_URL + confirmUrl);
     console.log(payUrl);
-    return this.http.post(Constants.SERVICE_URL + confirmUrl, data, Constants.getTokenHttpHeaders()).pipe(
+    return this.http.post(Constants.SERVICE_URL + confirmUrl,
+      data, authenticated ? Constants.getTokenHttpHeaders('false') : Constants.getNoTokenHeaders('false')).pipe(
       map(res => res));
   }
 

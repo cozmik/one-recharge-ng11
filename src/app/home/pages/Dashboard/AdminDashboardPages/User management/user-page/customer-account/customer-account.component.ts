@@ -1,9 +1,8 @@
-import { Component, OnInit , ViewContainerRef} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../../../../../../core/services/users-service/user-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AnonymousService} from '../../../../../../../core/services/anonymous-service';
 import {SharedService} from '../../../../../../../core/services/shared-service/shared.service';
-import {Constants} from '../../../../../../../shared/Constants';
 import {ToastService} from '../../../../../../../shared/services/toast-service/toast.service';
 import {ErrorService} from '../../../../../../../core/services/error_service/error.service';
 import '../../../../../../../shared/components/custom-alert/custom-alert.component';
@@ -23,11 +22,11 @@ export class CustomerProfileComponent implements OnInit {
   public error: any;
   public message: any;
   public isNotEdit: boolean;
-  public edit_text: string;
+  public editText: string;
   public isloading: boolean;
   public pageTitle: string;
-  public recentAgentTransactions : any;
-  public isLoadingrecentTransactions : boolean;
+  public recentAgentTransactions: any;
+  public isLoadingrecentTransactions: boolean;
 
   public allLoading: any = {
     profile: true,
@@ -49,12 +48,12 @@ export class CustomerProfileComponent implements OnInit {
     blocked: ''
   };
 
-  public updateData:any = {
-    email : " ",
+  public updateData: any = {
+    email : ' ',
     firstName : '',
     lastName : '',
     mobile : ''
-  }
+  };
 
   errorResponse: any;
 
@@ -64,11 +63,13 @@ export class CustomerProfileComponent implements OnInit {
   public isBlocked: any;
 
 
-  constructor(public sharedService: SharedService, public router: Router, public anonymousService: AnonymousService, public errorHandler: ErrorService,
-              public agentService: UserService, public toast: ToastService, public activatedRoute: ActivatedRoute) {
+  constructor(public sharedService: SharedService, public router: Router,
+              public anonymousService: AnonymousService, public errorHandler: ErrorService,
+              public agentService: UserService, public toast: ToastService,
+              public activatedRoute: ActivatedRoute) {
     this.activatedRoute.parent.params.subscribe(params => {
-      this.userId = +params['id'];
-    })
+      this.userId = +params.id;
+    });
 
     this.userFormData.mainWallet = 0;
     this.userFormData.commissionWallet = 0;
@@ -84,7 +85,7 @@ export class CustomerProfileComponent implements OnInit {
     this.isEdit = false;
     this.getRoles();
     this.isNotEdit = true;
-    this.edit_text = 'Edit Profile';
+    this.editText = 'Edit Profile';
     this.viewInfo = true;
     this.getUser();
 
@@ -122,7 +123,7 @@ export class CustomerProfileComponent implements OnInit {
     this.updateCustomer();
   }
   // update users
-  updateCustomer() {
+  updateCustomer(): void {
 
     this.isNotEdit = true;
     this.isloading = true;
@@ -144,16 +145,16 @@ export class CustomerProfileComponent implements OnInit {
         this.isloading = false;
         this.isNotEdit = false;
       }
-    )
+    );
   }
 
 
 
   // get roles
-  getRoles() {
+  getRoles(): void {
     this.anonymousService.getRoles().subscribe(
       (response: any) => {
-        console.log("get roles function");
+        console.log('get roles function');
         console.log(response.data);
         this.roles = response.data;
 
@@ -163,14 +164,14 @@ export class CustomerProfileComponent implements OnInit {
         console.log(err);
         this.error.errorHandlerWithText(this.getRoles, err);
       }
-    )
+    );
   }
 
 
-  public getRecentTransactions() {
+  public getRecentTransactions(): void {
     this.anonymousService.getUserTransactions(this.userId).subscribe(
       (response: any) => {
-        console.log("get user tranx");
+        console.log('get user tranx');
         this.recentAgentTransactions = response.data[0].content;
         console.log('******************* ******************************');
         console.log(this.recentAgentTransactions);
@@ -183,15 +184,15 @@ export class CustomerProfileComponent implements OnInit {
         this.isLoadingrecentTransactions = false;
         this.errorResponse = this.error.errorHandlerWithText(this.getRecentTransactions, err);
       }
-    )
+    );
   }
 
 
-  public getUser() {
+  public getUser(): void {
     this.anonymousService.getUser(this.userId).subscribe(
       (response: any) => {
-        console.log("get user function");
-        this.userData = response.data[0];
+        console.log('get user function');
+        this.userData = response;
         console.log(this.userData);
 
         this.allLoading.profile = false;
@@ -215,7 +216,7 @@ export class CustomerProfileComponent implements OnInit {
         this.error.errorHandlerWithText(this.getUser, err);
 
       }
-    )
+    );
   }
 
   editProfile(): void {
