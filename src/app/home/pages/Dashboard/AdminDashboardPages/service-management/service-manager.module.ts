@@ -19,7 +19,6 @@ import {NotSavedWarningComponent} from './components/modals/not-saved-warning/no
 import {ServiceManagementComponent} from './service-management.component';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../../../../../core/shared/modules/shared.module';
-import {ServiceManagerService} from './views/service-manager.service';
 
 @NgModule({
   declarations: [

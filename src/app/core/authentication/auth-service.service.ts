@@ -201,7 +201,9 @@ export class AuthService {
 
 // logout service
   logout(): void {
-    localStorage.clear();
+    localStorage.removeItem(Constants.PROFILE);
+    localStorage.removeItem(Constants.ACCESS_TOKEN);
+    localStorage.removeItem(Constants.REFRESH_TOKEN);
     location.reload();
     this.router.navigate([Constants.SIGNIN_URL]);
   }

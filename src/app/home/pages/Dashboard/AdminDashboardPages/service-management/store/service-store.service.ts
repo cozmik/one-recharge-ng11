@@ -21,6 +21,7 @@ export class ServiceStoreService {
   private readonly _servicePackages = new BehaviorSubject<ServicePackageInterface[]>([]);
 
   get categories(): Observable<CategoryInterface[]> {
+    console.log('setting categories');
     return this._serviceCategories as Observable<CategoryInterface[]>;
   }
 
@@ -28,8 +29,8 @@ export class ServiceStoreService {
     const services = [];
     categories.forEach((cat) => {
       services.push(...cat.serviceResponses);
-      this._allServices.next(services);
     });
+    this._allServices.next(services);
   }
 
   get allServices(): Observable<ServiceInterface[]> {

@@ -428,7 +428,7 @@ export class ReportOverviewComponent implements OnInit {
     {yesterday: [], today: [], thisWeek: [], lastWeek: [], thisMonth: [], lastMonth: []};
   public pieChartAirtimeTransactionsPerChannelVolumeChartDataView = [];
   public pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable: boolean;
-  public pieChartAirtimeTransactionsPerChannelVolumePeriod: string;
+  public pieChartAirtimeTransactionsPerChannelVolumePeriod = 'today';
 
 
   // Last 12 months by User Type Top 3 Agents (FROM TYPE)
@@ -499,335 +499,413 @@ export class ReportOverviewComponent implements OnInit {
   // pie charts
 
   // airtime transactions per networks value
-  getPieChartAirtimeTransactionsPerNetworkValueStatistics = (response) => {
-    // this.last24HoursNetworksTransactionsVolumeChartData = [];
-    const pieChartAirtimeTransactionsPerNetworkValueLabels = response.todayAirtimeTransactionsPerNetwork.label;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.today = response.todayAirtimeTransactionsPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday = response.yesterdayAirtimeTransactionsPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek = response.thisWeekAirtimeTransactionsPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek = response.lastWeekAirtimeTransactionsPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth = response.thisMonthAirtimeTransactionsPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth = response.lastMonthAirtimeTransactionsPerNetwork.data;
+  // getPieChartAirtimeTransactionsPerNetworkValueStatistics = (response) => {
+  //   // this.last24HoursNetworksTransactionsVolumeChartData = [];
+  //   const pieChartAirtimeTransactionsPerNetworkValueLabels = response.todayAirtimeTransactionsPerNetwork.label;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.today = response.todayAirtimeTransactionsPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday = response.yesterdayAirtimeTransactionsPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek = response.thisWeekAirtimeTransactionsPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek = response.lastWeekAirtimeTransactionsPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth = response.thisMonthAirtimeTransactionsPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth = response.lastMonthAirtimeTransactionsPerNetwork.data;
+  //
+  //   for (const element of pieChartAirtimeTransactionsPerNetworkValueLabels) {
+  //     this.pieChartAirtimeTransactionsPerNetworkValueLabels.push(element);
+  //   }
+  //
+  //   console.log('pieChartAirtimeTransactionsPerNetworkValueLabels', this.pieChartAirtimeTransactionsPerNetworkValueLabels);
+  //   console.log('pieChartAirtimeTransactionsPerNetworkValueChartData', this.pieChartAirtimeTransactionsPerNetworkValueChartData);
+  // }
 
-    for (const element of pieChartAirtimeTransactionsPerNetworkValueLabels) {
-      this.pieChartAirtimeTransactionsPerNetworkValueLabels.push(element);
-    }
-
-    console.log('pieChartAirtimeTransactionsPerNetworkValueLabels', this.pieChartAirtimeTransactionsPerNetworkValueLabels);
-    console.log('pieChartAirtimeTransactionsPerNetworkValueChartData', this.pieChartAirtimeTransactionsPerNetworkValueChartData);
+  toCamelCase(str): string {
+    return str
+      .replace(/\s(.)/g, ($1) => $1.toUpperCase())
+      .replace(/\s/g, '')
+      .replace(/^(.)/, ($1) => $1.toLowerCase());
   }
 
-  renderPieChartAirtimeTransactionsPerNetworkValueStatistics(): void {
-    this.pieChartAirtimeTransactionsPerNetworkValueChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'today') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.today) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'yesterday') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this week') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last week') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this month') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last month') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth) {
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
-      }
+
+  renderPieChartAirtimeDataStatistics(type: string): void {
+    const hold = [];
+    // if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'today') {
+    let check = this['pieChartAirtimeTransactions' + type + 'Period'];
+    check = check.length === 1 ? check : this.toCamelCase(check);
+    for (const element of this['pieChartAirtimeTransactions' + type + 'ChartData'][check]) {
+      hold.push(element);
     }
+    this['pieChartAirtimeTransactions' + type + 'Period'] = hold;
+
+    // }
+    // else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'yesterday') {
+    //   for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.yesterday) {
+    //     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
+    //   }
+    // } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this week') {
+    //   for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisWeek) {
+    //     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
+    //   }
+    // } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last week') {
+    //   for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastWeek) {
+    //     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
+    //   }
+    // } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'this month') {
+    //   for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.thisMonth) {
+    //     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
+    //   }
+    // } else if (this.pieChartAirtimeTransactionsPerNetworkValuePeriod === 'last month') {
+    //   for (const element of this.pieChartAirtimeTransactionsPerNetworkValueChartData.lastMonth) {
+    //     this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.push(element);
+    //   }
+    // }
 
     // console.log('this.pieChartAirtimeTransactionsPerNetworkValueChartDataView',
     // this.pieChartAirtimeTransactionsPerNetworkValueChartDataView);
 
     const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
-    if (this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.length > 0) {
-      this.pieChartAirtimeTransactionsPerNetworkValueIsDataAvailable =
-        this.pieChartAirtimeTransactionsPerNetworkValueChartDataView.reduce(reducer) > 0;
+    if (this['pieChartAirtimeTransactions' + type + 'ChartDataView'].length > 0) {
+      this['pieChartAirtimeTransactions' + type + 'IsDataAvailable'] =
+        this['pieChartAirtimeTransactions' + type + 'ChartDataView'].reduce(reducer) > 0;
     }
   }
 
   // airtime transactions per networks volume
-  getPieChartAirtimeTransactionsPerNetworkVolumeStatistics = (response) => {
-    const pieChartAirtimeTransactionsPerNetworkVolumeLabels = response.todayAirtimeTransactionsCountPerNetwork.label;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today = response.todayAirtimeTransactionsCountPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday = response.yesterdayAirtimeTransactionsCountPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek = response.thisWeekAirtimeTransactionsCountPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek = response.lastWeekAirtimeTransactionsCountPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerNetwork.data;
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerNetwork.data;
+  // getPieChartAirtimeTransactionsPerNetworkVolumeStatistics = (response) => {
+  //   const pieChartAirtimeTransactionsPerNetworkVolumeLabels = response.todayAirtimeTransactionsCountPerNetwork.label;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today = response.todayAirtimeTransactionsCountPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday = response.yesterdayAirtimeTransactionsCountPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek = response.thisWeekAirtimeTransactionsCountPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek = response.lastWeekAirtimeTransactionsCountPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerNetwork.data;
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerNetwork.data;
+  //
+  //   for (const element of pieChartAirtimeTransactionsPerNetworkVolumeLabels) {
+  //     this.pieChartAirtimeTransactionsPerNetworkVolumeLabels.push(element);
+  //   }
+  //
+  //   console.log('pieChartAirtimeTransactionsPerNetworkVolumeLabels', this.pieChartAirtimeTransactionsPerNetworkVolumeLabels);
+  //   console.log('pieChartAirtimeTransactionsPerNetworkVolumeChartData', this.pieChartAirtimeTransactionsPerNetworkVolumeChartData);
+  // }
 
-    for (const element of pieChartAirtimeTransactionsPerNetworkVolumeLabels) {
-      this.pieChartAirtimeTransactionsPerNetworkVolumeLabels.push(element);
-    }
-
-    console.log('pieChartAirtimeTransactionsPerNetworkVolumeLabels', this.pieChartAirtimeTransactionsPerNetworkVolumeLabels);
-    console.log('pieChartAirtimeTransactionsPerNetworkVolumeChartData', this.pieChartAirtimeTransactionsPerNetworkVolumeChartData);
-  }
-
-  renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics(): void {
-    this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'today') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'yesterday') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this week') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last week') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this month') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last month') {
-      for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth) {
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
-      }
-    }
-
-    // console.log('this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView',
-    // this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView);
-
-    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
-    if (this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.length > 0) {
-
-      this.pieChartAirtimeTransactionsPerNetworkVolumeIsDataAvailable =
-        this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.reduce(reducer) > 0;
-    }
-  }
+  // renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics(): void {
+  //   this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView = [];
+  //   if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'today') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.today) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'yesterday') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.yesterday) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisWeek) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastWeek) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'this month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.thisMonth) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerNetworkVolumePeriod === 'last month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerNetworkVolumeChartData.lastMonth) {
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.push(element);
+  //     }
+  //   }
+  //
+  //   // console.log('this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView',
+  //   // this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView);
+  //
+  //   const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
+  //   if (this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.length > 0) {
+  //
+  //     this.pieChartAirtimeTransactionsPerNetworkVolumeIsDataAvailable =
+  //       this.pieChartAirtimeTransactionsPerNetworkVolumeChartDataView.reduce(reducer) > 0;
+  //   }
+  // }
 
   // airtime transactions per channels value
-  getPieChartAirtimeTransactionsPerChannelValueStatistics = (response) => {
-    const pieChartAirtimeTransactionsPerChannelsValueLabels = response.todayAirtimeTransactionsPerChannel.label;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.today = response.todayAirtimeTransactionsPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.yesterday = response.yesterdayAirtimeTransactionsPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.thisWeek = response.thisWeekAirtimeTransactionsPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.lastWeek = response.lastWeekAirtimeTransactionsPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth = response.thisMonthAirtimeTransactionsPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth = response.lastMonthAirtimeTransactionsPerChannel.data;
+  getPieChartAirtimeTransactionsStatistics(response, type: string): void{
+    let responsePeriod = '';
+    if (type.indexOf('Value') > -1) {
+      responsePeriod = type.replace('Value', '');
+    } else {
+      responsePeriod = type.replace('Volume', '');
+    }
+    const pieChartAirtimeTransactionsPerChannelsValueLabels = response['todayAirtimeTransactions' + responsePeriod].label ||
+      response['todayAirtimeTransactionsCount' + responsePeriod].label;
+
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].today = response['todayAirtimeTransactions' + responsePeriod].data ||
+      response['todayAirtimeTransactionsCount' + responsePeriod].data;
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].yesterday = response['yesterdayAirtimeTransactions' + responsePeriod]
+        .data || response['yesterdayAirtimeTransactionsCount' + responsePeriod].data;
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].thisWeek = response['thisWeekAirtimeTransactions' + responsePeriod]
+        .data || response['thisWeekAirtimeTransactionsCount' + responsePeriod].data;
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].lastWeek = response['lastWeekAirtimeTransactions' + responsePeriod].data ||
+      response['lastWeekAirtimeTransactionsCount' + responsePeriod].data;
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].thisMonth = response['thisMonthAirtimeTransactions' + responsePeriod].data ||
+      response['thisMonthAirtimeTransactionsCount' + responsePeriod].data;
+    this['pieChartAirtimeTransactions' + type + 'ChartData'].lastMonth = response['lastMonthAirtimeTransactions' + responsePeriod].data ||
+      response['lastMonthAirtimeTransactionsCount' + responsePeriod].data;
 
     for (const element of pieChartAirtimeTransactionsPerChannelsValueLabels) {
-      this.pieChartAirtimeTransactionsPerChannelValueLabels.push(element);
+      this['pieChartAirtimeTransactions' + type + 'Labels'].push(element);
     }
+    this.renderPieChartAirtimeDataStatistics(type);
 
     console.log('pieChartAirtimeTransactionsPerChannelValueLabels', this.pieChartAirtimeTransactionsPerChannelValueLabels);
     console.log('pieChartAirtimeTransactionsPerChannelValueChartData', this.pieChartAirtimeTransactionsPerChannelValueChartData);
   }
 
-  renderPieChartAirtimeTransactionsPerChannelValueStatistics(): void {
-    this.pieChartAirtimeTransactionsPerChannelValueChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'today') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.today) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'yesterday') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.yesterday) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this week') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisWeek) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last week') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastWeek) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this month') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last month') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth) {
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
-      }
-    }
-
-    // console.log('this.pieChartAirtimeTransactionsPerChannelValueChartDataView',
-    // this.pieChartAirtimeTransactionsPerChannelValueChartData);
-
-    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
-    if (this.pieChartAirtimeTransactionsPerChannelValueChartDataView.length > 0) {
-      this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable =
-        this.pieChartAirtimeTransactionsPerChannelValueChartDataView.reduce(reducer) > 0;
-      // console.log('this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable',
-      //   this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable);
-    }
-  }
+  // renderPieChartAirtimeTransactionsPerChannelValueStatistics(): void {
+  //   this.pieChartAirtimeTransactionsPerChannelValueChartDataView = [];
+  //   if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'today') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.today) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'yesterday') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.yesterday) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisWeek) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastWeek) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'this month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.thisMonth) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelValuePeriod === 'last month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelValueChartData.lastMonth) {
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.push(element);
+  //     }
+  //   }
+  //
+  //   // console.log('this.pieChartAirtimeTransactionsPerChannelValueChartDataView',
+  //   // this.pieChartAirtimeTransactionsPerChannelValueChartData);
+  //
+  //   const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
+  //   if (this.pieChartAirtimeTransactionsPerChannelValueChartDataView.length > 0) {
+  //     this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable =
+  //       this.pieChartAirtimeTransactionsPerChannelValueChartDataView.reduce(reducer) > 0;
+  //     // console.log('this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable',
+  //     //   this.pieChartAirtimeTransactionsPerChannelValueIsDataAvailable);
+  //   }
+  // }
 
   // airtime transactions per channels volume
-  getPieChartAirtimeTransactionsPerChannelVolumeStatistics = (response) => {
-    const pieChartAirtimeTransactionsPerChannelVolumeLabels = response.todayAirtimeTransactionsCountPerChannel.label;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today = response.todayAirtimeTransactionsCountPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday = response.yesterdayAirtimeTransactionsCountPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek = response.thisWeekAirtimeTransactionsCountPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek = response.lastWeekAirtimeTransactionsCountPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerChannel.data;
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerChannel.data;
+  // getPieChartAirtimeTransactionsPerChannelVolumeStatistics = (response) => {
+  //   const pieChartAirtimeTransactionsPerChannelVolumeLabels = response.todayAirtimeTransactionsCountPerChannel.label;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today = response.todayAirtimeTransactionsCountPerChannel.data;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday = response.yesterdayAirtimeTransactionsCountPerChannel.data;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek = response.thisWeekAirtimeTransactionsCountPerChannel.data;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek = response.lastWeekAirtimeTransactionsCountPerChannel.data;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth = response.thisMonthAirtimeTransactionsCountPerChannel.data;
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth = response.lastMonthAirtimeTransactionsCountPerChannel.data;
+  //
+  //   for (const element of pieChartAirtimeTransactionsPerChannelVolumeLabels) {
+  //     this.pieChartAirtimeTransactionsPerChannelVolumeLabels.push(element);
+  //   }
+  //
+  //   // console.log('pieChartAirtimeTransactionsPerChannelVolumeLabels', this.pieChartAirtimeTransactionsPerChannelVolumeLabels);
+  //   // console.log('pieChartAirtimeTransactionsPerChannelVolumeChartData', this.pieChartAirtimeTransactionsPerChannelVolumeChartData);
+  // }
 
-    for (const element of pieChartAirtimeTransactionsPerChannelVolumeLabels) {
-      this.pieChartAirtimeTransactionsPerChannelVolumeLabels.push(element);
-    }
-
-    // console.log('pieChartAirtimeTransactionsPerChannelVolumeLabels', this.pieChartAirtimeTransactionsPerChannelVolumeLabels);
-    // console.log('pieChartAirtimeTransactionsPerChannelVolumeChartData', this.pieChartAirtimeTransactionsPerChannelVolumeChartData);
-  }
-
-  renderPieChartAirtimeTransactionsPerChannelVolumeStatistics(): void {
-    this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView = [];
-    if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'today') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'yesterday') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this week') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last week') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this month') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last month') {
-      for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth) {
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
-      }
-    }
-
-    // console.log('this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView',
-    // this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView);
-
-    const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
-    if (this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.length > 0) {
-
-      this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable =
-        this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.reduce(reducer) > 0;
-      // console.log('this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable',
-      // this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable);
-    }
-  }
+  // renderPieChartAirtimeTransactionsPerChannelVolumeStatistics(): void {
+  //   this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView = [];
+  //   if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'today') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.today) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'yesterday') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.yesterday) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisWeek) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last week') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastWeek) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'this month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.thisMonth) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   } else if (this.pieChartAirtimeTransactionsPerChannelVolumePeriod === 'last month') {
+  //     for (const element of this.pieChartAirtimeTransactionsPerChannelVolumeChartData.lastMonth) {
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.push(element);
+  //     }
+  //   }
+  //
+  //   // console.log('this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView',
+  //   // this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView);
+  //
+  //   const reducer = (accumulator = 0, currentValue) => accumulator + currentValue;
+  //   if (this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.length > 0) {
+  //
+  //     this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable =
+  //       this.pieChartAirtimeTransactionsPerChannelVolumeChartDataView.reduce(reducer) > 0;
+  //     // console.log('this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable',
+  //     // this.pieChartAirtimeTransactionsPerChannelVolumeIsDataAvailable);
+  //   }
+  // }
 
   // bar charts
-  getLast24HoursNetworksTransactionsVolumeStatistics = (response) => {
-    this.last24HoursNetworksTransactionsVolumeChartData = [];
-    const last24HoursNetworksTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCount.categories;
-    const last24HoursNetworksTransactionsVolumeLabelsSeries = response.last24HoursAirtimeTransactionsCount.series;
+  // getLast24HoursNetworksTransactionsVolumeStatistics = (response) => {
+  //   this.last24HoursNetworksTransactionsVolumeChartData = [];
+  //   const last24HoursNetworksTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCount.categories;
+  //   const last24HoursNetworksTransactionsVolumeLabelsSeries = response.last24HoursAirtimeTransactionsCount.series;
+  //
+  //   for (const element of last24HoursNetworksTransactionsVolumeLabels) {
+  //     this.last24HoursNetworksTransactionsVolumeLabels.push(element);
+  //   }
+  //
+  //   for (const element of last24HoursNetworksTransactionsVolumeLabelsSeries) {
+  //     const reversedElementData = element.data;
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.last24HoursNetworksTransactionsVolumeChartData.push(ele);
+  //   }
+  //   console.log('last24HoursNetworksTransactionsVolumeChartData', this.last24HoursNetworksTransactionsVolumeChartData);
+  // }
 
-    for (const element of last24HoursNetworksTransactionsVolumeLabels) {
-      this.last24HoursNetworksTransactionsVolumeLabels.push(element);
+  // getLast24HoursNetworksTransactionsValueStatistics = (response) => {
+  //   this.last24HoursNetworksTransactionsValueChartData = [];
+  //   const last24HoursNetworksTransactionsValueLabels = response.last24HoursAirtimeTransactions.categories;
+  //   const last24HoursNetworksTransactionsValueLabelsSeries = response.last24HoursAirtimeTransactions.series;
+  //
+  //   for (const element of last24HoursNetworksTransactionsValueLabels) {
+  //     this.last24HoursNetworksTransactionsValueLabels.push(element);
+  //   }
+  //
+  //   for (const element of last24HoursNetworksTransactionsValueLabelsSeries) {
+  //     const reversedElementData = element.data;
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.last24HoursNetworksTransactionsValueChartData.push(ele);
+  //   }
+  //   console.log('last24HoursNetworksTransactions', this.last24HoursNetworksTransactionsValueChartData);
+  // }
+
+  // getLast24HoursChannelsTransactionsValueStatistics = (response) => {
+  //   this.last24HoursChannelsTransactionsValueChartData = [];
+  //   const last24HoursChannelsTransactionsValueLabels = response.last24HoursAirtimeTransactionsPerChannel.categories;
+  //   const last24HoursChannelsTransactionsValueSeries = response.last24HoursAirtimeTransactionsPerChannel.series;
+  //
+  //   for (const element of last24HoursChannelsTransactionsValueLabels) {
+  //     this.last24HoursChannelsTransactionsValueLabels.push(element);
+  //   }
+  //
+  //   for (const element of last24HoursChannelsTransactionsValueSeries) {
+  //     const reversedElementData = element.data;
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.last24HoursChannelsTransactionsValueChartData.push(ele);
+  //   }
+  //   console.log('last24HoursChannelsTransactions', this.last24HoursChannelsTransactionsValueChartData);
+  // }
+
+  // getLast24HoursChannelsTransactionsVolumeStatistics = (response) => {
+  //   this.last24HoursChannelsTransactionsVolumeChartData = [];
+  //   const last24HoursChannelsTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCountPerChannel.categories;
+  //   const last24HoursChannelsTransactionsVolumeSeries = response.last24HoursAirtimeTransactionsCountPerChannel.series;
+  //
+  //   for (const element of last24HoursChannelsTransactionsVolumeLabels) {
+  //     this.last24HoursChannelsTransactionsVolumeLabels.push(element);
+  //   }
+  //
+  //   for (const element of last24HoursChannelsTransactionsVolumeSeries) {
+  //     const reversedElementData = element.data;
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.last24HoursChannelsTransactionsVolumeChartData.push(ele);
+  //   }
+  //   console.log('last24HoursChannelsTransactionsVolumeChartData', this.last24HoursChannelsTransactionsVolumeChartData);
+  // }
+
+  // getLast12MonthsAirtimeStatistics = (response) => {
+  //   this.Last12MonthsTransactionChartData = [];
+  //   const last12MonthsTransactionsLabels = response.last12MonthsAirtimeTransactions.categories.reverse();
+  //   const last12MonthsTransactionsseries = response.last12MonthsAirtimeTransactions.series;
+  //
+  //   for (const element of last12MonthsTransactionsLabels) {
+  //     this.last12MonthsAirtimeTransactionsLabels.push(element);
+  //   }
+  //
+  //   for (const element of last12MonthsTransactionsseries) {
+  //     const reversedElementData = element.data.reverse();
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.Last12MonthsTransactionChartData.push(ele);
+  //   }
+  //   console.log('Last12MonthsTransactionChartData', this.Last12MonthsTransactionChartData);
+  // }
+
+  // getLast7DaysAirtimeStatistics = (response) => {
+  //   this.Last7DaysTransactionChartData = [];
+  //   const last7DaysTransactionsLabels = response.last7DaysAirtimeTransactions.categories.reverse();
+  //   const last7DaysTransactionsSeries = response.last7DaysAirtimeTransactions.series;
+  //
+  //   for (const element of last7DaysTransactionsLabels) {
+  //     this.last7DaysAirtimeTransactionsLabels.push(element);
+  //   }
+  //
+  //   for (const element of last7DaysTransactionsSeries) {
+  //     const reversedElementData = element.data.reverse();
+  //     const ele = {
+  //       data: reversedElementData,
+  //       label: element.name,
+  //       borderWidth: 1,
+  //       pointRadius: 1
+  //     };
+  //     this.Last7DaysTransactionChartData.push(ele);
+  //   }
+  //   console.log('Last7DaysTransactionChartData', this.Last7DaysTransactionChartData);
+  //   console.log('Last7DaysTransactionLabels', this.last7DaysAirtimeTransactionsLabels);
+  // }
+
+  // getLast12MonthsAirtimeTransactionsByChannelStatistics = (response) => {
+  //
+  //   console.log('last12MonthsAirtimeTransactionsByChannelChartData', this.last12MonthsAirtimeTransactionsByChannelChartData);
+  // }
+
+  setupTransactionChartData(response, type: string): { data: any[], labels: any[] } {
+    const data = [];
+    const labels = [];
+    const typeSeries = response[type].series;
+
+    for (const element of response[type].categories.reverse()) {
+      labels.push(element);
     }
 
-    for (const element of last24HoursNetworksTransactionsVolumeLabelsSeries) {
-      const reversedElementData = element.data;
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last24HoursNetworksTransactionsVolumeChartData.push(ele);
-    }
-    console.log('last24HoursNetworksTransactionsVolumeChartData', this.last24HoursNetworksTransactionsVolumeChartData);
-  }
-
-  getLast24HoursNetworksTransactionsValueStatistics = (response) => {
-    this.last24HoursNetworksTransactionsValueChartData = [];
-    const last24HoursNetworksTransactionsValueLabels = response.last24HoursAirtimeTransactions.categories;
-    const last24HoursNetworksTransactionsValueLabelsSeries = response.last24HoursAirtimeTransactions.series;
-
-    for (const element of last24HoursNetworksTransactionsValueLabels) {
-      this.last24HoursNetworksTransactionsValueLabels.push(element);
-    }
-
-    for (const element of last24HoursNetworksTransactionsValueLabelsSeries) {
-      const reversedElementData = element.data;
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last24HoursNetworksTransactionsValueChartData.push(ele);
-    }
-    console.log('last24HoursNetworksTransactions', this.last24HoursNetworksTransactionsValueChartData);
-  }
-
-  getLast24HoursChannelsTransactionsValueStatistics = (response) => {
-    this.last24HoursChannelsTransactionsValueChartData = [];
-    const last24HoursChannelsTransactionsValueLabels = response.last24HoursAirtimeTransactionsPerChannel.categories;
-    const last24HoursChannelsTransactionsValueSeries = response.last24HoursAirtimeTransactionsPerChannel.series;
-
-    for (const element of last24HoursChannelsTransactionsValueLabels) {
-      this.last24HoursChannelsTransactionsValueLabels.push(element);
-    }
-
-    for (const element of last24HoursChannelsTransactionsValueSeries) {
-      const reversedElementData = element.data;
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last24HoursChannelsTransactionsValueChartData.push(ele);
-    }
-    console.log('last24HoursChannelsTransactions', this.last24HoursChannelsTransactionsValueChartData);
-  }
-
-  getLast24HoursChannelsTransactionsVolumeStatistics = (response) => {
-    this.last24HoursChannelsTransactionsVolumeChartData = [];
-    const last24HoursChannelsTransactionsVolumeLabels = response.last24HoursAirtimeTransactionsCountPerChannel.categories;
-    const last24HoursChannelsTransactionsVolumeSeries = response.last24HoursAirtimeTransactionsCountPerChannel.series;
-
-    for (const element of last24HoursChannelsTransactionsVolumeLabels) {
-      this.last24HoursChannelsTransactionsVolumeLabels.push(element);
-    }
-
-    for (const element of last24HoursChannelsTransactionsVolumeSeries) {
-      const reversedElementData = element.data;
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last24HoursChannelsTransactionsVolumeChartData.push(ele);
-    }
-    console.log('last24HoursChannelsTransactionsVolumeChartData', this.last24HoursChannelsTransactionsVolumeChartData);
-  }
-
-  getLast12MonthsAirtimeStatistics = (response) => {
-    this.Last12MonthsTransactionChartData = [];
-    const last12MonthsTransactionsLabels = response.last12MonthsAirtimeTransactions.categories.reverse();
-    const last12MonthsTransactionsseries = response.last12MonthsAirtimeTransactions.series;
-
-    for (const element of last12MonthsTransactionsLabels) {
-      this.last12MonthsAirtimeTransactionsLabels.push(element);
-    }
-
-    for (const element of last12MonthsTransactionsseries) {
+    for (const element of typeSeries) {
       const reversedElementData = element.data.reverse();
       const ele = {
         data: reversedElementData,
@@ -835,75 +913,26 @@ export class ReportOverviewComponent implements OnInit {
         borderWidth: 1,
         pointRadius: 1
       };
-      this.Last12MonthsTransactionChartData.push(ele);
+      data.push(ele);
     }
-    console.log('Last12MonthsTransactionChartData', this.Last12MonthsTransactionChartData);
+    return ({data, labels});
   }
 
-  getLast7DaysAirtimeStatistics = (response) => {
-    this.Last7DaysTransactionChartData = [];
-    const last7DaysTransactionsLabels = response.last7DaysAirtimeTransactions.categories.reverse();
-    const last7DaysTransactionsSeries = response.last7DaysAirtimeTransactions.series;
-
-    for (const element of last7DaysTransactionsLabels) {
-      this.last7DaysAirtimeTransactionsLabels.push(element);
-    }
-
-    for (const element of last7DaysTransactionsSeries) {
-      const reversedElementData = element.data.reverse();
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.Last7DaysTransactionChartData.push(ele);
-    }
-    console.log('Last7DaysTransactionChartData', this.Last7DaysTransactionChartData);
-    console.log('Last7DaysTransactionLabels', this.last7DaysAirtimeTransactionsLabels);
+  streamlineAssignment(response: string, type: string): void {
+    this[type + 'ChartData'] = this.setupTransactionChartData(response, type).data;
+    this[type + 'ChartLabels'] = this.setupTransactionChartData(response, type).labels;
   }
 
-  getLast12MonthsAirtimeTransactionsByChannelStatistics = (response) => {
-    this.last12MonthsAirtimeTransactionsByChannelChartData = [];
-    const last12MonthsAirtimeTransactionsByChannelLabels = response.last12MonthsAirtimeTransactionsByChannel.categories.reverse();
-    const last12MonthsAirtimeTransactionsByChannelSeries = response.last12MonthsAirtimeTransactionsByChannel.series;
+  getBarChartStatistics = (response) => {
+    this.streamlineAssignment(response, 'last12MonthAirtimeTransactionsByFromType');
+    this.streamlineAssignment(response, 'last12MonthsAirtimeTransactionsByChannel');
+    this.streamlineAssignment(response, 'last7DaysAirtimeTransactions');
+    this.streamlineAssignment(response, 'last12MonthsAirtimeTransactions');
+    this.streamlineAssignment(response, 'last24HoursAirtimeTransactionsCountPerChannel');
+    this.streamlineAssignment(response, 'last24HoursAirtimeTransactionsPerChannel');
+    this.streamlineAssignment(response, 'last24HoursAirtimeTransactions');
+    this.streamlineAssignment(response, 'last24HoursAirtimeTransactionsCount');
 
-    for (const element of last12MonthsAirtimeTransactionsByChannelLabels) {
-      this.last12MonthsAirtimeTransactionsByChannelLabels.push(element);
-    }
-
-    for (const element of last12MonthsAirtimeTransactionsByChannelSeries) {
-      const reversedElementData = element.data.reverse();
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last12MonthsAirtimeTransactionsByChannelChartData.push(ele);
-    }
-    console.log('last12MonthsAirtimeTransactionsByChannelChartData', this.last12MonthsAirtimeTransactionsByChannelChartData);
-  }
-
-  getLast12MonthAirtimeTransactionsByFromTypeStatistics = (response) => {
-    this.last12MonthAirtimeTransactionsByFromTypeChartData = [];
-    const last12MonthTransactionsByFromTypeLabels = response.last12MonthAirtimeTransactionsByFromType.categories.reverse();
-    const last12MonthsAirtimeTransactionsByFromTypeSeries = response.last12MonthAirtimeTransactionsByFromType.series;
-
-    for (const element of last12MonthTransactionsByFromTypeLabels) {
-      this.last12MonthAirtimeTransactionsByFromTypeLabels.push(element);
-    }
-
-    for (const element of last12MonthsAirtimeTransactionsByFromTypeSeries) {
-      const reversedElementData = element.data.reverse();
-      const ele = {
-        data: reversedElementData,
-        label: element.name,
-        borderWidth: 1,
-        pointRadius: 1
-      };
-      this.last12MonthAirtimeTransactionsByFromTypeChartData.push(ele);
-    }
     console.log('last12MonthAirtimeTransactionsByFromTypeChartData', this.last12MonthAirtimeTransactionsByFromTypeChartData);
   }
 
@@ -942,26 +971,26 @@ export class ReportOverviewComponent implements OnInit {
         const response = res.data[0];
         // console.log('******* CHART response *******');
         // console.log(response);
-        this.getLast12MonthsAirtimeStatistics(response);
-        this.getLast7DaysAirtimeStatistics(response);
-        this.getLast12MonthsAirtimeTransactionsByChannelStatistics(response);
-        this.getLast12MonthAirtimeTransactionsByFromTypeStatistics(response);
-        this.getLast24HoursNetworksTransactionsValueStatistics(response);
-        this.getLast24HoursNetworksTransactionsVolumeStatistics(response);
-        this.getLast24HoursChannelsTransactionsValueStatistics(response);
-        this.getLast24HoursChannelsTransactionsVolumeStatistics(response);
+        // this.getLast12MonthsAirtimeStatistics(response);
+        // this.getLast7DaysAirtimeStatistics(response);
+        // this.getLast12MonthsAirtimeTransactionsByChannelStatistics(response);
+        this.getBarChartStatistics(response);
+        // this.getLast24HoursNetworksTransactionsValueStatistics(response);
+        // this.getLast24HoursNetworksTransactionsVolumeStatistics(response);
+        // this.getLast24HoursChannelsTransactionsValueStatistics(response);
+        // this.getLast24HoursChannelsTransactionsVolumeStatistics(response);
 
-        this.getPieChartAirtimeTransactionsPerNetworkValueStatistics(response);
-        this.renderPieChartAirtimeTransactionsPerNetworkValueStatistics();
+        this.getPieChartAirtimeTransactionsStatistics(response, 'PerNetworkValue');
+        // this.renderPieChartAirtimeDataStatistics('PerNetworkValue');
 
-        this.getPieChartAirtimeTransactionsPerNetworkVolumeStatistics(response);
-        this.renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics();
+        this.getPieChartAirtimeTransactionsStatistics(response, 'PerNetworkVolume');
+        // this.renderPieChartAirtimeDataStatistics('PerNetworkVolume');
 
-        this.getPieChartAirtimeTransactionsPerChannelValueStatistics(response);
-        this.renderPieChartAirtimeTransactionsPerChannelValueStatistics();
+        this.getPieChartAirtimeTransactionsStatistics(response, 'PerChannelValue');
+        // this.renderPieChartAirtimeDataStatistics('PerChannelValue');
 
-        this.getPieChartAirtimeTransactionsPerChannelVolumeStatistics(response);
-        this.renderPieChartAirtimeTransactionsPerChannelVolumeStatistics();
+        this.getPieChartAirtimeTransactionsStatistics(response, 'PerChannelVolume');
+        // this.renderPieChartAirtimeDataStatistics('PerChannelVolume');
 
         this.getTopSellingAgentsOfTheMonth(response);
 

@@ -1,4 +1,4 @@
-@import '../../../../assets/sass/variable';
+@use 'src/assets/sass/variable' as *;
 
 :host {
   .main-content {

@@ -28,7 +28,7 @@
 
 
   <article class="freq-services d-flex flex-nowrap flex-row" >
-    <app-recent-services [auth]="false"></app-recent-services>
+    <app-recent-services (selectService)="selectRecentService($event)"></app-recent-services>
   </article>
   <article class="service-form">
     <div class="widget-content">

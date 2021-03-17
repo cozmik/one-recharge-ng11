@@ -90,7 +90,9 @@ export class ErrorHandler implements HttpInterceptor {
   }
 
   private logout(): void {
-    localStorage.clear();
+    localStorage.removeItem(Constants.PROFILE);
+    localStorage.removeItem(Constants.ACCESS_TOKEN);
+    localStorage.removeItem(Constants.REFRESH_TOKEN);
     // location.reload();
   }
 }

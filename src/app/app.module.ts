@@ -113,6 +113,9 @@ import {
 } from './home/pages/Dashboard/AdminDashboardPages/Transactions/wallet/wallet.component';
 import {CustomerHomeComponent} from './home/pages/Dashboard/CustomerDashboardPages/customer-home/customer-home.component';
 import { ViewServicesComponent } from './home/pages/Dashboard/AdminDashboardPages/User management/user-page/view-services/view-services.component';
+import {AnonymousService} from './core/services/anonymous-service';
+import {ServiceManagerService} from './home/pages/Dashboard/AdminDashboardPages/service-management/views/service-manager.service';
+import { ConfirmModalComponent } from './home/common-components/confirm-modal/confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -205,6 +208,7 @@ import { ViewServicesComponent } from './home/pages/Dashboard/AdminDashboardPage
     TransactionDialogComponent,
     GuestServiceFormComponent,
     ViewServicesComponent,
+    ConfirmModalComponent,
   ],
   entryComponents: [
     DialogResultComponent,
@@ -232,5 +236,8 @@ import { ViewServicesComponent } from './home/pages/Dashboard/AdminDashboardPage
 })
 
 export class AppModule {
+  constructor(private anon: ServiceManagerService) {
+    this.anon.getAllServicesByCategories();
+  }
 }
 

@@ -12,7 +12,6 @@ import {ServiceStoreService} from './store/service-store.service';
 })
 export class ServiceManagementComponent implements OnInit {
 
-  private closed: boolean;
   @ViewChild('rightPanel', {static: true}) private rightPanel: MatSidenav;
 
   constructor(

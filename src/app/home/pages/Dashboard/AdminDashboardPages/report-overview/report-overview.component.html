@@ -111,7 +111,7 @@
           <div class="col-md-12" style="min-height:400px;">
             <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
             <div style="display: block;">
-              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkValuePeriod" (change)="renderPieChartAirtimeTransactionsPerNetworkValueStatistics()" style="width:100px;"  >
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkValuePeriod" (change)="renderPieChartAirtimeDataStatistics('PerNetworkValue')" style="width:100px;"  >
                 <mat-option value="today">Today</mat-option>
                 <mat-option value="yesterday">Yesterday</mat-option>
                 <mat-option value="this week">This Week</mat-option>
@@ -145,7 +145,7 @@
           <div class="col-md-12 canva_style">
             <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
             <div style="display: block;">
-              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkVolumePeriod" (change)="renderPieChartAirtimeTransactionsPerNetworkVolumeStatistics()" style="width:100px;"  >
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerNetworkVolumePeriod" (change)="renderPieChartAirtimeDataStatistics('PerNetworkVolume')" style="width:100px;"  >
                 <mat-option value="today">Today</mat-option>
                 <mat-option value="yesterday">Yesterday</mat-option>
                 <mat-option value="this week">This Week</mat-option>
@@ -188,7 +188,7 @@
           <div class="col-md-12 canva_style">
             <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
             <div style="display: block;">
-              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelValuePeriod" (change)="renderPieChartAirtimeTransactionsPerChannelValueStatistics()" style="width:100px;"  >
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelValuePeriod" (change)="renderPieChartAirtimeDataStatistics('PerChannelValue')" style="width:100px;"  >
                 <mat-option value="today">Today</mat-option>
                 <mat-option value="yesterday">Yesterday</mat-option>
                 <mat-option value="this week">This Week</mat-option>
@@ -222,7 +222,7 @@
           <div class="col-md-12 canva_style">
             <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
             <div style="display: block;">
-              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelVolumePeriod" (change)="renderPieChartAirtimeTransactionsPerChannelVolumeStatistics()" style="width:100px;"  >
+              <mat-select [(ngModel)]="pieChartAirtimeTransactionsPerChannelVolumePeriod" (change)="renderPieChartAirtimeDataStatistics('PerChannelVolume')" style="width:100px;"  >
                 <mat-option value="today">Today</mat-option>
                 <mat-option value="yesterday">Yesterday</mat-option>
                 <mat-option value="this week">This Week</mat-option>

@@ -764,8 +764,7 @@ class SellAirtimeComponent {
         });
     }
     setNetwork(id) {
-        const networkName = this.networksWithId.filter((network) => network.data.id === id)[0].data.networkName;
-        this.selectedNetwork = networkName;
+        this.selectedNetwork = this.networksWithId.filter((network) => network.data.id === id)[0].data.networkName;
         //  console.log(networkName);
     }
     getNetworkName(id) {

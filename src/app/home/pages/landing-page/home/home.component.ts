@@ -8,6 +8,7 @@ import {ErrorService} from '../../../../core/services/error_service/error.servic
 import {ToastService} from '../../../../shared/services/toast-service/toast.service';
 import {MobileNetworks} from '../../../../shared/mobile-networks';
 import {Router} from '@angular/router';
+import {ServiceStoreService} from '../../Dashboard/AdminDashboardPages/service-management/store/service-store.service';
 
 declare var window: any;
 @Component({
@@ -39,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   constructor(public sharedService: SharedService, public anonymousService: AnonymousService,
               public error: ErrorService, public authService: AuthService, public fb: FormBuilder,
-              public toast: ToastService, public router: Router) {
+              public toast: ToastService, public router: Router, private smStore: ServiceStoreService) {
     this.isLoadingNetworks = false;
     this.isVerifyDetails = false;
 
@@ -225,5 +226,13 @@ export class HomeComponent implements OnInit {
 
   gotoRoute(defaultService: string): void {
     this.router.navigate(['/' + defaultService]);
+  }
+
+  selectRecentService(e: any): void {
+    const servCat = this.smStore.allCategories.filter(c => c.id === e.data.serviceCategory.id)[0];
+    this.anonymousService.dynamicFormCategory.next({category: servCat});
+    setTimeout(() => {
+      this.anonymousService.dynamicFormService.next({service: e.data});
+    }, 100);
   }
 }

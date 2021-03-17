@@ -52,7 +52,6 @@ export class CustomerDashboardComponent implements OnInit {
     this.getAirtimeTransactions();
   }
 
-
   editRole(id): void {
     this.router.navigate(['admin/edit-role/', id ]);
   }
@@ -148,7 +147,6 @@ export class CustomerDashboardComponent implements OnInit {
         this.getTransactionsWithId();
         console.log('***** Airtime Transactions with id ****');
         console.log(this.transactionsWithId);
-
       },
       err => {
         console.log(err);
@@ -160,6 +158,5 @@ export class CustomerDashboardComponent implements OnInit {
     );
   }
 
-
-
+  selectService($event: any): void {}
 }

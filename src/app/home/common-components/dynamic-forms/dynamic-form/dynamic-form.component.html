@@ -1,7 +1,7 @@
 <form *ngIf="fields.length" (ngSubmit)="onSubmit()" [formGroup]="form">
 
   <ng-template ngFor let-field [ngForOf]="fields" class="form-row">
-    <app-dynamic-field [field]="field" [form]="form"></app-dynamic-field>
+    <app-dynamic-field [field]="field" [form]="form" [package]="package"></app-dynamic-field>
   </ng-template>
 
   <div class="col-12 mt-3 p-0">

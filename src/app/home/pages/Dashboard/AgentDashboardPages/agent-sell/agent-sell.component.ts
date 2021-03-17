@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {ErrorService} from '../../../../../core/services/error_service/error.service';
@@ -6,10 +6,7 @@ import {UserService} from '../../../../../core/services/users-service/user-servi
 import {StorageService} from '../../../../../core/services/storage-service/storage.service';
 import {ToastService} from '../../../../../shared/services/toast-service/toast.service';
 import {Router} from '@angular/router';
-import { Subscription } from 'rxjs';
-import {Agent} from '../../../../../core/mocks/agent/agent.model';
-import {Constants} from '../../../../../shared/Constants';
-import {User} from '../../../../../core/mocks/user/user.model';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-agent-sell',

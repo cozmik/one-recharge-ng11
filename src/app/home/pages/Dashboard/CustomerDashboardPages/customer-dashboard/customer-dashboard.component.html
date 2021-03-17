@@ -29,8 +29,8 @@
           <!--<p>Cable TV</p>-->
         <!--</div>-->
       <!--</div>-->
+<!--      <app-recent-services (selectService)="selectService($event)"></app-recent-services>-->
     </div>
-
 
     <div class="row" style="margin-bottom:30px;">
       <div class="col-xl-12 col-md-12">
@@ -38,7 +38,7 @@
           <header style="font-weight:700;">Recent Transactions</header>
           <div>
             <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
-            <table class="table table-primary mobile-table"  *ngIf="transactionsWithId.length > 0  && !isTransactionsLoaded">
+            <table class="table table-primary mobile-table" *ngIf="transactionsWithId.length > 0  && !isTransactionsLoaded">
               <thead>
               <tr>
                 <!--make table stable-->

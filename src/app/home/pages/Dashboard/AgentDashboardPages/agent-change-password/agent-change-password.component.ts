@@ -20,7 +20,7 @@ export class AgentChangePasswordComponent implements OnInit {
   pageTitle = 'Change Password';
 
   constructor( public authService: AuthService, public router: Router, public fb: FormBuilder,
-               public error: ErrorService, public toast: ToastService, public sharedService : SharedService) {
+               public error: ErrorService, public toast: ToastService, public sharedService: SharedService) {
     console.log('agent change password');
     this.sharedService.emitChange(this.pageTitle);
     this.changePasswordStatus = false;
@@ -56,9 +56,9 @@ export class AgentChangePasswordComponent implements OnInit {
         console.log(data);
         if (data.status === 200) {
           this.toast.showSuccess(data.message, '');
-          setTimeout(()=>{
+          setTimeout(() => {
             this.authService.logout();
-          },2000)
+          }, 2000);
 
         }
       },
@@ -68,7 +68,7 @@ export class AgentChangePasswordComponent implements OnInit {
         const msg = this.error.errorHandlerWithText(this.changePassword, err);
         this.toast.showError(msg.message, 'Error');
       }
-    )
+    );
   }
 }
 
@@ -79,9 +79,9 @@ export class PasswordValidation {
     const password = AC.get('password').value; // to get value in input tag
     const confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
     if (password  !==  confirmPassword) {
-      AC.get('confirmPassword').setErrors({MatchPassword: true})
+      AC.get('confirmPassword').setErrors({MatchPassword: true});
     } else {
-      return null
+      return null;
     }
   }
 }

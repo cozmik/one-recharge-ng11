@@ -1,0 +1,10 @@
+<article>
+  <h3>{{data.title}}</h3>
+
+  <div class="message">{{data.message}}</div>
+
+  <div class="button-section">
+    <button mat-flat-button class="error" (click)="dialogRef.close(null)">cancel</button>
+    <button mat-flat-button color="accent" class="confirm" (click)="dialogRef.close(true)">confirm</button>
+  </div>
+</article>

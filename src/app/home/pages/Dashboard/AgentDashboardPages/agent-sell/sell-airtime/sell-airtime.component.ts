@@ -94,8 +94,7 @@ export class SellAirtimeComponent implements OnInit {
   }
 
   setNetwork(id: any): void{
-    const networkName = this.networksWithId.filter((network) =>  network.data.id === id)[0].data.networkName;
-    this.selectedNetwork = networkName;
+    this.selectedNetwork = this.networksWithId.filter((network) =>  network.data.id === id)[0].data.networkName;
   //  console.log(networkName);
   }
 

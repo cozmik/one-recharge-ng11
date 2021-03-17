@@ -20,7 +20,7 @@
             <div class="widget-content-block">
               <mat-form-field class="d-block">
                 <mat-select placeholder="Pick a service" required
-                            [(ngModel)]="chosenService" style="width:100%;">
+                            [(ngModel)]="chosenService" style="width:100%;" (ngModelChange)="selectService(chosenService)">
                   <mat-option *ngFor="let service of category?.serviceResponses" [value]="service">
                     {{sharedService.prettifyString(service.serviceName)}}
                   </mat-option>
@@ -30,13 +30,13 @@
                               *ngIf="chosenService && chosenService.servicePackages && chosenService.servicePackages.length">
                 <mat-select placeholder="Select Service Package" required
                             [(ngModel)]="servicePackage" style="width:100%;" (ngModelChange)="setService()">
-                  <mat-option *ngFor="let p of chosenService.servicePackages" [value]="p.id">
+                  <mat-option *ngFor="let p of chosenService.servicePackages" [value]="p">
                     {{sharedService.prettifyString(p.name) | titlecase}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <app-dynamic-form [isLoading]="isLoading" *ngIf="fields" [form]="form" [fields]="fields"
+              <app-dynamic-form [isLoading]="isLoading" [package]="servicePackage" *ngIf="fields" [form]="form" [fields]="fields"
                                 (submitData)="submitServiceData($event)"></app-dynamic-form>
             </div>
             <!--recharge block-->

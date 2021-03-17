@@ -28,7 +28,7 @@ export class ServiceManagerService {
         callBack();
       }
     }
-    this.http.get(this.serviceApi + 'categories', Constants.getTokenHttpHeaders()).subscribe(
+    this.http.get(this.serviceApi + 'categories', Constants.getNoTokenHeaders()).subscribe(
       (res: any) => {
         this.serviceStore.setCategories(res);
         if (callBack) {

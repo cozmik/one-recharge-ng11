@@ -29,6 +29,7 @@ export interface ServiceInterface {
   serviceProviderHasCommission: number;
   serviceProviderName: string;
   status: number;
+  meta: MetaData;
   superAgentCommission: number;
   systemCommission: number;
 }
@@ -57,6 +58,7 @@ export class ServiceModel implements ServiceInterface{
   serviceFees: ServiceFee[];
   private _serviceLogo: string;
   serviceName: string;
+  meta: MetaData;
   servicePackages: ServicePackageModel[];
   serviceProviderCommission: number;
   serviceProviderHasCommission: number;
@@ -83,6 +85,7 @@ export class ServiceModel implements ServiceInterface{
     this.isUpLineCommissionFixed = object.isUpLineCommissionFixed;
     this.serviceCategory = object.serviceCategory;
     this.serviceCode = object.serviceCode;
+    this.meta = object.meta;
     this.serviceFees = object.serviceFees;
     this._serviceLogo = object.serviceLogo;
     this.serviceName = object.serviceName;
@@ -111,3 +114,21 @@ export class ServiceModel implements ServiceInterface{
     this._serviceLogo = value;
   }
 }
+
+
+export interface MetaData {
+  confirmationUrl: string;
+  fields: Array<{
+    description: string;
+    field: string;
+    formFields: null
+    optional: boolean;
+    options: any;
+    title: string;
+    type: string;
+  }>;
+  guestUrl: string;
+  hasConfirmation: boolean;
+  url: string;
+}
+

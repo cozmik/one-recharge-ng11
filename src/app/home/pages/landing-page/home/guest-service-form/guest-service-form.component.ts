@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
@@ -8,13 +8,17 @@ import {ToastService} from '../../../../../shared/services/toast-service/toast.s
 import {Router} from '@angular/router';
 import {ServiceFormBase} from '../../../../common-components/service-form-base';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ServiceStoreService} from '../../../Dashboard/AdminDashboardPages/service-management/store/service-store.service';
+import {Subscription} from 'rxjs';
+import {ConfirmModalComponent} from '../../../../common-components/confirm-modal/confirm-modal.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-guest-service-form',
   templateUrl: './guest-service-form.component.html',
   styleUrls: ['./guest-service-form.component.scss']
 })
-export class GuestServiceFormComponent implements OnInit {
+export class GuestServiceFormComponent implements OnInit, OnDestroy {
   public airtimeForm: FormGroup;
 
   mobnumPattern = '^((\\+91-?)|0)?[0-9]{7,14}$';
@@ -45,6 +49,10 @@ export class GuestServiceFormComponent implements OnInit {
   form: FormGroup;
   fields = [];
   private transactionID: string;
+  private $allSub: Subscription[] = [];
+  private $catSub: Subscription;
+  private $formServiceSub: Subscription;
+  private $formCatSub: Subscription;
 
   constructor(public sharedService: SharedService,
               public anonymousService: AnonymousService,
@@ -52,21 +60,12 @@ export class GuestServiceFormComponent implements OnInit {
               public authService: AuthService, public fb: FormBuilder,
               public errorService: ErrorService,
               public toast: ToastService,
+              private sStore: ServiceStoreService,
+              private dialog: MatDialog,
               public router: Router) {
     this.isLoadingServices = false;
     this.isVerifyDetails = false;
     this.isLoading = false;
-
-  }
-
-  private getServices(): void {
-    this.isLoadingServices = true;
-    this.anonymousService.getServices().subscribe((res: any) => {
-      this.serviceCategories = res.filter(cat => {
-        return cat.serviceResponses.some(ser => ser.meta.guestUrl !== null);
-      });
-      this.isLoadingServices = false;
-    });
   }
 
   // createForm(): void {
@@ -134,16 +133,14 @@ export class GuestServiceFormComponent implements OnInit {
   //   )
   // };
 
-  private generateTransaction = () => {
-    this.isRecharging = true;
-    this.anonymousService.generateTransactionId().subscribe(
-      response => {
-        console.log('************ generateTransactionId ****************');
-        console.log(response.data[0].transactionId);
-        this.transactionID = response.data[0].transactionId;
-        // this.payWithRave();
-      });
-  }
+  // private generateTransaction = () => {
+    // this.isRecharging = true;
+    // this.anonymousService.generateTransactionId().subscribe(
+    //   response => {
+    //     this.transactionID = response.data[0].transactionId;
+    //     // this.payWithRave();
+    //   });
+  // }
 
   // checkNum() {
   //   if (this.airtimeForm.value.mobile.length && this.airtimeForm.value.mobile.length  !==  11) {
@@ -166,8 +163,8 @@ export class GuestServiceFormComponent implements OnInit {
   //
 
   // Submit recharge form
-  onSubmit(): void {
-    this.isLoading = true;
+  // onSubmit(): void {
+  //   this.isLoading = true;
     // this.rechargeObj.networkId = this.airtimeForm.value.networkId;
     // this.rechargeObj.receiverMsisdn = this.airtimeForm.value.mobile;
     // this.rechargeObj.amount = this.airtimeForm.value.amount;
@@ -179,11 +176,36 @@ export class GuestServiceFormComponent implements OnInit {
     // this.switchState = 'recharge-verify';
     // console.log('recharge Request', this._airtimeForm.value);
     // console.log('recharge rechargeObj', this.rechargeObj);
-  }
+  // }
 
   //
   ngOnInit(): void {
-    this.getServices();
+    this.isLoadingServices = true;
+    this.$catSub = this.sStore.categories.subscribe(c => {
+      this.serviceCategories = c.filter(cat => {
+        return cat.serviceResponses.some(ser => ser.meta.guestUrl !== null);
+      });
+      this.isLoadingServices = false;
+    });
+    this.$allSub.push(this.$catSub);
+
+    this.$formCatSub = this.anonymousService.dynamicFormCategory.subscribe(c => {
+      if (c){
+        this.category = c.category;
+        this.services = c.category.serviceResponses.filter(service => service.meta.guestUrl !== null);
+        if (this.form) {
+          this.form.reset();
+        }
+      }
+    });
+    this.$allSub.push(this.$formCatSub);
+
+    this.$formServiceSub = this.anonymousService.dynamicFormService.subscribe(s => {
+      if (s){
+        this.service = this.services.filter(ser => s.service.id === ser.id)[0];
+      }
+    });
+    this.$allSub.push(this.$formServiceSub);
     // this.getAllNetworks();
   }
 
@@ -273,42 +295,70 @@ export class GuestServiceFormComponent implements OnInit {
   // }
 
   setServices(category: any): void {
-    this.services = category.serviceResponses.filter(service => service.meta.guestUrl !== null);
-    if (this.form) {
-      this.form.reset();
-      // Object.entries(this.form.controls).forEach(
-      //   ([key, value]) => this.form.removeControl(key)
-      // );
-    }
+    this.anonymousService.dynamicFormCategory.next({category});
   }
-
   prepareServiceForm(): void {
     const holdFields = [];
-    this.service.meta.fields.forEach(field => {
+    this.anonymousService.dynamicFormService.getValue().service.meta.fields.forEach(field => {
       holdFields.push(new ServiceFormBase(field));
     });
     this.fields = holdFields;
     this.form = this.sharedService.toFormGroup(this.fields);
   }
 
-  submitServiceData(e: Event): void {
+  submitServiceData(e: any): void {
     this.isLoading = true;
-    const {hasConfirmation, guestUrl, confirmationUrl} = this.service.meta;
+    let mainUrl = '';
+    let hasConfirmation: boolean;
+    const {guestUrl, confirmationUrl} = this.service.meta;
+    if (e.hasConfirmation === undefined) {
+      hasConfirmation = this.service.meta.hasConfirmation;
+    } else {
+      hasConfirmation = e.hasConfirmation;
+    }
     const payload = {
       lat: 0,
       lga: '',
       lng: 0,
-      packageId: this.servicePackage,
+      packageId: this.servicePackage.id,
       state: ''
     };
     if (hasConfirmation) {
-      this.anonymousService.performService(this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/'),
-        this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/'), {...payload, ...e}, false).subscribe(res => {
-        console.log(res);
-        this.isLoading = false;
-      }, err => {
-        this.isLoading = false;
-      });
+      mainUrl = this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/');
+    } else {
+      mainUrl = this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/');
     }
+    this.anonymousService.performService(mainUrl, {...payload, ...e}).subscribe(res => {
+      if (hasConfirmation) {
+        this.confirmPayment({...payload, ...e}, res.message, 'Confirm Payment');
+      } else {
+        this.toast.showSuccess('Transaction was successful', 'Success');
+        this.isLoading = false;
+        this.anonymousService.addFreqService(this.service.id);
+        this.form.reset();
+      }    }, error => {
+      this.isLoading = false;
+    });
+  }
+
+  selectServices(service): void {
+    this.anonymousService.dynamicFormService.next({service});
+  }
+
+  ngOnDestroy(): void {
+    this.anonymousService.dynamicFormService.next(null);
+    this.anonymousService.dynamicFormCategory.next(null);
+    this.$allSub.forEach(sub => sub.unsubscribe());
+  }
+
+  confirmPayment(data: any, message: string, title: string): void {
+    const dialog = this.dialog.open(ConfirmModalComponent, {
+      width: '450px',
+      data: {message, title},
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.submitServiceData({...data, hasConfirmation: false});
+      }
+    });
   }
 }

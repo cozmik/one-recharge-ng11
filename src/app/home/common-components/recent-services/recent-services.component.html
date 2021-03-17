@@ -1,6 +1,6 @@
-<section class="package-section" *ngIf="recentServices">
+<section class="package-section w-100" *ngIf="recentServices">
   <h4 class="w-100" *ngIf="title">Frequently Performed Services</h4>
-    <button class="package" *ngFor="let service of recentServices" (click)="getService(service.id)">
+    <button class="package" *ngFor="let service of recentServices" (click)="getService(service)">
       <div class="logo">
         <img [src]="sanitizer.bypassSecurityTrustResourceUrl(service.serviceLogo)">
       </div>

@@ -6,14 +6,52 @@ import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {Constants} from '../../shared/Constants';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {ServiceInterface, ServiceModel} from '../../home/pages/Dashboard/AdminDashboardPages/service-management/models/service.model';
+import {CategoryInterface} from '../../home/pages/Dashboard/AdminDashboardPages/service-management/models/service-category.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnonymousService {
+  public static guestFreqServices = new BehaviorSubject<Map<any, any>>(new Map());
+  public static userFreqServices = new BehaviorSubject<Map<any, any>>(new Map());
+  private readonly loggedInUserId;
+  dynamicFormCategory = new BehaviorSubject<{category?: CategoryInterface}>(null);
+  dynamicFormService = new BehaviorSubject<{service?: ServiceInterface}>(null);
+  userDynamicFormService = new BehaviorSubject<{service?: ServiceInterface}>(null);
 
   constructor(public http: HttpClient) {
+    this.loggedInUserId = JSON.parse(localStorage.getItem(Constants.PROFILE))?.id;
+    if (localStorage.getItem('guest_freq_services')){
+      AnonymousService.guestFreqServices.next(new Map(JSON.parse(localStorage.getItem('guest_freq_services'))));
+    }
+    if (localStorage.getItem(`user_freq_services_${this.loggedInUserId}`)){
+      AnonymousService.userFreqServices.next(new Map(JSON.parse(localStorage.getItem(`user_freq_services_${this.loggedInUserId}`))));
+    }
+  }
+
+  addFreqService(serviceId: number, userId?: number): void {
+    console.log('here');
+    if (userId){
+      const frqServ = AnonymousService.userFreqServices.getValue();
+      if (frqServ.has(`${serviceId}`)) {
+        frqServ.set(`${serviceId}`, frqServ.get(`${serviceId}`) + 1);
+      } else {
+        frqServ.set(`${serviceId}`, 1);
+      }
+      AnonymousService.userFreqServices.next(frqServ);
+      localStorage.setItem(`user_freq_services_${this.loggedInUserId}`, JSON.stringify([...frqServ]));
+    } else {
+      const frqServ = AnonymousService.guestFreqServices.getValue();
+      if (frqServ.has(`${serviceId}`)) {
+        frqServ.set(`${serviceId}`, frqServ.get(`${serviceId}`) + 1);
+      } else {
+        frqServ.set(`${serviceId}`, 1);
+      }
+      AnonymousService.guestFreqServices.next(frqServ);
+      localStorage.setItem('guest_freq_services', JSON.stringify([...frqServ]));
+    }
   }
 
   getRoles(): Observable<any> {
@@ -80,10 +118,8 @@ export class AnonymousService {
       map(res => res));
   }
 
-  performService(confirmUrl: string, payUrl: string, data: any, authenticated = true): Observable<any> {
-    console.log(Constants.SERVICE_URL + confirmUrl);
-    console.log(payUrl);
-    return this.http.post(Constants.SERVICE_URL + confirmUrl,
+  performService(mainUrl, data: any, authenticated = true): Observable<any> {
+    return this.http.post(Constants.SERVICE_URL + mainUrl,
       data, authenticated ? Constants.getTokenHttpHeaders('false') : Constants.getNoTokenHeaders('false')).pipe(
       map(res => res));
   }
