@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {CustomerDashboardComponent} from './customer-dashboard/customer-dashboard.component';
-import {BuyDataComponent} from './customer-dashboard/buy-data/buy-data.component';
 import {PaymentStatusComponent} from '../../../common-components/payment-status/payment-status.component';
 import {CustomerSettingsComponent} from './customer-settings/customer-settings.component';
 import {CustomerTransactionHistoryComponent} from './customer-transaction-history/customer-transaction-history.component';
@@ -11,28 +10,25 @@ import {PerformServiceComponent} from '../user-shared/perform-service/perform-se
 import {RecentServicesComponent} from '../../../common-components/recent-services/recent-services.component';
 
 const routes: Routes = [
-  { path: '',
-    children: [
-      {
-        path: '', component: CustomerDashboardComponent,
-        children: [
-          {path: '', component: RecentServicesComponent},
-          {path: 'data', component: BuyDataComponent},
-          {path: 'payment-status', component: PaymentStatusComponent},
-          {path: 'services', component: ServicesComponent},
-          {path: 'services/:id', component: PerformServiceComponent},
-        ]
-      },
-      {path: '', pathMatch: 'full', component: CustomerDashboardComponent},
-      {path: 'settings', component: CustomerSettingsComponent},
-      {path: 'transaction-history', component: CustomerTransactionHistoryComponent}
-    ],
+  {
+    path: '',
+    component: CustomerDashboardComponent,
     canActivate: [AuthGuard]
-  }
+  },
+  {path: '', component: RecentServicesComponent},
+  {path: 'payment-status', component: PaymentStatusComponent},
+  {path: 'services', component: ServicesComponent},
+  {path: 'services/:id', component: PerformServiceComponent},
+  {path: 'services/:id/:serviceId', component: PerformServiceComponent},
+
+  {path: '', pathMatch: 'full', component: CustomerDashboardComponent},
+  {path: 'settings', component: CustomerSettingsComponent},
+  {path: 'transaction-history', component: CustomerTransactionHistoryComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CustomerRoutingModule { }
+export class CustomerRoutingModule {
+}

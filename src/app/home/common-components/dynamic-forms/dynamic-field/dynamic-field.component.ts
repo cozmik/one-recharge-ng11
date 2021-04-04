@@ -1,27 +1,25 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ServiceFormBase} from '../../service-form-base';
-import {FormGroup} from '@angular/forms';
+import {CustomFormGroup} from '../../../../core/services/shared-service/shared.service';
+import {AbstractControl} from '@angular/forms';
 
 @Component({
   selector: 'app-dynamic-field',
   templateUrl: './dynamic-field.component.html',
   styleUrls: ['./dynamic-field.component.scss']
 })
-export class DynamicFieldComponent implements OnInit{
-  @Input() field: ServiceFormBase<string>;
-  @Input() form: FormGroup;
-  @Input() package: any;
+export class DynamicFieldComponent implements OnInit {
+  @Input() form: CustomFormGroup | AbstractControl | any;
+
   getIsValid(): boolean {
-    if (this.form.controls[this.field.key].pristine){
-      return true;
-    }
-    return this.form.controls[this.field.key].valid;
+    this.form.fields.forEach(field => {
+      if (this.form.controls[field.key].pristine) {
+        return true;
+      }
+      return this.form.controls[field.key].valid;
+    });
+    return true;
   }
 
   ngOnInit(): void {
-    if (this.package && this.package.amount){
-      this.form.controls.amount.patchValue(this.package.amount);
-      this.form.controls.amount.disable();
-    }
   }
 }

@@ -1,163 +1,176 @@
- <div class="container">
-   <div class="row">
+<div class="container">
+  <div class="row">
 
-     <div class="col-md-6 col-xl-3">
-       <div class="card-wrap danger-card info-card custom-card">
-         <div class="card-content">
-           <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
-           <div class="content-block-single">
-             <div class="title text-uppercase" style="color:#469408">Main Account</div>
-             <div class="count"> {{DashboardStatistics?.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
-           </div>
-         </div>
-       </div>
-     </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card-wrap danger-card info-card custom-card">
+        <div class="card-content">
+          <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
+          <div class="content-block-single">
+            <div class="title text-uppercase" style="color:#469408">Main Account</div>
+            <div
+              class="count"> {{DashboardStatistics?.walletBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-     <div class="col-md-6 col-xl-3">
-       <div class="card-wrap danger-card info-card custom-card">
-         <div class="card-content">
-           <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
-           <div class="content-block-single">
-             <div class="title text-uppercase"  style="color:#469408">Commission Account</div>
-             <div class="count">{{DashboardStatistics?.walletCommissionBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
-           </div>
-         </div>
-       </div>
-     </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card-wrap danger-card info-card custom-card">
+        <div class="card-content">
+          <span class="icon" style="background-color: #469408;"><i class="fa fa-money"></i></span>
+          <div class="content-block-single">
+            <div class="title text-uppercase" style="color:#469408">Commission Account</div>
+            <div
+              class="count">{{DashboardStatistics?.walletCommissionBalance | currency : 'NGN' : 'symbol-narrow' | moneyFormatter }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-     <div class="col-md-6 col-xl-6">
-       <div class="card-wrap danger-card info-card custom-card">
-         <div class="card-content card-content-multi">
-           <span class="icon" style="background-color: #03aced;"><i class="fa fa-exchange"></i></span>
-           <div class="content-block-multi" style="flex:2 ">
-             <div class="title text-uppercase"  style="color:#03aced">Total Transactions</div>
-             <div class="count">{{DashboardStatistics?.totalTransactions }}</div>
-           </div>
-           <div class="content-block-multi">
-             <div class="title text-uppercase">Successful</div>
-             <div class="count">{{DashboardStatistics?.successfulTransactions }}</div>
-           </div>
-           <div class="content-block-multi">
-             <div class="title text-uppercase">Failed</div>
-             <div class="count">{{DashboardStatistics?.failedTransactions}}</div>
-           </div>
-           <div class="content-block-multi">
-             <div class="title text-uppercase">Pending</div>
-             <div class="count">{{DashboardStatistics?.pendingTransactions }}</div>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
+    <div class="col-md-6 col-xl-6">
+      <div class="card-wrap danger-card info-card custom-card">
+        <div class="card-content card-content-multi">
+          <span class="icon" style="background-color: #03aced;"><i class="fa fa-exchange"></i></span>
+          <div class="content-block-multi" style="flex:2 ">
+            <div class="title text-uppercase" style="color:#03aced">Total Transactions</div>
+            <div class="count">{{DashboardStatistics?.totalTransactions }}</div>
+          </div>
+          <div class="content-block-multi">
+            <div class="title text-uppercase">Successful</div>
+            <div class="count">{{DashboardStatistics?.successfulTransactions }}</div>
+          </div>
+          <div class="content-block-multi">
+            <div class="title text-uppercase">Failed</div>
+            <div class="count">{{DashboardStatistics?.failedTransactions}}</div>
+          </div>
+          <div class="content-block-multi">
+            <div class="title text-uppercase">Pending</div>
+            <div class="count">{{DashboardStatistics?.pendingTransactions }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="recent-services">
+      <app-recent-services [title]="true"></app-recent-services>
+  </div>
+  <div class="row" style="margin:20px 5px 10px;">
+    <div class="col-lg-12 filter-container">
+
+      <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
+        <header>
+          Most Recent Transactions
+          <!--           <a class="download-btn" *ngIf="false" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>-->
+        </header>
+        <div>
+          <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
+          <table class="table table-primary mobile-table" *ngIf="airtimeTransactions.length > 0">
+            <thead>
+            <tr>
+              <!--make table stable-->
+              <th></th>
+              <!---->
+              <th scope="col">#</th>
+              <th scope="col">Transaction Type</th>
+              <!--<th scope="col">Full Name</th>-->
+              <th scope="col">Email</th>
+              <th scope="col">Channel</th>
+              <th scope="col">Network</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date / Time</th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let tranx of airtimeTransactions; let i = index;">
+            <tr [style.backgroundColor]="i %2 === 0 ? '#ecf0f5' : 'white'">
+              <!--               <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
+              <!--make table stable-->
+              <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
+
+              <td scope="row">{{i + 1}}</td>
+              <td scope="row">{{formatTranxType(tranx.transactionType)}}</td>
+              <!--<td class="link">{{tranx.data.firstName}} {{tranx.data.lastName}} </td>-->
+              <td scope="row">{{tranx.email}}</td>
+              <td scope="row">{{tranx.channel}}</td>
+              <td scope="row">{{tranx.networkName}}</td>
+              <td scope="row">{{tranx.toMsisdn}}</td>
+              <td scope="row">{{tranx.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
+              <td class="more" style="position: relative;">
+                {{tranx.createdDate | date}}, {{tranx.createdDate | date : 'shortTime'}}
+                <span *ngIf="tranx.status === 0" [style.background-color]="'#d9534f'" class="status desktopOnly"></span>
+                <!--failed-->
+                <span *ngIf="tranx.status === -1" [style.background-color]="'#dfac2d'"
+                      class="status desktopOnly"></span><!--pending-->
+                <span *ngIf="tranx.status === 1" [style.background-color]="'#5cb85c'" class="status desktopOnly"></span>
+                <!--successful-->
+              </td>
+              <td *ngIf="tranx.status === 0" class="mobileOnly"><span [style.background-color]="'#d9534f'"
+                                                                      class="status-badge">Failed</span></td>
+              <td *ngIf="tranx.status === -1" class="mobileOnly"><span [style.background-color]="'#dfac2d'"
+                                                                       class="status-badge">Pending</span></td>
+              <td *ngIf="tranx.status === 1" class="mobileOnly"><span [style.background-color]="'#5cb85c'"
+                                                                      class="status-badge">Success</span></td>
+
+              <!--<td class="more"><div class="btn btn-link" (click)="getAgentData(agent.data)" [mat-menu-trigger-for]="action"><i class="fa fa-ellipsis-v"></i></div>-->
+              <!--<span *ngIf="tranx.data.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> &lt;!&ndash;failed&ndash;&gt;-->
+              <!--<span *ngIf="tranx.data.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span>&lt;!&ndash;pending&ndash;&gt;-->
+              <!--<span *ngIf="tranx.data.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> &lt;!&ndash;successful&ndash;&gt;-->
+              <!--</td>-->
+            </tr>
+            </tbody>
+          </table>
+          <div *ngIf="airtimeTransactions.length < 1 && !airtimeTransactions"
+               style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+            <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-   <div class="row" style="margin:20px 5px 10px;">
-     <div class="col-lg-12 filter-container">
-
-       <div class="custom-card" style="margin:0; padding-bottom:20px;min-height: 400px;">
-         <header>
-           Most Recent Transactions
-<!--           <a class="download-btn" *ngIf="false" (click)="downloadDialog()"><span class="fa fa-download"></span> Download CSV</a>-->
-         </header>
-         <div>
-           <mat-progress-bar *ngIf="isTransactionsLoaded" mode="indeterminate"></mat-progress-bar>
-           <table class="table table-dark mobile-table"  *ngIf="transactionsWithId.length > 0">
-             <thead>
-             <tr>
-               <!--make table stable-->
-               <th></th>
-               <!---->
-               <th scope="col">#</th>
-               <th scope="col">Transaction Type</th>
-               <!--<th scope="col">Full Name</th>-->
-               <th scope="col">Email</th>
-               <th scope="col">Channel</th>
-               <th scope="col">Network</th>
-               <th scope="col">Phone</th>
-               <th scope="col">Amount</th>
-               <th scope="col">Date / Time</th>
-             </tr>
-             </thead>
-             <tbody *ngFor="let tranx of transactionsWithId; let i = index;">
-             <tr [style.backgroundColor] = "i %2 === 0 ? '#ecf0f5' : 'white'">
-<!--               <mat-progress-bar *ngIf="isloading && tranx.data.id === setId" mode="indeterminate" style="position: absolute; width: 95%; margin-top: 45px; margin-bottom: 0"></mat-progress-bar>-->
-               <!--make table stable-->
-               <mat-progress-bar mode="indeterminate" style="visibility: hidden"></mat-progress-bar>
-
-               <td scope="row">{{tranx.id}}</td>
-               <td scope="row">{{formatTranxType(tranx.data.transactionType)}}</td>
-               <!--<td class="link">{{tranx.data.firstName}} {{tranx.data.lastName}} </td>-->
-               <td scope="row">{{tranx.data.email}}</td>
-               <td scope="row">{{tranx.data.channel}}</td>
-               <td scope="row">{{tranx.data.networkName}}</td>
-               <td scope="row">{{tranx.data.toMsisdn}}</td>
-               <td scope="row">{{tranx.data.amount | currency : 'NGN' : 'symbol-narrow' | moneyFormatter}}</td>
-               <td class="more" style="position: relative;">
-                 {{tranx.data.createdDate | date}}, {{tranx.data.createdDate | date : 'shortTime'}}
-                 <span *ngIf="tranx.data.status === 0"  [style.background-color]="'#d9534f'" class="status desktopOnly"></span> <!--failed-->
-                 <span *ngIf="tranx.data.status === -1" [style.background-color]="'#dfac2d'" class="status desktopOnly"></span><!--pending-->
-                 <span *ngIf="tranx.data.status === 1" [style.background-color]="'#5cb85c'" class="status desktopOnly"></span> <!--successful-->
-               </td>
-               <td *ngIf="tranx.data.status === 0" class="mobileOnly"><span [style.background-color]="'#d9534f'" class="status-badge">Failed</span></td>
-               <td *ngIf="tranx.data.status === -1" class="mobileOnly"><span [style.background-color]="'#dfac2d'" class="status-badge">Pending</span></td>
-               <td *ngIf="tranx.data.status === 1" class="mobileOnly"><span [style.background-color]="'#5cb85c'" class="status-badge">Success</span></td>
-
-               <!--<td class="more"><div class="btn btn-link" (click)="getAgentData(agent.data)" [mat-menu-trigger-for]="action"><i class="fa fa-ellipsis-v"></i></div>-->
-               <!--<span *ngIf="tranx.data.status === 0" class="status" [style.background-color]="'#d9534f'" class="status"></span> &lt;!&ndash;failed&ndash;&gt;-->
-               <!--<span *ngIf="tranx.data.status === -1" class="status" [style.background-color]="'#dfac2d'" class="status"></span>&lt;!&ndash;pending&ndash;&gt;-->
-               <!--<span *ngIf="tranx.data.status === 1" class="status" [style.background-color]="'#5cb85c'" class="status"></span> &lt;!&ndash;successful&ndash;&gt;-->
-               <!--</td>-->
-             </tr>
-             </tbody>
-           </table>
-           <div *ngIf="transactionsWithId.length < 1 && !isTransactionsLoaded"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
-             <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
-
-
-   <div class="row" *ngIf="false">
-     <div class="col-xl-12">
-       <div class="transaction-card">
-         <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
-         <header style="font-weight:700;">Recent Airtime Transactions</header>
-         <div>
-           <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
-           <table class="table table-primary"  *ngIf="true">
-             <thead>
-             <tr>
-               <th scope="col">Transaction Ref</th>
-               <th scope="col">Type</th>
-               <th scope="col">Phone number</th>
-               <th scope="col">Network</th>
-               <th scope="col">Amount (₦)</th>
-               <th scope="col">Date / Time</th>
-               <th scope="col">Action</th>
-             </tr>
-             </thead>
-             <tbody>
-             <tr>
-               <td class="link"> gdgdfg</td>
-               <td class="link"> fsdfs</td>
-               <td class="link"> sdfas</td>
-               <td class="link"> dfsdsd </td>
-               <td class="link"> dffsffs</td>
-               <td class="link"> dfsdsd </td>
-               <td class="link"> <button class="btn-outline-danger btn btn-sm">Repeat <i class="fa fa-spinner fa-spin" style="color:#ff6265"></i></button></td>
-             </tr>
-             </tbody>
-           </table>
-           <div *ngIf="false"  style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
-             <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
- </div>
+  <div class="row" *ngIf="false">
+    <div class="col-xl-12">
+      <div class="transaction-card">
+        <div class="loader" *ngIf="false"><span class="fa fa-spinner icon-loader"></span></div>
+        <header style="font-weight:700;">Recent Airtime Transactions</header>
+        <div>
+          <mat-progress-bar *ngIf="false" mode="indeterminate"></mat-progress-bar>
+          <table class="table table-primary" *ngIf="true">
+            <thead>
+            <tr>
+              <th scope="col">Transaction Ref</th>
+              <th scope="col">Type</th>
+              <th scope="col">Phone number</th>
+              <th scope="col">Network</th>
+              <th scope="col">Amount (₦)</th>
+              <th scope="col">Date / Time</th>
+              <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="link"> gdgdfg</td>
+              <td class="link"> fsdfs</td>
+              <td class="link"> sdfas</td>
+              <td class="link"> dfsdsd</td>
+              <td class="link"> dffsffs</td>
+              <td class="link"> dfsdsd</td>
+              <td class="link">
+                <button class="btn-outline-danger btn btn-sm">Repeat <i class="fa fa-spinner fa-spin"
+                                                                        style="color:#ff6265"></i></button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div *ngIf="false" style="text-align:center; border-top:1px solid #ccc; padding:20px 0px;">
+            <span style="color:#ccc; font-size:2rem;">No Transactions Data</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

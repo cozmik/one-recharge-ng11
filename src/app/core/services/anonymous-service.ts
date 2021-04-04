@@ -1,9 +1,8 @@
-
 import {map} from 'rxjs/operators';
 /**
  * Created by swifta on 1/22/18.
  */
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Constants} from '../../shared/Constants';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
@@ -17,40 +16,39 @@ export class AnonymousService {
   public static guestFreqServices = new BehaviorSubject<Map<any, any>>(new Map());
   public static userFreqServices = new BehaviorSubject<Map<any, any>>(new Map());
   private readonly loggedInUserId;
-  dynamicFormCategory = new BehaviorSubject<{category?: CategoryInterface}>(null);
-  dynamicFormService = new BehaviorSubject<{service?: ServiceInterface}>(null);
-  userDynamicFormService = new BehaviorSubject<{service?: ServiceInterface}>(null);
+  dynamicFormCategory = new BehaviorSubject<{ category?: CategoryInterface }>(null);
+  dynamicFormService = new BehaviorSubject<{ service?: ServiceInterface }>(null);
+  userDynamicFormService = new BehaviorSubject<{ service?: ServiceInterface }>(null);
 
   constructor(public http: HttpClient) {
     this.loggedInUserId = JSON.parse(localStorage.getItem(Constants.PROFILE))?.id;
-    if (localStorage.getItem('guest_freq_services')){
+    if (localStorage.getItem('guest_freq_services')) {
       AnonymousService.guestFreqServices.next(new Map(JSON.parse(localStorage.getItem('guest_freq_services'))));
     }
-    if (localStorage.getItem(`user_freq_services_${this.loggedInUserId}`)){
+    if (localStorage.getItem(`user_freq_services_${this.loggedInUserId}`)) {
       AnonymousService.userFreqServices.next(new Map(JSON.parse(localStorage.getItem(`user_freq_services_${this.loggedInUserId}`))));
     }
   }
 
-  addFreqService(serviceId: number, userId?: number): void {
-    console.log('here');
-    if (userId){
-      const frqServ = AnonymousService.userFreqServices.getValue();
-      if (frqServ.has(`${serviceId}`)) {
-        frqServ.set(`${serviceId}`, frqServ.get(`${serviceId}`) + 1);
-      } else {
-        frqServ.set(`${serviceId}`, 1);
-      }
-      AnonymousService.userFreqServices.next(frqServ);
-      localStorage.setItem(`user_freq_services_${this.loggedInUserId}`, JSON.stringify([...frqServ]));
+  storeFreqService(service: ServiceModel, userType: string): string {
+    const frqServ = AnonymousService[userType].getValue();
+    if (frqServ.has(service)) {
+      frqServ.set(service, frqServ.get(service) + 1);
     } else {
-      const frqServ = AnonymousService.guestFreqServices.getValue();
-      if (frqServ.has(`${serviceId}`)) {
-        frqServ.set(`${serviceId}`, frqServ.get(`${serviceId}`) + 1);
-      } else {
-        frqServ.set(`${serviceId}`, 1);
-      }
-      AnonymousService.guestFreqServices.next(frqServ);
-      localStorage.setItem('guest_freq_services', JSON.stringify([...frqServ]));
+      frqServ.set(service, 1);
+    }
+    AnonymousService[userType].next(frqServ);
+    return JSON.stringify([...frqServ]);
+  }
+
+  addFreqService(service: ServiceModel, userId?: number): void {
+    let userType = '';
+    if (userId) {
+      userType = 'userFreqServices';
+      localStorage.setItem(`user_freq_services_${this.loggedInUserId}`, this.storeFreqService(service, userType));
+    } else {
+      userType = 'guestFreqServices';
+      localStorage.setItem('guest_freq_services', this.storeFreqService(service, userType));
     }
   }
 
@@ -63,7 +61,7 @@ export class AnonymousService {
     return this.http.get(Constants.GET_NETWORKS_URL).pipe(map(res => res));
   }
 
-  getDataNetworks(): Observable<any>{
+  getDataNetworks(): Observable<any> {
     return this.http.get(Constants.GET_NETWORKS_URL + 'data-network').pipe(map(res => res));
   }
 
@@ -74,7 +72,7 @@ export class AnonymousService {
 
   generateTransactionId(): Observable<any> {
     return this.http.get(Constants.SERVICE_URL + '/transactions/generate-transaction-id',
-      Constants.getTokenHttpHeaders() ).pipe(map(res => res));
+      Constants.getTokenHttpHeaders()).pipe(map(res => res));
   }
 
   getPermissions(): Observable<any> {
@@ -84,7 +82,6 @@ export class AnonymousService {
 
   getRole(id): Observable<any> {
     return this.http.get(Constants.GET_ROLES_URL + id, Constants.getTokenHttpHeaders()).pipe(
-
       map(res => res));
   }
 
@@ -104,7 +101,7 @@ export class AnonymousService {
   }
 
   getUserTransactions(userId: number): Observable<any> {
-    return this.http.get(Constants.USERS_TRANSACTIONS_URL + userId + '?pageSize=10' , Constants.getTokenHttpHeaders()).pipe(
+    return this.http.get(Constants.USERS_TRANSACTIONS_URL + userId + '?pageSize=10', Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
 
@@ -113,19 +110,15 @@ export class AnonymousService {
       map(res => res));
   }
 
-  getServices(): Observable<any> {
-    return this.http.get(Constants.SERVICE_URL + '/services/categories', Constants.getNoTokenHeaders()).pipe(
-      map(res => res));
-  }
-
-  performService(mainUrl, data: any, authenticated = true): Observable<any> {
-    return this.http.post(Constants.SERVICE_URL + mainUrl,
-      data, authenticated ? Constants.getTokenHttpHeaders('false') : Constants.getNoTokenHeaders('false')).pipe(
+  performService(mainUrl, data: any): Observable<any> {
+    console.log(data);
+    return this.http.post(Constants.SERVICE_URL + '/' + mainUrl,
+      data, Constants.getNoTokenHeaders('false')).pipe(
       map(res => res));
   }
 
   cleanUrl(str: string, stringToRemove: string): string {
-    if (str.includes(stringToRemove)){
+    if (str.includes(stringToRemove)) {
       return str.replace(stringToRemove, '');
     } else {
       return str;

@@ -36,7 +36,6 @@ export class RecentServicesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   populateRecentServices(): void {
@@ -52,10 +51,8 @@ export class RecentServicesComponent implements OnInit {
       if (s.size) {
         const m = new Map([...s.entries()].sort((a, b) => b[1] - a[1]).slice(0, 9));
         m.forEach((value, key) => {
-          rServices.push(new ServiceModel(this.serviceList.filter(sm => {
-            return sm.id.toString() === key;
-          })[0]));
-        });
+          rServices.push(new ServiceModel(key));
+          });
         this.recentServices = rServices;
       }
     });
@@ -63,8 +60,9 @@ export class RecentServicesComponent implements OnInit {
 
   getService(service: ServiceModel): void {
     if (this.user) {
-      this.router.navigate(['services/' + service.id], { relativeTo: this.ar.parent }).then(() => {
-        this.anonymousService.userDynamicFormService.next({service});
+      this.router.navigate([this.user.userType.toLowerCase() === 'agent'
+        ? 'sell/' + service.serviceCategory.id + '/' + service.id
+        : 'services/' + service.serviceCategory.id + '/' + service.id], {relativeTo: this.ar.parent}).then(() => {
       });
     } else {
       this.selectService.emit({data: service});

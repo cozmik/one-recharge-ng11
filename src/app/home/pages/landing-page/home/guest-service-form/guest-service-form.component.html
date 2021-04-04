@@ -3,8 +3,8 @@
     Loading Services </span>
   <mat-form-field class="col-12 m-md-1">
     <mat-select [disabled]="isLoadingServices" placeholder="Select Category" required
-               [(ngModel)]="category" style="width:100%;" (ngModelChange)="setServices(category)">
-      <mat-option *ngFor="let category of serviceCategories" [value]="category">
+               [(ngModel)]="categoryId" style="width:100%;" (ngModelChange)="setServices()">
+      <mat-option *ngFor="let category of serviceCategories" [value]="category.id">
           {{category.categoryName | titlecase}}
       </mat-option>
     </mat-select>
@@ -26,6 +26,6 @@
     </mat-select>
   </mat-form-field>
 
-  <app-dynamic-form *ngIf="fields" [isLoading]="isLoading" [form]="form" [fields]="fields" [package]="servicePackage" (submitData)="submitServiceData($event)"></app-dynamic-form>
+  <app-dynamic-form *ngIf="form?.fields" [isLoading]="isLoading" [form]="form" [package]="servicePackage" (submitData)="submitServiceData($event)"></app-dynamic-form>
 
 </div>

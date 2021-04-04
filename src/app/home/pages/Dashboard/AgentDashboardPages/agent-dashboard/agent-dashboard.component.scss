@@ -12,6 +12,10 @@
   border-top: none;
 }
 
+.recent-services{
+  padding: 20px 10px 10px;
+}
+
 
 .custom-card{
   :host {
@@ -34,8 +38,6 @@
     border-radius: 0;
     text-transform: uppercase;
     color: #292b2c;
-    border-radius: 0;
-    text-transform: uppercase;
     //color: #fff;
     -webkit-box-shadow: 0px 3px 12px -1px rgba(0,0,0,0.29);
     -moz-box-shadow: 0px 3px 12px -1px rgba(0,0,0,0.29);
@@ -126,7 +128,7 @@
     .count-section{
       border-top: 3px solid rgba(0, 0, 0, 0.06);
       min-width: 20px;
-      padding: 5px 0px 0px;
+      padding: 5px 0 0;
       margin-top:10px;
       display:flex;
       justify-content: space-around;
@@ -205,9 +207,6 @@
     border-radius: 0;
     text-transform: uppercase;
     color: #fff;
-    border-radius: 0;
-    text-transform: uppercase;
-    //color: #fff;
     -webkit-box-shadow: 0px 3px 12px -1px rgba(0,0,0,0.29);
     -moz-box-shadow: 0px 3px 12px -1px rgba(0,0,0,0.29);
     box-shadow: 0px 3px 12px -1px rgba(0,0,0,0.29);

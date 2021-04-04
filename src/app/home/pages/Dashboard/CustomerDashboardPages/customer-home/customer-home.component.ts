@@ -4,7 +4,8 @@ import {ServiceManagerService} from '../../AdminDashboardPages/service-managemen
 
 @Component({
   selector: 'app-customer-home',
-  template: '<router-outlet></router-outlet>'
+  template: '<div class="container"><router-outlet></router-outlet></div>',
+  styles: ['.container{ min-height: 71vh }']
 })
 export class CustomerHomeComponent implements OnInit {
 

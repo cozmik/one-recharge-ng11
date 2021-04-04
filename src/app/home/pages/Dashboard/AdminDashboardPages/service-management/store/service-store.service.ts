@@ -11,7 +11,6 @@ export class ServiceStoreService {
 
   constructor() {
   }
-
   private readonly _serviceCategories = new BehaviorSubject<CategoryInterface[]>([]);
   private readonly _selectedCategory = new BehaviorSubject<CategoryInterface>(null);
   private readonly _catServices = new BehaviorSubject<ServiceInterface[]>([]);
@@ -19,10 +18,29 @@ export class ServiceStoreService {
   private readonly _allServices = new BehaviorSubject<ServiceInterface[]>([]);
   private readonly _selectedServicePackage = new BehaviorSubject<ServicePackageInterface>(null);
   private readonly _servicePackages = new BehaviorSubject<ServicePackageInterface[]>([]);
+  private readonly _updatedServiceList = new BehaviorSubject<number[]>([]);
+  private readonly _updatedCategoryList = new BehaviorSubject<number[]>([]);
 
   get categories(): Observable<CategoryInterface[]> {
-    console.log('setting categories');
     return this._serviceCategories as Observable<CategoryInterface[]>;
+  }
+
+  addToUpdatedServiceList(id: number): void {
+    const currentList = [...this._updatedServiceList.getValue(), id];
+    this._updatedServiceList.next(currentList);
+  }
+
+  get updatedServiceList(): number[]{
+    return this._updatedServiceList.getValue();
+  }
+
+  addToUpdatedCategoryList(id: number): void {
+    const currentList = [...this._updatedCategoryList.getValue(), id];
+    this._updatedCategoryList.next(currentList);
+  }
+
+  get updatedCategoryList(): number[]{
+    return this._updatedCategoryList.getValue();
   }
 
   setAllServices(categories: CategoryInterface[]): void {
@@ -67,8 +85,11 @@ export class ServiceStoreService {
   }
 
   getSelectedService(catId: number, serviceId: number): ServiceInterface {
-    this._selectedService.next(this.getCategory(catId).serviceResponses.find(s => s.id === serviceId));
-    this._servicePackages.next(this._selectedService.getValue().servicePackages);
+    const selectServ = this.getCategory(catId).serviceResponses.find(s => s.id === serviceId);
+    if (selectServ) {
+      this._selectedService.next(selectServ);
+      this._servicePackages.next(this._selectedService.getValue().servicePackages);
+    }
     return this._selectedService.getValue();
   }
 
@@ -82,12 +103,10 @@ export class ServiceStoreService {
     const cat = this.getCategory(catId);
     if (cat) {
       const index = this.allCategories.indexOf(cat);
-      console.log(data);
       this.allCategories[index] = {
         ...cat,
         ...data
       };
-      console.log(this.allCategories);
     }
   }
 
@@ -108,6 +127,10 @@ export class ServiceStoreService {
       this.services[index] = {
         ...service
       };
+    } else {
+      this._selectedService.next(service);
+      this._allServices.next([...this._allServices.getValue(), service]);
+      this.getCategory(service.serviceCategory.id).serviceResponses.push(service);
     }
   }
 }

@@ -1,8 +1,6 @@
-<form *ngIf="fields.length" (ngSubmit)="onSubmit()" [formGroup]="form">
+<form *ngIf="form.fields.length" (ngSubmit)="onSubmit()" [formGroup]="form">
 
-  <ng-template ngFor let-field [ngForOf]="fields" class="form-row">
-    <app-dynamic-field [field]="field" [form]="form" [package]="package"></app-dynamic-field>
-  </ng-template>
+  <app-dynamic-field [form]="form"></app-dynamic-field>
 
   <div class="col-12 mt-3 p-0">
     <button class="col-12" mat-raised-button type="submit" [disabled]="form.invalid || isLoading">Proceed</button>

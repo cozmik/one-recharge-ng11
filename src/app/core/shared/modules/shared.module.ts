@@ -40,6 +40,7 @@ import {CustomAlertComponent} from '../../../shared/components/custom-alert/cust
 import {TransactionsPipe} from '../../../shared/pipes/transactions-filter/airtime-transactions.pipe';
 import {TransactionStatusFilterPipe} from '../../../shared/pipes/transactions-status-filter/transaction-status-filter.pipe';
 import {RecentServicesComponent} from '../../../home/common-components/recent-services/recent-services.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import {RecentServicesComponent} from '../../../home/common-components/recent-se
     MatSnackBarModule,
     MatProgressBarModule,
     MatInputModule,
+    MatDividerModule,
     MatRadioModule,
     MatMenuModule,
     ChartsModule,
@@ -97,6 +99,7 @@ import {RecentServicesComponent} from '../../../home/common-components/recent-se
     MatSnackBarModule,
     MatProgressBarModule,
     MatInputModule,
+    MatDividerModule,
     MatRadioModule,
     MatMenuModule,
     ChartsModule,

@@ -1,17 +1,27 @@
 <ng-container [formGroup]="form">
-  <ng-container [ngSwitch]="field.controlType">
+  <ng-template ngFor let-field [ngForOf]="form.fields" let-i="index">
+    <ng-container [ngSwitch]="field.controlType">
 
-    <mat-form-field *ngSwitchCase="'textbox'" class="col-12">
-      <label class="sr-only" [attr.for]="field.key">{{field.label}}</label>
-      <input matInput [placeholder]="field.label"  [formControlName]="field.key"
-             [id]="field.key" [type]="field.type" (blur)="getIsValid()">
-    </mat-form-field>
+      <mat-form-field *ngSwitchCase="'textbox'" class="col-12">
+        <label class="sr-only" [attr.for]="field.key">{{field.label}}</label>
+        <input matInput [placeholder]="field.label" [formControlName]="field.key"
+               [id]="field.key" [type]="field.type" (blur)="getIsValid()">
+      </mat-form-field>
 
-    <mat-select [placeholder]="field.label" *ngSwitchCase="'dropdown'" [formControlName]="field.key" class="col-12">
-      <label class="sr-only" [attr.for]="field.key">{{field.label}}</label>
-      <mat-option *ngFor="let opt of field.options" (change)="getIsValid()" [value]="opt.key">{{opt.value}}</mat-option>
-    </mat-select>
-  </ng-container>
+      <mat-form-field *ngSwitchCase="'dropdown'" class="col-12">
+        <mat-select [placeholder]="field.label" [formControlName]="field.key">
+          <label class="sr-only" [attr.for]="field.key">{{field.label}}</label>
+          <mat-option *ngFor="let opt of field.options" (change)="getIsValid()"
+                      [value]="opt.key">{{opt.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <div class="errorMessage" *ngIf="!getIsValid()">{{field.label}} is required</div>
+      <ng-container *ngSwitchCase="'form'">
+        <h4 style="margin: 5px; font-size: .9em; font-weight: 500; color: #ccc; border-bottom: 1px solid lightgrey">{{field.label}}</h4>
+        <app-dynamic-field [form]="form.controls[field.key]"></app-dynamic-field>
+      </ng-container>
+    </ng-container>
+
+    <div class="errorMessage" *ngIf="!getIsValid()">{{field.label}} is required</div>
+  </ng-template>
 </ng-container>

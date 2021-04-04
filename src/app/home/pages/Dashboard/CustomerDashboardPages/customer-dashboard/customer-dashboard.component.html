@@ -6,7 +6,7 @@
         <h5 class="greetings">Welcome, <span> <i *ngIf="!customerDetails?.firstName" class="fa fa-spinner fa-spin"></i>{{customerDetails?.firstName}}</span></h5>
 
         <!--package section-->
-        <router-outlet></router-outlet>
+<!--        <router-outlet></router-outlet>-->
 
       </div>
 
@@ -29,7 +29,7 @@
           <!--<p>Cable TV</p>-->
         <!--</div>-->
       <!--</div>-->
-<!--      <app-recent-services (selectService)="selectService($event)"></app-recent-services>-->
+      <app-recent-services></app-recent-services>
     </div>
 
     <div class="row" style="margin-bottom:30px;">

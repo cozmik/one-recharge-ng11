@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {CategoryInterface, ServiceCategoryModel} from '../models/service-category.model';
 import {map} from 'rxjs/operators';
 import {ServiceInterface, ServiceModel} from '../models/service.model';
@@ -53,16 +53,25 @@ export class ServiceManagerService {
     );
   }
 
-  getCategoryDetails(id: number, callBack?: () => void): void {
-    this.http.get(this.serviceApi + 'categories/' + id,
-      Constants.getTokenHttpHeaders()).subscribe(
-      res => {
-        this.serviceStore.setCategory(res as CategoryInterface);
-        if (callBack) {
-          callBack();
-        }
-      });
+  getCategoryDetails(id: number, callBack?: (resp) => void): void {
+
+    if (this.serviceStore.updatedCategoryList.indexOf(id) < 0) {
+      this.http.get(this.serviceApi + 'categories/' + id,
+        Constants.getNoTokenHeaders()).subscribe(
+        res => {
+          this.serviceStore.addToUpdatedCategoryList(id);
+          this.serviceStore.updateCategory(id, res);
+          if (callBack) {
+            callBack(res);
+          }
+        });
+    } else {
+      if (callBack) {
+        callBack(this.serviceStore.allCategories.find(cat => cat.id === id));
+      }
+    }
   }
+
 
   updateService(service: ServiceInterface, callBack?: () => void): void {
     const data = {
@@ -78,20 +87,23 @@ export class ServiceManagerService {
       });
   }
 
-  // getServiceDetails(id: number, callBack?: () => void): Observable<ServiceModel> {
-  //   if (this.selectedService.getValue() && this.selectedService.getValue().id === id) {
-  //     return this.selectedService;
-  //   } else {
-  //     return this.http.get(this.serviceApi + id, Constants.getNoTokenHeaders()).pipe(
-  //       map(res => {
-  //         if (callBack) {
-  //           callBack();
-  //         }
-  //         return new ServiceModel(res);
-  //       })
-  //     );
-  //   }
-  // }
+  getServiceDetails(id: number, callBack?: (res?: any) => void): void {
+    if (!(this.serviceStore.updatedServiceList.indexOf(id) > 0)) {
+      this.http.get(this.serviceApi + id, Constants.getNoTokenHeaders()).pipe(
+        map((res: any) => {
+          this.serviceStore.addToUpdatedServiceList(res.id);
+          this.serviceStore.updateService(res as ServiceInterface);
+          if (callBack) {
+            callBack(res);
+          }
+        })
+      ).subscribe();
+    } else {
+      if (callBack) {
+        callBack();
+      }
+    }
+  }
 
   updateServicePackage(servicePackageId: number,
                        packageData: { amount: number; name: string; description: string },

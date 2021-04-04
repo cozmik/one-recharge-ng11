@@ -1,4 +1,4 @@
-<section>
+<section class="container">
   <button *ngFor="let category of categories" (click)="gotoServicePage(category.id)">
     <div class="logo">
       <img [src]="sanitizer.bypassSecurityTrustResourceUrl(category.categoryLogo)"> </div>

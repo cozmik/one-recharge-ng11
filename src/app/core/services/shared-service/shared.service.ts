@@ -1,7 +1,6 @@
-
 import {map} from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { Subject , BehaviorSubject, Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Constants} from '../../../shared/Constants';
 import {AnonymousService} from '../anonymous-service';
 import {ErrorService} from '../error_service/error.service';
@@ -10,6 +9,15 @@ import {ServiceFormBase} from '../../../home/common-components/service-form-base
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 
+export class CustomFormGroup extends FormGroup {
+  fields: ServiceFormBase<string>[];
+
+  constructor(formData: any, fields) {
+    super(formData);
+    this.fields = fields;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,12 +25,28 @@ export class SharedService {
   // Observable string sources
   public emitChangeSource = new Subject();
   public emitWalletAccountsSource = new Subject<any>();
-  public recentServices = new BehaviorSubject<{}>(null)
+  public recentServices = new BehaviorSubject<{}>(null);
+  // Observable string streams
+  changeEmitted$ = this.emitChangeSource.asObservable();
+
+  // Observable wallet accounts
+  walletAccountsEmitted$ = this.emitWalletAccountsSource.asObservable();
 
   totalTicketCount: BehaviorSubject<number> = new BehaviorSubject<number>(10);
-
   private _userWallet: any;
 
+  static toFormGroup(fields: ServiceFormBase<string>[]): CustomFormGroup {
+    const group: any = {};
+    fields.forEach(field => {
+      if (!field.formFields) {
+        group[field.key] = field.required ? new FormControl(field.value || '', Validators.required) :
+          new FormControl(field.value || '');
+      } else {
+        group[field.key] = SharedService.toFormGroup(field.formFields);
+      }
+    });
+    return new CustomFormGroup(group, fields);
+  }
 
   get userWallet(): any {
     return this._userWallet;
@@ -32,13 +56,6 @@ export class SharedService {
     this._userWallet = value;
   }
 
-  // Observable string streams
-  changeEmitted$ = this.emitChangeSource.asObservable();
-
-  // Observable wallet accounts
-  walletAccountsEmitted$ = this.emitWalletAccountsSource.asObservable();
-
-
   // Service message commands
   emitChange(change: string): any {
     this.emitChangeSource.next(change);
@@ -46,13 +63,12 @@ export class SharedService {
 
   emitWalletAccounts = () => {
     const walletAccounts: any = {
-      walletBalance : 0,
-      walletCommissionBalance : 0,
-      actualWalletBalance : 0
+      walletBalance: 0,
+      walletCommissionBalance: 0,
+      actualWalletBalance: 0
     };
 
     const userId = JSON.parse(localStorage.getItem(Constants.PROFILE)).id; // get user ID
-
 
     this.anonymousService.getUser(userId).subscribe(
       (data: any) => {
@@ -63,7 +79,7 @@ export class SharedService {
         walletAccounts.walletCommissionBalance = userDetails.walletCommissionBalance;
         walletAccounts.actualWalletBalance = userDetails.actualWalletBalance;
         console.log('** inner **', walletAccounts);
-        this.emitWalletAccountsSource.next({ walletAccounts });
+        this.emitWalletAccountsSource.next({walletAccounts});
 
       },
       err => {
@@ -94,7 +110,7 @@ export class SharedService {
   }
 
 
-  checkUserExist(email= '', mobileNo= ''): Observable<any> {
+  checkUserExist(email = '', mobileNo = ''): Observable<any> {
     return this.http.get(Constants.SEARCH_USER_URL + '?email=' + email + '&mobileNo=' + mobileNo, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
   }
@@ -103,15 +119,6 @@ export class SharedService {
   getProfile(email): Observable<any> {
     return this.http.get(Constants.SEARCH_USER_URL + '?email=' + email, Constants.getTokenHttpHeaders()).pipe(
       map(res => res));
-  }
-
-  toFormGroup(fields: ServiceFormBase<string>[] ): FormGroup {
-    const group: any = {};
-    fields.forEach(field => {
-      group[field.key] = field.required ? new FormControl(field.value || '', Validators.required) :
-        new FormControl(field.value || '');
-    });
-    return new FormGroup(group);
   }
 
   prettifyString(str: string): string {

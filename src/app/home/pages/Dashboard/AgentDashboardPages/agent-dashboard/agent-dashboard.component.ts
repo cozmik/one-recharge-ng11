@@ -86,7 +86,6 @@ export class AgentDashboardComponent implements OnInit {
         // console.log('agentDetails', this.agentDetails);
         this.DashboardStatistics.walletBalance = this.agentDetails.walletBalance;
         this.DashboardStatistics.walletCommissionBalance = this.agentDetails.walletCommissionBalance;
-        console.log(this.agentDetails);
       });
   };
 
@@ -113,8 +112,6 @@ export class AgentDashboardComponent implements OnInit {
           failedAirtimeTransactions: failedAirtimeTrans,
           pendingAirtimeTransactions: pendingAirtimeTrans,
         };
-
-        console.log('stats', this.DashboardStatistics);
       },
       err => {
         console.log(err);
@@ -139,12 +136,8 @@ export class AgentDashboardComponent implements OnInit {
         console.log('###', response);
         // this.airtimeTransactions = this.airtimeTransactions.filter( tranx => tranx.transactionType === Constants.AIRTIME_TRANSACTION);
 
-        this.airtimeTransactions = transactionData.splice(0, 20);
-        console.log('***** Filtered  Transactions ****');
-        console.log(this.airtimeTransactions);
-        this.getTransactionsWithId();
+        this.airtimeTransactions = transactionData.splice(0, 15);
         console.log('***** Airtime with id ****');
-        console.log(this.transactionsWithId);
         this.isTransactionsLoaded = false;
       },
       err => {
@@ -155,26 +148,26 @@ export class AgentDashboardComponent implements OnInit {
 
       }
     );
-  };
+  }
 
   formatTranxType = (type) => {
     return type.split('_').join(' ');
-  };
+  }
 
 
   // Re-Sort data ////////////////////
-  getTransactionsWithId(): void {
-    this.transactionsWithId = [];
-    for (let i = 0; i < this.airtimeTransactions.length; i++) {
-      const sortedTranx: any = {id: 0, data: {}};
-      sortedTranx.id = i + 1;
-      sortedTranx.data = this.airtimeTransactions[i];
-      this.transactionsWithId.push(sortedTranx);
-      this.isTransactionsLoaded = false;
-    }
-    console.log('************ trax with id ****************');
-    console.log(this.transactionsWithId);
-  }
+  // getTransactionsWithId(): void {
+  //   this.transactionsWithId = [];
+  //   for (let i = 0; i < this.airtimeTransactions.length; i++) {
+  //     const sortedTranx: any = {id: 0, data: {}};
+  //     sortedTranx.id = i + 1;
+  //     sortedTranx.data = this.airtimeTransactions[i];
+  //     this.transactionsWithId.push(sortedTranx);
+  //     this.isTransactionsLoaded = false;
+  //   }
+  //   console.log('************ trax with id ****************');
+  //   console.log(this.transactionsWithId);
+  // }
 
 
 }

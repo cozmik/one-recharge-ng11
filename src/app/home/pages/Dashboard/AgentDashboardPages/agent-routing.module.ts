@@ -33,6 +33,7 @@ const routes: Routes = [
     children: [
       {path: '', component: SelectPackageComponent},
       {path: ':id', component: PerformServiceComponent},
+      {path: ':id/:serviceId', component: PerformServiceComponent},
       {path: 'airtime', component: SellAirtimeComponent},
       {path: 'data', component: SellDataComponent}]
   },

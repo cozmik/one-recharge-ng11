@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {SharedService} from '../../../../../core/services/shared-service/shared.service';
+import {CustomFormGroup, SharedService} from '../../../../../core/services/shared-service/shared.service';
 import {AnonymousService} from '../../../../../core/services/anonymous-service';
 import {ErrorService} from '../../../../../core/services/error_service/error.service';
 import {AuthService} from '../../../../../core/authentication/auth-service.service';
@@ -12,6 +12,8 @@ import {ServiceStoreService} from '../../../Dashboard/AdminDashboardPages/servic
 import {Subscription} from 'rxjs';
 import {ConfirmModalComponent} from '../../../../common-components/confirm-modal/confirm-modal.component';
 import {MatDialog} from '@angular/material/dialog';
+import {ServiceManagerService} from '../../../Dashboard/AdminDashboardPages/service-management/views/service-manager.service';
+import {CategoryInterface} from '../../../Dashboard/AdminDashboardPages/service-management/models/service-category.model';
 
 @Component({
   selector: 'app-guest-service-form',
@@ -35,6 +37,7 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
   public isRecharging: boolean;
   public switchState: string;
   servicePackage: any;
+  categoryId: number;
 
   services: any;
   service: any;
@@ -46,9 +49,8 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
   public mobile: number;
   public network: any;
   serviceCategories: any[];
-  form: FormGroup;
+  form: CustomFormGroup;
   fields = [];
-  private transactionID: string;
   private $allSub: Subscription[] = [];
   private $catSub: Subscription;
   private $formServiceSub: Subscription;
@@ -61,6 +63,7 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
               public errorService: ErrorService,
               public toast: ToastService,
               private sStore: ServiceStoreService,
+              private smService: ServiceManagerService,
               private dialog: MatDialog,
               public router: Router) {
     this.isLoadingServices = false;
@@ -182,24 +185,22 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoadingServices = true;
     this.$catSub = this.sStore.categories.subscribe(c => {
-      this.serviceCategories = c.filter(cat => {
-        return cat.serviceResponses.some(ser => ser.meta.guestUrl !== null);
-      });
+      this.serviceCategories = c;
       this.isLoadingServices = false;
     });
     this.$allSub.push(this.$catSub);
-
     this.$formCatSub = this.anonymousService.dynamicFormCategory.subscribe(c => {
       if (c){
         this.category = c.category;
-        this.services = c.category.serviceResponses.filter(service => service.meta.guestUrl !== null);
+        this.services = c.category.serviceResponses;
+        this.category.serviceResponses = c.category.serviceResponses;
+        console.log(c.category);
         if (this.form) {
           this.form.reset();
         }
       }
     });
     this.$allSub.push(this.$formCatSub);
-
     this.$formServiceSub = this.anonymousService.dynamicFormService.subscribe(s => {
       if (s){
         this.service = this.services.filter(ser => s.service.id === ser.id)[0];
@@ -294,23 +295,26 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  setServices(category: any): void {
-    this.anonymousService.dynamicFormCategory.next({category});
-  }
-  prepareServiceForm(): void {
-    const holdFields = [];
-    this.anonymousService.dynamicFormService.getValue().service.meta.fields.forEach(field => {
-      holdFields.push(new ServiceFormBase(field));
+  setServices(): void {
+    this.smService.getCategoryDetails(this.categoryId, (res: CategoryInterface) => {
+      this.anonymousService.dynamicFormCategory.next({category: res});
     });
-    this.fields = holdFields;
-    this.form = this.sharedService.toFormGroup(this.fields);
   }
 
-  submitServiceData(e: any): void {
+  prepareServiceForm(): void {
+    const holdFields = [];
+    this.anonymousService.dynamicFormService.getValue().service.meta.fields.forEach((field: any) => {
+      holdFields.push(new ServiceFormBase(field));
+    });
+    this.form = SharedService.toFormGroup(holdFields);
+    console.log(this.form);
+  }
+
+  submitServiceData(e: any, confirm = false): void {
     this.isLoading = true;
     let mainUrl = '';
+    const {url, confirmationUrl} = this.service.meta;
     let hasConfirmation: boolean;
-    const {guestUrl, confirmationUrl} = this.service.meta;
     if (e.hasConfirmation === undefined) {
       hasConfirmation = this.service.meta.hasConfirmation;
     } else {
@@ -326,17 +330,18 @@ export class GuestServiceFormComponent implements OnInit, OnDestroy {
     if (hasConfirmation) {
       mainUrl = this.anonymousService.cleanUrl(confirmationUrl, 'kojeh-v2/api/');
     } else {
-      mainUrl = this.anonymousService.cleanUrl(guestUrl, 'kojeh-v2/api/');
+      mainUrl = this.anonymousService.cleanUrl(url, 'kojeh-v2/api/');
     }
     this.anonymousService.performService(mainUrl, {...payload, ...e}).subscribe(res => {
       if (hasConfirmation) {
         this.confirmPayment({...payload, ...e}, res.message, 'Confirm Payment');
       } else {
         this.toast.showSuccess('Transaction was successful', 'Success');
-        this.isLoading = false;
         this.anonymousService.addFreqService(this.service.id);
+        this.isLoading = false;
         this.form.reset();
-      }    }, error => {
+      }
+    }, error => {
       this.isLoading = false;
     });
   }
