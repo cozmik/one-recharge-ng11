@@ -154,7 +154,6 @@ class PerformServiceComponent {
         this.form = _core_services_shared_service_shared_service__WEBPACK_IMPORTED_MODULE_1__["SharedService"].toFormGroup(this.fields);
     }
     submitServiceData(e, confirm = false) {
-        this.anonymousService.addFreqService(this.chosenService, this.userData.id);
         this.isLoading = true;
         let mainUrl = '';
         const { url, confirmationUrl } = this.chosenService.meta;

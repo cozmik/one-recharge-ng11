@@ -93,7 +93,6 @@ export class PerformServiceComponent implements OnInit, OnDestroy {
   }
 
   submitServiceData(e: any, confirm = false): void {
-    this.anonymousService.addFreqService(this.chosenService, this.userData.id);
     this.isLoading = true;
     let mainUrl = '';
     const {url, confirmationUrl} = this.chosenService.meta;
